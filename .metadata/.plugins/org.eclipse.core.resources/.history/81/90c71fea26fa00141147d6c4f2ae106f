@@ -37,9 +37,8 @@ public class GUI extends JFrame {
 	 * Create the frame.
 	 */
 	public GUI() {
-		setTitle("Creator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 766, 662);
+		setBounds(100, 100, 538, 662);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -78,6 +77,10 @@ public class GUI extends JFrame {
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(58, 150, 332, 70);
 		contentPane.add(textArea);
+		
+		JLabel lblNewLabel_1 = new JLabel("Question #1");
+		lblNewLabel_1.setBounds(58, 125, 332, 14);
+		contentPane.add(lblNewLabel_1);
 		
 		JTextArea textArea_1 = new JTextArea();
 		textArea_1.setBounds(58, 231, 332, 70);
@@ -130,9 +133,5 @@ public class GUI extends JFrame {
 		JLabel lblNewLabel_2 = new JLabel("/ 30");
 		lblNewLabel_2.setBounds(295, 494, 46, 14);
 		contentPane.add(lblNewLabel_2);
-		
-		JButton btnAdd = new JButton("Add");
-		btnAdd.setBounds(520, 490, 89, 23);
-		contentPane.add(btnAdd);
 	}
 }
