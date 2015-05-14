@@ -1,0 +1,9 @@
+
+public class Question {
+	private String description;
+	private String variantA;
+	private String variantB;
+	private String variantC;
+	private int correctVariant;
+	
+}

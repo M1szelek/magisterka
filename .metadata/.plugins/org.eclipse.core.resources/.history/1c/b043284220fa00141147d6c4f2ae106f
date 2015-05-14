@@ -4,5 +4,6 @@ public class Question {
 	private QuestionVariant variantA;
 	private QuestionVariant variantB;
 	private QuestionVariant variantC;
+	private int correctVariant;
 	
 }

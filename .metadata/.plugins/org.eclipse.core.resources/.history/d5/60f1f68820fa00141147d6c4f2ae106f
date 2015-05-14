@@ -1,5 +1,6 @@
 
 public class Question {
+	private int id;
 	private String content;
 	private QuestionVariant variantA;
 	private QuestionVariant variantB;
