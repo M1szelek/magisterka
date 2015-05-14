@@ -8,7 +8,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
-import javax.swing.JSpinner;
 
 
 public class GUI extends JFrame {
@@ -77,61 +76,5 @@ public class GUI extends JFrame {
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(58, 150, 332, 70);
 		contentPane.add(textArea);
-		
-		JLabel lblNewLabel_1 = new JLabel("Question #1");
-		lblNewLabel_1.setBounds(58, 125, 332, 14);
-		contentPane.add(lblNewLabel_1);
-		
-		JTextArea textArea_1 = new JTextArea();
-		textArea_1.setBounds(58, 231, 332, 70);
-		contentPane.add(textArea_1);
-		
-		JTextArea textArea_2 = new JTextArea();
-		textArea_2.setBounds(58, 312, 332, 70);
-		contentPane.add(textArea_2);
-		
-		JTextArea textArea_3 = new JTextArea();
-		textArea_3.setBounds(58, 393, 332, 70);
-		contentPane.add(textArea_3);
-		
-		JLabel lblContent = new JLabel("Content");
-		lblContent.setBounds(10, 176, 46, 14);
-		contentPane.add(lblContent);
-		
-		JLabel lblA = new JLabel("A");
-		lblA.setBounds(34, 260, 12, 14);
-		contentPane.add(lblA);
-		
-		JLabel lblB = new JLabel("B");
-		lblB.setBounds(34, 340, 12, 14);
-		contentPane.add(lblB);
-		
-		JLabel lblC = new JLabel("C");
-		lblC.setBounds(34, 422, 12, 14);
-		contentPane.add(lblC);
-		
-		JButton btnNewButton = new JButton("|<");
-		btnNewButton.setBounds(58, 490, 89, 23);
-		contentPane.add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("<");
-		btnNewButton_1.setBounds(157, 490, 89, 23);
-		contentPane.add(btnNewButton_1);
-		
-		JButton btnNewButton_2 = new JButton(">");
-		btnNewButton_2.setBounds(326, 490, 89, 23);
-		contentPane.add(btnNewButton_2);
-		
-		JButton btnNewButton_3 = new JButton(">|");
-		btnNewButton_3.setBounds(425, 490, 89, 23);
-		contentPane.add(btnNewButton_3);
-		
-		JSpinner spinner = new JSpinner();
-		spinner.setBounds(256, 491, 29, 20);
-		contentPane.add(spinner);
-		
-		JLabel lblNewLabel_2 = new JLabel("/ 30");
-		lblNewLabel_2.setBounds(295, 494, 46, 14);
-		contentPane.add(lblNewLabel_2);
 	}
 }
