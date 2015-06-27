@@ -1,5 +1,0 @@
-
-public class QuestionVariant {
-	private String content;
-	private bool correct;
-}

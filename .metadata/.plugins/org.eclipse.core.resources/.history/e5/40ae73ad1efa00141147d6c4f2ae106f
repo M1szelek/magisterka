@@ -1,7 +1,0 @@
-import java.util.ArrayList;
-
-
-public class QBase {
-	private String name;
-	ArrayList<Question> questions;
-}

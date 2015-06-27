@@ -1,9 +1,0 @@
-
-public class Question {
-	private String content;
-	private String variantA;
-	private String variantB;
-	private String variantC;
-	private int correctVariant;
-	
-}
