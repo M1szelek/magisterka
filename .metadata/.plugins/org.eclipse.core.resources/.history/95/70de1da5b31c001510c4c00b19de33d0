@@ -10,8 +10,6 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JSpinner;
 import java.awt.Font;
-import javax.swing.JRadioButton;
-import javax.swing.ButtonGroup;
 
 
 public class GUI extends JFrame {
@@ -19,7 +17,6 @@ public class GUI extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
 
 	/**
 	 * Launch the application.
@@ -142,20 +139,5 @@ public class GUI extends JFrame {
 		JButton btnAdd = new JButton("Add");
 		btnAdd.setBounds(520, 490, 89, 23);
 		contentPane.add(btnAdd);
-		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Correct");
-		buttonGroup.add(rdbtnNewRadioButton);
-		rdbtnNewRadioButton.setBounds(615, 256, 109, 23);
-		contentPane.add(rdbtnNewRadioButton);
-		
-		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Correct");
-		buttonGroup.add(rdbtnNewRadioButton_1);
-		rdbtnNewRadioButton_1.setBounds(615, 336, 109, 23);
-		contentPane.add(rdbtnNewRadioButton_1);
-		
-		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("Correct\r\n");
-		buttonGroup.add(rdbtnNewRadioButton_2);
-		rdbtnNewRadioButton_2.setBounds(615, 418, 109, 23);
-		contentPane.add(rdbtnNewRadioButton_2);
 	}
 }
