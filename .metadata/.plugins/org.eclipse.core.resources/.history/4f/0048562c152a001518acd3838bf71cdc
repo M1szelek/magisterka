@@ -1,0 +1,66 @@
+import java.awt.Image;
+
+
+public class Question {
+	private String content;
+	private QuestionVariant variantA;
+	private QuestionVariant variantB;
+	private QuestionVariant variantC;
+	
+	private Image imgContent;
+	private Image imgVarA;
+	private Image imgVarB;
+	private Image imgVarC;
+	
+	public Image getImgContent() {
+		return imgContent;
+	}
+	public void setImgContent(Image imgContent) {
+		this.imgContent = imgContent;
+	}
+	public Image getImgVarA() {
+		return imgVarA;
+	}
+	public void setImgVarA(Image imgVarA) {
+		this.imgVarA = imgVarA;
+	}
+	public Image getImgVarB() {
+		return imgVarB;
+	}
+	public void setImgVarB(Image imgVarB) {
+		this.imgVarB = imgVarB;
+	}
+	public Image getImgVarC() {
+		return imgVarC;
+	}
+	public void setImgVarC(Image imgVarC) {
+		this.imgVarC = imgVarC;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public QuestionVariant getVariantA() {
+		return variantA;
+	}
+	public void setVariantA(QuestionVariant variantA) {
+		this.variantA = variantA;
+	}
+	public QuestionVariant getVariantB() {
+		return variantB;
+	}
+	public void setVariantB(QuestionVariant variantB) {
+		this.variantB = variantB;
+	}
+	public QuestionVariant getVariantC() {
+		return variantC;
+	}
+	public void setVariantC(QuestionVariant variantC) {
+		this.variantC = variantC;
+	}
+	
+	
+	
+}

@@ -1,0 +1,28 @@
+import java.util.ArrayList;
+
+
+public class QBase {
+	private String name;
+	private String author;
+	ArrayList<Question> questions;
+	
+	
+	
+	public QBase(String name, String author) {
+		super();
+		this.name = name;	
+		this.author = author;
+		questions = new ArrayList<Question>();
+	}
+
+
+
+	void addQuestion(){
+		
+	}
+	
+	void removeQuestion(int i){
+		questions.remove(i);
+	}
+	
+}

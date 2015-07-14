@@ -1,0 +1,4 @@
+
+public class QuestionVariant {
+	private String content;
+}
