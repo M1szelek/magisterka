@@ -34,7 +34,6 @@ public class GUI extends JFrame {
 	JTextArea textArea_varA = new JTextArea();
 	JTextArea textArea_varB = new JTextArea();
 	JTextArea textArea_varC = new JTextArea();
-	JSpinner spinner = new JSpinner();
 
 	/**
 	 * Launch the application.
@@ -58,7 +57,7 @@ public class GUI extends JFrame {
 		textArea_varA.setText(q.getVarA().getContent());
 		textArea_varB.setText(q.getVarB().getContent());
 		textArea_varC.setText(q.getVarC().getContent());
-		spinner.setValue(currQ);;
+		
 		
 	}
 	
@@ -169,7 +168,7 @@ public class GUI extends JFrame {
 		JButton btn_next = new JButton(">");
 		btn_next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				nextQuestion();
+				
 			}
 		});
 		btn_next.setBounds(326, 490, 89, 23);

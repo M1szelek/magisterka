@@ -169,7 +169,7 @@ public class GUI extends JFrame {
 		JButton btn_next = new JButton(">");
 		btn_next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				nextQuestion();
+				
 			}
 		});
 		btn_next.setBounds(326, 490, 89, 23);

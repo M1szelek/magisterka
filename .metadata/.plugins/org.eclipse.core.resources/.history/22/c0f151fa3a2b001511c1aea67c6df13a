@@ -31,10 +31,6 @@ public class GUI extends JFrame {
 	private int currQ = 1;
 	
 	JTextArea textArea_content = new JTextArea();
-	JTextArea textArea_varA = new JTextArea();
-	JTextArea textArea_varB = new JTextArea();
-	JTextArea textArea_varC = new JTextArea();
-	JSpinner spinner = new JSpinner();
 
 	/**
 	 * Launch the application.
@@ -55,10 +51,6 @@ public class GUI extends JFrame {
 	public void renderQuestion(int currQ){
 		Question q = qbase.getQuestions().get(currQ);
 		textArea_content.setText(q.getContent());
-		textArea_varA.setText(q.getVarA().getContent());
-		textArea_varB.setText(q.getVarB().getContent());
-		textArea_varC.setText(q.getVarC().getContent());
-		spinner.setValue(currQ);;
 		
 	}
 	
@@ -127,17 +119,17 @@ public class GUI extends JFrame {
 		textArea_content.setBounds(58, 150, 551, 70);
 		contentPane.add(textArea_content);
 		
-		//JTextArea textArea_varA = new JTextArea();
+		JTextArea textArea_varA = new JTextArea();
 		textArea_varA.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		textArea_varA.setBounds(58, 231, 551, 70);
 		contentPane.add(textArea_varA);
 		
-		//JTextArea textArea_varB = new JTextArea();
+		JTextArea textArea_varB = new JTextArea();
 		textArea_varB.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		textArea_varB.setBounds(58, 312, 551, 70);
 		contentPane.add(textArea_varB);
 		
-		//JTextArea textArea_varC = new JTextArea();
+		JTextArea textArea_varC = new JTextArea();
 		textArea_varC.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		textArea_varC.setBounds(58, 393, 551, 70);
 		contentPane.add(textArea_varC);
@@ -167,11 +159,6 @@ public class GUI extends JFrame {
 		contentPane.add(btn_prev);
 		
 		JButton btn_next = new JButton(">");
-		btn_next.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				nextQuestion();
-			}
-		});
 		btn_next.setBounds(326, 490, 89, 23);
 		contentPane.add(btn_next);
 		
@@ -179,7 +166,7 @@ public class GUI extends JFrame {
 		btn_last.setBounds(425, 490, 89, 23);
 		contentPane.add(btn_last);
 		
-		//JSpinner spinner = new JSpinner();
+		JSpinner spinner = new JSpinner();
 		spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		spinner.setBounds(256, 491, 29, 20);
 		contentPane.add(spinner);
