@@ -28,7 +28,7 @@ public class GUI extends JFrame {
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	
 	private QBase qbase = new QBase("anonymous","example");
-	private int currQ = 1;
+	private int currQ = 0;
 	
 	JTextArea textArea_content = new JTextArea();
 	JTextArea textArea_varA = new JTextArea();
@@ -52,31 +52,66 @@ public class GUI extends JFrame {
 		});
 	}
 	
-	public void renderQuestion(int currQ){
-		Question q = qbase.getQuestions().get(currQ);
+	public void renderQuestion(){
+		Question q = qbase.getQuestions().get(this.currQ);
 		textArea_content.setText(q.getContent());
 		textArea_varA.setText(q.getVarA().getContent());
 		textArea_varB.setText(q.getVarB().getContent());
 		textArea_varC.setText(q.getVarC().getContent());
-		spinner.setValue(currQ);;
+		//this.currQ = _currQ;
+		//dodajemy dla spinnera zawsze 1, zeby nie zaczynac od 0 pytania na HUDzie
+		spinner.setValue(this.currQ+1);				
 		
 	}
 	
 	public void nextQuestion(){
-		if(currQ == qbase.getQuestions().size()){
+		if(this.currQ == qbase.getQuestions().size()-1){
 			return;
 		}else{
-			currQ++;
-			renderQuestion(currQ);
+			this.currQ++;
+			renderQuestion();
 		}
 	}
 	
 	public void previousQuestion(){
-		if(currQ == 0){
+		if(this.currQ == 0){
 			return;
 		}else{
-			currQ--;
-			renderQuestion(currQ);
+			this.currQ--;
+			renderQuestion();
+		}
+	}
+	
+	public void firstQuestion(){
+		this.currQ = 0;
+		renderQuestion();
+	}
+	
+	public void lastQuestion(){
+		this.currQ = qbase.getQuestions().size()-1;
+		renderQuestion();
+	}
+	
+	public void addQuestion(){
+		qbase.addQuestion();
+		this.currQ = qbase.getQuestions().size()-1;
+		renderQuestion();
+	}
+	
+	public void removeQuestion(){
+		if(qbase.getQuestions().size()-1 > 0){		//jesli mamy wiecej niz 1 pytanie
+			if(this.currQ == qbase.getQuestions().size()-1){	//jesli jestesmy na ostatnim pytaniu
+				this.currQ--;
+				qbase.removeQuestion(this.currQ+1);	
+				renderQuestion();
+				return;
+			}
+			
+			qbase.removeQuestion(this.currQ);	
+			
+			renderQuestion();
+		}else{
+			return;			//moze dodamy tutaj kiedys czyszczenie pytania
 		}
 	}
 
@@ -159,10 +194,20 @@ public class GUI extends JFrame {
 		contentPane.add(lblC);
 		
 		JButton btn_first = new JButton("|<");
+		btn_first.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				firstQuestion();
+			}
+		});
 		btn_first.setBounds(58, 490, 89, 23);
 		contentPane.add(btn_first);
 		
 		JButton btn_prev = new JButton("<");
+		btn_prev.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				previousQuestion();
+			}
+		});
 		btn_prev.setBounds(157, 490, 89, 23);
 		contentPane.add(btn_prev);
 		
@@ -176,12 +221,17 @@ public class GUI extends JFrame {
 		contentPane.add(btn_next);
 		
 		JButton btn_last = new JButton(">|");
+		btn_last.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lastQuestion();
+			}
+		});
 		btn_last.setBounds(425, 490, 89, 23);
 		contentPane.add(btn_last);
 		
 		//JSpinner spinner = new JSpinner();
 		spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
-		spinner.setBounds(256, 491, 29, 20);
+		spinner.setBounds(249, 491, 38, 20);
 		contentPane.add(spinner);
 		
 		final JLabel lblqsize = new JLabel("/ 1");
@@ -191,10 +241,10 @@ public class GUI extends JFrame {
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				qbase.addQuestion();
+				addQuestion();
 				String str = "/ " + Integer.toString(qbase.getQuestions().size());
 				lblqsize.setText(str);
-				currQ = qbase.getQuestions().size();
+				
 			}
 		});
 		btnAdd.setBounds(520, 490, 89, 23);
@@ -216,6 +266,13 @@ public class GUI extends JFrame {
 		contentPane.add(rdbtn_corrC);
 		
 		JButton btnRemove = new JButton("Remove");
+		btnRemove.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeQuestion();
+				String str = "/ " + Integer.toString(qbase.getQuestions().size());
+				lblqsize.setText(str);
+			}
+		});
 		btnRemove.setBounds(619, 490, 89, 23);
 		contentPane.add(btnRemove);
 	}
