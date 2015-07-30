@@ -7,7 +7,7 @@ public class Question {
 	private QuestionVariant varA;
 	private QuestionVariant varB;
 	private QuestionVariant varC;
-	private int correct;
+	private int correct;			//1 - A, 2 - B, 3 - C
 	
 	private Image imgContent;
 	

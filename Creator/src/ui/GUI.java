@@ -15,6 +15,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import model.QBase;
 import model.Question;
@@ -25,7 +27,11 @@ public class GUI extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
+	private final JRadioButton rdbtn_corrA = new JRadioButton("Correct");
+	private final JRadioButton rdbtn_corrB = new JRadioButton("Correct");
+	private final JRadioButton rdbtn_corrC = new JRadioButton("Correct");
 	private final ButtonGroup buttonGroup = new ButtonGroup();
+	
 	
 	private QBase qbase = new QBase("anonymous","example");
 	private int currQ = 0;
@@ -60,7 +66,20 @@ public class GUI extends JFrame {
 		textArea_varC.setText(q.getVarC().getContent());
 		//this.currQ = _currQ;
 		//dodajemy dla spinnera zawsze 1, zeby nie zaczynac od 0 pytania na HUDzie
-		spinner.setValue(this.currQ+1);				
+		spinner.setValue(this.currQ+1);
+		
+		switch(q.getCorrect()){
+			case 1:
+				rdbtn_corrA.setSelected(true);
+				break;
+			case 2:
+				rdbtn_corrB.setSelected(true);
+				break;
+			case 3:
+				rdbtn_corrC.setSelected(true);
+				
+				
+		}
 		
 	}
 	
@@ -160,21 +179,129 @@ public class GUI extends JFrame {
 		//JTextArea textArea_content = new JTextArea();
 		textArea_content.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		textArea_content.setBounds(58, 150, 551, 70);
+		textArea_content.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qbase.getQuestions().get(currQ).setContent(textArea_content.getText());
+				//System.out.println("Added character to" + currQ);
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qbase.getQuestions().get(currQ).setContent(textArea_content.getText());
+				//System.out.println("Removed character from" + currQ);
+				
+			}
+			
+		});
 		contentPane.add(textArea_content);
 		
 		//JTextArea textArea_varA = new JTextArea();
 		textArea_varA.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		textArea_varA.setBounds(58, 231, 551, 70);
+		textArea_varA.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qbase.getQuestions().get(currQ).getVarA().setContent(textArea_varA.getText());
+				//System.out.println("Added character to" + currQ);
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qbase.getQuestions().get(currQ).getVarA().setContent(textArea_varA.getText());
+				//System.out.println("Removed character from" + currQ);
+				
+			}
+			
+		});
 		contentPane.add(textArea_varA);
 		
 		//JTextArea textArea_varB = new JTextArea();
 		textArea_varB.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		textArea_varB.setBounds(58, 312, 551, 70);
+		textArea_varB.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qbase.getQuestions().get(currQ).getVarB().setContent(textArea_varB.getText());
+				//System.out.println("Added character to" + currQ);
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qbase.getQuestions().get(currQ).getVarB().setContent(textArea_varB.getText());
+				//System.out.println("Removed character from" + currQ);
+				
+			}
+			
+		});
 		contentPane.add(textArea_varB);
 		
 		//JTextArea textArea_varC = new JTextArea();
 		textArea_varC.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		textArea_varC.setBounds(58, 393, 551, 70);
+		textArea_varC.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qbase.getQuestions().get(currQ).getVarC().setContent(textArea_varC.getText());
+				//System.out.println("Added character to" + currQ);
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qbase.getQuestions().get(currQ).getVarC().setContent(textArea_varC.getText());
+				//System.out.println("Removed character from" + currQ);
+				
+			}
+			
+		});
 		contentPane.add(textArea_varC);
 		
 		JLabel lblContent = new JLabel("Content");
@@ -250,30 +377,59 @@ public class GUI extends JFrame {
 		btnAdd.setBounds(520, 490, 89, 23);
 		contentPane.add(btnAdd);
 		
-		JRadioButton rdbtn_corrA = new JRadioButton("Correct");
+		
 		buttonGroup.add(rdbtn_corrA);
 		rdbtn_corrA.setBounds(615, 256, 109, 23);
+		rdbtn_corrA.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				qbase.getQuestions().get(currQ).setCorrect(1);
+			}
+			
+		});
 		contentPane.add(rdbtn_corrA);
 		
-		JRadioButton rdbtn_corrB = new JRadioButton("Correct");
+		
 		buttonGroup.add(rdbtn_corrB);
 		rdbtn_corrB.setBounds(615, 336, 109, 23);
+		rdbtn_corrB.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				qbase.getQuestions().get(currQ).setCorrect(2);
+			}
+			
+		});
 		contentPane.add(rdbtn_corrB);
 		
-		JRadioButton rdbtn_corrC = new JRadioButton("Correct\r\n");
+		
 		buttonGroup.add(rdbtn_corrC);
 		rdbtn_corrC.setBounds(615, 418, 109, 23);
+		rdbtn_corrC.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				qbase.getQuestions().get(currQ).setCorrect(3);
+			}
+			
+		});
 		contentPane.add(rdbtn_corrC);
 		
 		JButton btnRemove = new JButton("Remove");
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				removeQuestion();
+			removeQuestion();
 				String str = "/ " + Integer.toString(qbase.getQuestions().size());
 				lblqsize.setText(str);
 			}
 		});
 		btnRemove.setBounds(619, 490, 89, 23);
 		contentPane.add(btnRemove);
+		
+		this.renderQuestion();
 	}
 }
