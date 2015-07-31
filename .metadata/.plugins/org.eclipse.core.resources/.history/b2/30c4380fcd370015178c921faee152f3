@@ -421,6 +421,7 @@ public class GUI extends JFrame {
 		spinner.setBounds(249, 491, 38, 20);
 		contentPane.add(spinner);
 		
+		final JLabel lblqsize = new JLabel("/ 1");
 		lblqsize.setBounds(295, 494, 46, 14);
 		contentPane.add(lblqsize);
 		

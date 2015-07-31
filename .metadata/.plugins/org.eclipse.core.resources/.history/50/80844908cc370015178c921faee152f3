@@ -35,9 +35,8 @@ public class GUI extends JFrame {
 	private final JRadioButton rdbtn_corrA = new JRadioButton("Correct");
 	private final JRadioButton rdbtn_corrB = new JRadioButton("Correct");
 	private final JRadioButton rdbtn_corrC = new JRadioButton("Correct");
-	private final ButtonGroup buttonGroup = new ButtonGroup();
-	
 	private final JLabel lblqsize = new JLabel("/ 1");
+	private final ButtonGroup buttonGroup = new ButtonGroup();
 	
 	
 	private QBase qbase = new QBase("anonymous","example");
@@ -164,7 +163,7 @@ public class GUI extends JFrame {
 	         this.qbase = (QBase) in.readObject();
 	         in.close();
 	         fileIn.close();
-	         String str = "/ " + Integer.toString(this.qbase.getQuestions().size());
+	         String str = "/ " + Integer.toString(qbase.getQuestions().size());
 		     lblqsize.setText(str);
 		     currQ = 0;
 		     renderQuestion();
@@ -421,6 +420,7 @@ public class GUI extends JFrame {
 		spinner.setBounds(249, 491, 38, 20);
 		contentPane.add(spinner);
 		
+		final JLabel lblqsize = new JLabel("/ 1");
 		lblqsize.setBounds(295, 494, 46, 14);
 		contentPane.add(lblqsize);
 		
