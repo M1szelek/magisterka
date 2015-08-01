@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename method &apos;ui.GUI.loadFile()&apos; to &apos;load&apos;&#x0D;&#x0A;- Original project: &apos;Creator&apos;&#x0D;&#x0A;- Original element: &apos;ui.GUI.loadFile()&apos;&#x0D;&#x0A;- Renamed element: &apos;ui.GUI.load()&apos;&#x0D;&#x0A;- Update references to refactored element" delegate="false" deprecate="false" description="Rename method &apos;loadFile&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.method" input="/src&lt;ui{GUI.java[GUI~loadFile" name="load" references="true" stamp="1438464630038" version="1.0"/>
+</session>

@@ -3,6 +3,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.io.ObjectOutputStream;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,6 +27,13 @@ import javax.swing.event.DocumentListener;
 
 import model.QBase;
 import model.Question;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
 
 
 public class GUI extends JFrame {
@@ -39,8 +48,10 @@ public class GUI extends JFrame {
 	
 	private final JLabel lblqsize = new JLabel("/ 1");
 	
+	private JFileChooser fc = new JFileChooser();
 	
-	private QBase qbase = new QBase("anonymous","example");
+	
+	private QBase qBase = new QBase("anonymous","example");
 	private int currQ = 0;
 	
 	JTextArea textArea_content = new JTextArea();
@@ -48,6 +59,9 @@ public class GUI extends JFrame {
 	JTextArea textArea_varB = new JTextArea();
 	JTextArea textArea_varC = new JTextArea();
 	JSpinner spinner = new JSpinner();
+	
+	File currFile;
+	boolean isSaved = false;
 
 	/**
 	 * Launch the application.
@@ -66,7 +80,7 @@ public class GUI extends JFrame {
 	}
 	
 	public void renderQuestion(){
-		Question q = qbase.getQuestions().get(this.currQ);
+		Question q = qBase.getQuestions().get(this.currQ);
 		textArea_content.setText(q.getContent());
 		textArea_varA.setText(q.getVarA().getContent());
 		textArea_varB.setText(q.getVarB().getContent());
@@ -91,7 +105,7 @@ public class GUI extends JFrame {
 	}
 	
 	public void nextQuestion(){
-		if(this.currQ == qbase.getQuestions().size()-1){
+		if(this.currQ == qBase.getQuestions().size()-1){
 			return;
 		}else{
 			this.currQ++;
@@ -114,39 +128,65 @@ public class GUI extends JFrame {
 	}
 	
 	public void lastQuestion(){
-		this.currQ = qbase.getQuestions().size()-1;
+		this.currQ = qBase.getQuestions().size()-1;
 		renderQuestion();
 	}
 	
 	public void addQuestion(){
-		qbase.addQuestion();
-		this.currQ = qbase.getQuestions().size()-1;
+		qBase.addQuestion();
+		this.currQ = qBase.getQuestions().size()-1;
+		setQBaseSize();
 		renderQuestion();
 	}
 	
 	public void removeQuestion(){
-		if(qbase.getQuestions().size()-1 > 0){		//jesli mamy wiecej niz 1 pytanie
-			if(this.currQ == qbase.getQuestions().size()-1){	//jesli jestesmy na ostatnim pytaniu
+		if(qBase.getQuestions().size()-1 > 0){		//jesli mamy wiecej niz 1 pytanie
+			if(this.currQ == qBase.getQuestions().size()-1){	//jesli jestesmy na ostatnim pytaniu
 				this.currQ--;
-				qbase.removeQuestion(this.currQ+1);	
+				qBase.removeQuestion(this.currQ+1);	
 				renderQuestion();
 				return;
 			}
 			
-			qbase.removeQuestion(this.currQ);	
-			
+			qBase.removeQuestion(this.currQ);	
+			setQBaseSize();
 			renderQuestion();
 		}else{
 			return;			//moze dodamy tutaj kiedys czyszczenie pytania
 		}
 	}
 	
-	public void saveToFile(){
+	public void newBase(){
+		this.qBase = new QBase("anonymous","example");
+		currQ = 0;
+		setQBaseSize();
+		renderQuestion();
+	}
+	
+	public void setQBaseSize(){
+		String str = "/ " + Integer.toString(qBase.getQuestions().size());
+		this.lblqsize.setText(str);
+	}
+	
+	public void saveAs(){
 		try
 	      {
-	         FileOutputStream fileOut = new FileOutputStream("qbase");
+			int returnVal = fc.showSaveDialog(GUI.this);
+			
+			 File file;
+			 
+			 if (returnVal == JFileChooser.APPROVE_OPTION) {
+	                file = fc.getSelectedFile();
+	                //This is where a real application would open the file.
+	                //log.append("Opening: " + file.getName() + "." + newline);
+	            } else {
+	                //log.append("Open command cancelled by user." + newline);
+	            	return;
+	         }
+			
+			 FileOutputStream fileOut = new FileOutputStream(file);
 	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-	         out.writeObject(this.qbase);
+	         out.writeObject(this.qBase);
 	         out.close();
 	         fileOut.close();
 	         //System.out.printf("Serialized data is saved in /tmp/employee.ser");
@@ -156,16 +196,44 @@ public class GUI extends JFrame {
 	      }
 	}
 	
-	public void loadFile(){
+	public void save(){
+		try
+	      {
+			 FileOutputStream fileOut = new FileOutputStream(this.currFile);
+	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+	         out.writeObject(this.qBase);
+	         out.close();
+	         fileOut.close();
+	         //System.out.printf("Serialized data is saved in /tmp/employee.ser");
+	      }catch(IOException i)
+	      {
+	          i.printStackTrace();
+	      }
+	}
+	
+	public void load(){
 	      try
 	      {
-	         FileInputStream fileIn = new FileInputStream("qbase");
+	    	 int returnVal = fc.showOpenDialog(GUI.this);
+	    	 
+	    	 File file;
+	    	 
+	    	 if (returnVal == JFileChooser.APPROVE_OPTION) {
+	                file = fc.getSelectedFile();
+	                this.currFile = file;
+	                //This is where a real application would open the file.
+	                //log.append("Opening: " + file.getName() + "." + newline);
+	            } else {
+	                //log.append("Open command cancelled by user." + newline);
+	            	return;
+	         }
+	    	  
+	    	 FileInputStream fileIn = new FileInputStream(file);
 	         ObjectInputStream in = new ObjectInputStream(fileIn);
-	         this.qbase = (QBase) in.readObject();
+	         this.qBase = (QBase) in.readObject();
 	         in.close();
 	         fileIn.close();
-	         String str = "/ " + Integer.toString(this.qbase.getQuestions().size());
-		     lblqsize.setText(str);
+	         setQBaseSize();
 		     currQ = 0;
 		     renderQuestion();
 	      }catch(IOException i)
@@ -191,32 +259,80 @@ public class GUI extends JFrame {
 		setTitle("Creator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 766, 662);
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+		
+		JMenuItem mntmNew = new JMenuItem("New");
+		mntmNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
+		mnFile.add(mntmNew);
+		mntmNew.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				newBase();
+			}
+			
+		});
+		
+		JMenuItem mntmOpenFile = new JMenuItem("Open File...");
+		mntmOpenFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
+		mnFile.add(mntmOpenFile);
+		mntmOpenFile.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				load();
+			}
+			
+		});
+		
+		JSeparator separator = new JSeparator();
+		mnFile.add(separator);
+		
+		JMenuItem mntmSave = new JMenuItem("Save");
+		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
+		mnFile.add(mntmSave);
+		
+		mntmSave.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				save();
+			}
+			
+		});
+		
+		JMenuItem mntmSaveAs = new JMenuItem("Save As...");
+		mntmSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
+		mnFile.add(mntmSaveAs);
+		
+		mntmSaveAs.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				saveAs();
+			}
+			
+		});
+		
+		JSeparator separator_1 = new JSeparator();
+		mnFile.add(separator_1);
+		
+		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
+		mnFile.add(mntmExit);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		JButton btnNew = new JButton("New");
-		btnNew.setBounds(10, 11, 89, 23);
-		contentPane.add(btnNew);
-		
-		JButton btnOpen = new JButton("Open");
-		btnOpen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				loadFile();
-			}
-		});
-		btnOpen.setBounds(109, 11, 89, 23);
-		contentPane.add(btnOpen);
-		
-		JButton btnSave = new JButton("Save");
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				saveToFile();
-			}
-		});
-		btnSave.setBounds(208, 11, 89, 23);
-		contentPane.add(btnSave);
 		
 		JLabel lblNewLabel = new JLabel("Name");
 		lblNewLabel.setBounds(10, 48, 46, 14);
@@ -252,7 +368,7 @@ public class GUI extends JFrame {
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
-				qbase.getQuestions().get(currQ).setContent(textArea_content.getText());
+				qBase.getQuestions().get(currQ).setContent(textArea_content.getText());
 				//System.out.println("Added character to" + currQ);
 				
 			}
@@ -260,7 +376,7 @@ public class GUI extends JFrame {
 			@Override
 			public void removeUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
-				qbase.getQuestions().get(currQ).setContent(textArea_content.getText());
+				qBase.getQuestions().get(currQ).setContent(textArea_content.getText());
 				//System.out.println("Removed character from" + currQ);
 				
 			}
@@ -284,7 +400,7 @@ public class GUI extends JFrame {
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
-				qbase.getQuestions().get(currQ).getVarA().setContent(textArea_varA.getText());
+				qBase.getQuestions().get(currQ).getVarA().setContent(textArea_varA.getText());
 				//System.out.println("Added character to" + currQ);
 				
 			}
@@ -292,7 +408,7 @@ public class GUI extends JFrame {
 			@Override
 			public void removeUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
-				qbase.getQuestions().get(currQ).getVarA().setContent(textArea_varA.getText());
+				qBase.getQuestions().get(currQ).getVarA().setContent(textArea_varA.getText());
 				//System.out.println("Removed character from" + currQ);
 				
 			}
@@ -316,7 +432,7 @@ public class GUI extends JFrame {
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
-				qbase.getQuestions().get(currQ).getVarB().setContent(textArea_varB.getText());
+				qBase.getQuestions().get(currQ).getVarB().setContent(textArea_varB.getText());
 				//System.out.println("Added character to" + currQ);
 				
 			}
@@ -324,7 +440,7 @@ public class GUI extends JFrame {
 			@Override
 			public void removeUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
-				qbase.getQuestions().get(currQ).getVarB().setContent(textArea_varB.getText());
+				qBase.getQuestions().get(currQ).getVarB().setContent(textArea_varB.getText());
 				//System.out.println("Removed character from" + currQ);
 				
 			}
@@ -348,7 +464,7 @@ public class GUI extends JFrame {
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
-				qbase.getQuestions().get(currQ).getVarC().setContent(textArea_varC.getText());
+				qBase.getQuestions().get(currQ).getVarC().setContent(textArea_varC.getText());
 				//System.out.println("Added character to" + currQ);
 				
 			}
@@ -356,7 +472,7 @@ public class GUI extends JFrame {
 			@Override
 			public void removeUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
-				qbase.getQuestions().get(currQ).getVarC().setContent(textArea_varC.getText());
+				qBase.getQuestions().get(currQ).getVarC().setContent(textArea_varC.getText());
 				//System.out.println("Removed character from" + currQ);
 				
 			}
@@ -428,8 +544,7 @@ public class GUI extends JFrame {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				addQuestion();
-				String str = "/ " + Integer.toString(qbase.getQuestions().size());
-				lblqsize.setText(str);
+				
 				
 			}
 		});
@@ -444,7 +559,7 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				qbase.getQuestions().get(currQ).setCorrect(1);
+				qBase.getQuestions().get(currQ).setCorrect(1);
 			}
 			
 		});
@@ -458,7 +573,7 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				qbase.getQuestions().get(currQ).setCorrect(2);
+				qBase.getQuestions().get(currQ).setCorrect(2);
 			}
 			
 		});
@@ -472,7 +587,7 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				qbase.getQuestions().get(currQ).setCorrect(3);
+				qBase.getQuestions().get(currQ).setCorrect(3);
 			}
 			
 		});
@@ -481,9 +596,8 @@ public class GUI extends JFrame {
 		JButton btnRemove = new JButton("Remove");
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			removeQuestion();
-				String str = "/ " + Integer.toString(qbase.getQuestions().size());
-				lblqsize.setText(str);
+				removeQuestion();
+				
 			}
 		});
 		btnRemove.setBounds(619, 490, 89, 23);
