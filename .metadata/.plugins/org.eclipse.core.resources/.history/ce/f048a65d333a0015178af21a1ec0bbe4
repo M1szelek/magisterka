@@ -15,7 +15,7 @@ public class Question implements Serializable {
 	private QuestionVariant varC;
 	private int correct;			//1 - A, 2 - B, 3 - C
 	
-	transient private BufferedImage imgContent;
+	private BufferedImage imgContent;
 	private byte[] imgInByte;
 	
 	

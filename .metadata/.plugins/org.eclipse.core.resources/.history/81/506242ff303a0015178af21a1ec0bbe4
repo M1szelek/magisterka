@@ -12,14 +12,6 @@ public class QuestionVariant implements Serializable {
 	transient private BufferedImage img;
 	private byte[] imgInByte;
 
-	public byte[] getImgInByte() {
-		return imgInByte;
-	}
-
-	public void setImgInByte(byte[] imgInByte) {
-		this.imgInByte = imgInByte;
-	}
-
 	public BufferedImage getImg() {
 		return img;
 	}

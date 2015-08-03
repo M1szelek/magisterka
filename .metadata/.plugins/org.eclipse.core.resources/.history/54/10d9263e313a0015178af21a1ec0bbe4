@@ -15,20 +15,10 @@ public class Question implements Serializable {
 	private QuestionVariant varC;
 	private int correct;			//1 - A, 2 - B, 3 - C
 	
-	transient private BufferedImage imgContent;
+	private BufferedImage imgContent;
 	private byte[] imgInByte;
 	
 	
-	public byte[] getImgInByte() {
-		return imgInByte;
-	}
-
-
-	public void setImgInByte(byte[] imgInByte) {
-		this.imgInByte = imgInByte;
-	}
-
-
 	public Question() {
 		super();
 		this.content = new String();

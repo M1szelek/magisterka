@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -177,7 +178,21 @@ public class GUI extends JFrame {
 		this.lblqsize.setText(str);
 	}
 	
-	public void setContentImage(){
+	public String getFormat(String imageName)
+	{
+	    switch(imageName.toLowerCase())
+	    {
+	        case ".png": return "PNG";
+	        case ".gif": return "GIF";
+	        case ".tiff": return "TIFF";
+	        case ".jpg": return "JPG";
+	        case ".jpeg": return "JPEG";
+	    }
+
+	    return "UNKNOWN";
+	}
+	
+	public void setContentImage() throws IOException{
 		int returnVal = fc.showSaveDialog(GUI.this);
 		
 		 File file;
@@ -192,10 +207,16 @@ public class GUI extends JFrame {
         }
 		 
 		 //BufferedImage img = null;
-			try {
-			   qBase.getQuestions().get(currQ).setImgContent(ImageIO.read(file));
-			} catch (IOException e) {
-			}
+		 BufferedImage originalImage = ImageIO.read(file);
+		 ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		 String format = getFormat(file.getName());
+		 ImageIO.write( originalImage, format, baos );
+		 baos.flush();
+		 byte[] imageInByte = baos.toByteArray();
+		 baos.close();
+		 qBase.getQuestions().get(currQ).setImgInByte(imageInByte);
+		 qBase.getQuestions().get(currQ).setImgContent(originalImage);
+		 
 			
 			//int type = img.getType() == 0? BufferedImage.TYPE_INT_ARGB : img.getType();
 			
@@ -701,7 +722,12 @@ public class GUI extends JFrame {
 		JButton btnImage = new JButton("Image");
 		btnImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setContentImage();
+				try {
+					setContentImage();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnImage.setBounds(694, 176, 89, 23);

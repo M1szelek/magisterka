@@ -9,16 +9,7 @@ public class QuestionVariant implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String content;
-	transient private BufferedImage img;
-	private byte[] imgInByte;
-
-	public byte[] getImgInByte() {
-		return imgInByte;
-	}
-
-	public void setImgInByte(byte[] imgInByte) {
-		this.imgInByte = imgInByte;
-	}
+	private BufferedImage img;
 
 	public BufferedImage getImg() {
 		return img;
