@@ -3,6 +3,9 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,16 +13,22 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
@@ -27,20 +36,13 @@ import javax.swing.event.DocumentListener;
 
 import model.QBase;
 import model.Question;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JSeparator;
-import javax.swing.KeyStroke;
-import java.awt.event.KeyEvent;
-import java.awt.event.InputEvent;
 
 
 public class GUI extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField textField_name;
+	private JTextField textField_author;
 	private final JRadioButton rdbtn_corrA = new JRadioButton("Correct");
 	private final JRadioButton rdbtn_corrB = new JRadioButton("Correct");
 	private final JRadioButton rdbtn_corrC = new JRadioButton("Correct");
@@ -51,8 +53,8 @@ public class GUI extends JFrame {
 	private JFileChooser fc = new JFileChooser();
 	
 	
-	private QBase qBase = new QBase("anonymous","example");
-	private int currQ = 0;
+	private QBase qBase;
+	private int currQ;
 	
 	JTextArea textArea_content = new JTextArea();
 	JTextArea textArea_varA = new JTextArea();
@@ -102,6 +104,11 @@ public class GUI extends JFrame {
 				
 		}
 		
+	}
+	
+	public void renderAuthorName(){
+		textField_name.setText(qBase.getName());
+		textField_author.setText(qBase.getAuthor());
 	}
 	
 	public void nextQuestion(){
@@ -158,7 +165,9 @@ public class GUI extends JFrame {
 	
 	public void newBase(){
 		this.qBase = new QBase("anonymous","example");
-		currQ = 0;
+		this.currQ = 0;
+		this.currFile = null;
+		renderAuthorName();
 		setQBaseSize();
 		renderQuestion();
 	}
@@ -166,6 +175,30 @@ public class GUI extends JFrame {
 	public void setQBaseSize(){
 		String str = "/ " + Integer.toString(qBase.getQuestions().size());
 		this.lblqsize.setText(str);
+	}
+	
+	public void setContentImage(){
+		int returnVal = fc.showSaveDialog(GUI.this);
+		
+		 File file;
+		 
+		 if (returnVal == JFileChooser.APPROVE_OPTION) {
+               file = fc.getSelectedFile();
+               //This is where a real application would open the file.
+               //log.append("Opening: " + file.getName() + "." + newline);
+           } else {
+               //log.append("Open command cancelled by user." + newline);
+           	return;
+        }
+		 
+		 //BufferedImage img = null;
+			try {
+			   qBase.getQuestions().get(currQ).setImgContent(ImageIO.read(file));
+			} catch (IOException e) {
+			}
+			
+			//int type = img.getType() == 0? BufferedImage.TYPE_INT_ARGB : img.getType();
+			
 	}
 	
 	public void saveAs(){
@@ -196,9 +229,16 @@ public class GUI extends JFrame {
 	      }
 	}
 	
+	
+	
 	public void save(){
 		try
 	      {
+			 if(this.currFile == null){				//jesli jeszcze plik nie powstal
+				 saveAs();
+				 return;
+			 }
+			
 			 FileOutputStream fileOut = new FileOutputStream(this.currFile);
 	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
 	         out.writeObject(this.qBase);
@@ -236,6 +276,7 @@ public class GUI extends JFrame {
 	         setQBaseSize();
 		     currQ = 0;
 		     renderQuestion();
+		     renderAuthorName();
 	      }catch(IOException i)
 	      {
 	         i.printStackTrace();
@@ -258,7 +299,7 @@ public class GUI extends JFrame {
 	public GUI() {
 		setTitle("Creator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 766, 662);
+		setBounds(100, 100, 978, 662);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -338,19 +379,75 @@ public class GUI extends JFrame {
 		lblNewLabel.setBounds(10, 48, 46, 14);
 		contentPane.add(lblNewLabel);
 		
-		textField = new JTextField();
-		textField.setBounds(58, 45, 332, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		textField_name = new JTextField();
+		textField_name.setBounds(58, 45, 332, 20);
+		contentPane.add(textField_name);
+		textField_name.setColumns(10);
+		
+		textField_name.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.setName(textField_name.getText());
+				//System.out.println("Added character to" + currQ);
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.setName(textField_name.getText());
+				//System.out.println("Removed character from" + currQ);
+				
+			}
+			
+		});
 		
 		JLabel lblAuthor = new JLabel("Author");
 		lblAuthor.setBounds(10, 76, 46, 14);
 		contentPane.add(lblAuthor);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(58, 73, 332, 20);
-		contentPane.add(textField_1);
+		textField_author = new JTextField();
+		textField_author.setColumns(10);
+		textField_author.setBounds(58, 73, 332, 20);
+		contentPane.add(textField_author);
+		
+		textField_author.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.setAuthor(textField_author.getText());
+				//System.out.println("Added character to" + currQ);
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.setAuthor(textField_author.getText());
+				//System.out.println("Removed character from" + currQ);
+				
+			}
+			
+		});
 		
 		//JTextArea textArea_content = new JTextArea();
 		textArea_content.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -543,9 +640,7 @@ public class GUI extends JFrame {
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				addQuestion();
-				
-				
+				addQuestion();		
 			}
 		});
 		btnAdd.setBounds(520, 490, 89, 23);
@@ -553,7 +648,7 @@ public class GUI extends JFrame {
 		
 		
 		buttonGroup.add(rdbtn_corrA);
-		rdbtn_corrA.setBounds(615, 256, 109, 23);
+		rdbtn_corrA.setBounds(615, 256, 61, 23);
 		rdbtn_corrA.addActionListener(new ActionListener(){
 
 			@Override
@@ -567,7 +662,7 @@ public class GUI extends JFrame {
 		
 		
 		buttonGroup.add(rdbtn_corrB);
-		rdbtn_corrB.setBounds(615, 336, 109, 23);
+		rdbtn_corrB.setBounds(615, 336, 61, 23);
 		rdbtn_corrB.addActionListener(new ActionListener(){
 
 			@Override
@@ -581,7 +676,7 @@ public class GUI extends JFrame {
 		
 		
 		buttonGroup.add(rdbtn_corrC);
-		rdbtn_corrC.setBounds(615, 418, 109, 23);
+		rdbtn_corrC.setBounds(615, 418, 61, 23);
 		rdbtn_corrC.addActionListener(new ActionListener(){
 
 			@Override
@@ -603,6 +698,47 @@ public class GUI extends JFrame {
 		btnRemove.setBounds(619, 490, 89, 23);
 		contentPane.add(btnRemove);
 		
-		this.renderQuestion();
+		JButton btnImage = new JButton("Image");
+		btnImage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setContentImage();
+			}
+		});
+		btnImage.setBounds(694, 176, 89, 23);
+		contentPane.add(btnImage);
+		
+		JButton btnNewButton = new JButton("Image");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnNewButton.setBounds(694, 256, 89, 23);
+		contentPane.add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("Image");
+		btnNewButton_1.setBounds(694, 336, 89, 23);
+		contentPane.add(btnNewButton_1);
+		
+		JButton btnNewButton_2 = new JButton("Image");
+		btnNewButton_2.setBounds(694, 418, 89, 23);
+		contentPane.add(btnNewButton_2);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(802, 150, 150, 70);
+		contentPane.add(panel);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(802, 231, 150, 70);
+		contentPane.add(panel_1);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBounds(802, 312, 150, 70);
+		contentPane.add(panel_2);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setBounds(802, 393, 150, 70);
+		contentPane.add(panel_3);
+		
+		this.newBase();
 	}
 }

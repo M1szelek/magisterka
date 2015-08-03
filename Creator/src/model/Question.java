@@ -1,5 +1,6 @@
 package model;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 
@@ -14,7 +15,7 @@ public class Question implements Serializable {
 	private QuestionVariant varC;
 	private int correct;			//1 - A, 2 - B, 3 - C
 	
-	private Image imgContent;
+	private BufferedImage imgContent;
 	
 	
 	public Question() {
@@ -83,7 +84,7 @@ public class Question implements Serializable {
 	}
 
 
-	public void setImgContent(Image imgContent) {
+	public void setImgContent(BufferedImage imgContent) {
 		this.imgContent = imgContent;
 	}	
 	

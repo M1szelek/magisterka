@@ -1,11 +1,23 @@
 package model;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 public class QuestionVariant implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String content;
-	private Image img;
+	private BufferedImage img;
+
+	public BufferedImage getImg() {
+		return img;
+	}
+
+	public void setImg(BufferedImage img) {
+		this.img = img;
+	}
 
 	public String getContent() {
 		return content;
