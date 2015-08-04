@@ -1,4 +1,5 @@
 package model;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -78,6 +79,12 @@ public class QBase implements Serializable {
 
 	public void setQuestions(ArrayList<Question> questions) {
 		this.questions = questions;
+	}
+	
+	public void byteArrayToImg() throws IOException{
+		for(Question q: questions){
+			q.byteArrayToImg();
+		}
 	}
 	
 	

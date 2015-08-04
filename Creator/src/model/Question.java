@@ -1,7 +1,11 @@
 package model;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.Serializable;
+
+import javax.imageio.ImageIO;
 
 
 public class Question implements Serializable {
@@ -90,14 +94,20 @@ public class Question implements Serializable {
 	}
 
 
-	public Image getImgContent() {
+	public BufferedImage getImgContent() {
 		return imgContent;
 	}
 
 
 	public void setImgContent(BufferedImage imgContent) {
 		this.imgContent = imgContent;
-	}	
+	}
+	
+	public void byteArrayToImg() throws IOException{
+		if(imgInByte != null){
+			imgContent = ImageIO.read(new ByteArrayInputStream(imgInByte));
+		}
+	}
 	
 	
 }
