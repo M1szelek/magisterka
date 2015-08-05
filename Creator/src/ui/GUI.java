@@ -51,7 +51,7 @@ public class GUI extends JFrame {
 	
 	private final JLabel lblqsize = new JLabel("/ 1");
 	
-	private JFileChooser fc = new JFileChooser();
+	private JFileChooser fc = new JFileChooser("C:\\Users\\Miszelek\\Desktop");
 	
 	
 	private QBase qBase;
@@ -63,10 +63,10 @@ public class GUI extends JFrame {
 	JTextArea textArea_varC = new JTextArea();
 	JSpinner spinner = new JSpinner();
 	
-	ImagePanel panel_previewImg;
+	ImagePanel imagePanel;
 	
 	File currFile;
-	boolean isSaved = false;
+	boolean saved = false;
 
 	/**
 	 * Launch the application.
@@ -94,8 +94,8 @@ public class GUI extends JFrame {
 		//dodajemy dla spinnera zawsze 1, zeby nie zaczynac od 0 pytania na HUDzie
 		spinner.setValue(this.currQ+1);
 		
-		this.panel_previewImg.setImage(q.getImgContent());
-		this.panel_previewImg.resizeImage();
+		this.imagePanel.setImage(q.getContentImg());
+		this.imagePanel.resizeImage();
 		
 		switch(q.getCorrect()){
 			case 1:
@@ -110,6 +110,16 @@ public class GUI extends JFrame {
 				
 		}
 		
+	}
+	
+	public void notSaved(){
+		this.saved = false;
+		this.setTitle(currFile.getName() + "* - Creator");
+	}
+	
+	public void saved(){
+		this.saved = true;
+		this.setTitle(currFile.getName() + " - Creator");
 	}
 	
 	public void renderAuthorName(){
@@ -150,6 +160,7 @@ public class GUI extends JFrame {
 		this.currQ = qBase.getQuestions().size()-1;
 		setQBaseSize();
 		renderQuestion();
+		this.notSaved();
 	}
 	
 	public void removeQuestion(){
@@ -164,6 +175,7 @@ public class GUI extends JFrame {
 			qBase.removeQuestion(this.currQ);	
 			setQBaseSize();
 			renderQuestion();
+			this.notSaved();
 		}else{
 			return;			//moze dodamy tutaj kiedys czyszczenie pytania
 		}
@@ -185,13 +197,20 @@ public class GUI extends JFrame {
 	
 	public String getFormat(String imageName)
 	{
-	    switch(imageName.toLowerCase())
+		String extension = "";
+
+		int i = imageName.lastIndexOf('.');
+		if (i > 0) {
+		    extension = imageName.substring(i+1);
+		}
+		
+		switch(extension)
 	    {
-	        case ".png": return "PNG";
-	        case ".gif": return "GIF";
-	        case ".tiff": return "TIFF";
-	        case ".jpg": return "JPG";
-	        case ".jpeg": return "JPEG";
+	        case "png": return "PNG";
+	        case "gif": return "GIF";
+	        case "tiff": return "TIFF";
+	        case "jpg": return "JPG";
+	        case "jpeg": return "JPEG";
 	    }
 
 	    return "UNKNOWN";
@@ -220,11 +239,23 @@ public class GUI extends JFrame {
 		 byte[] imageInByte = baos.toByteArray();
 		 baos.close();
 		 qBase.getQuestions().get(currQ).setImgInByte(imageInByte);
-		 qBase.getQuestions().get(currQ).setImgContent(originalImage);
+		 qBase.getQuestions().get(currQ).setContentImg(originalImage);
+		 
+		 this.saved = false;
+		 
+		 renderQuestion();
+		 
+		 
 		 
 			
 			//int type = img.getType() == 0? BufferedImage.TYPE_INT_ARGB : img.getType();
 			
+	}
+	
+	public void deleteContentImage(){
+		qBase.getQuestions().get(currQ).deleteImg();
+		this.saved = false;
+		this.renderQuestion();
 	}
 	
 	public void saveAs(){				//zapisz jako
@@ -248,6 +279,7 @@ public class GUI extends JFrame {
 	         out.writeObject(this.qBase);
 	         out.close();
 	         fileOut.close();
+	         this.saved();
 	         //System.out.printf("Serialized data is saved in /tmp/employee.ser");
 	      }catch(IOException i)
 	      {
@@ -270,6 +302,7 @@ public class GUI extends JFrame {
 	         out.writeObject(this.qBase);
 	         out.close();
 	         fileOut.close();
+	         this.saved();
 	         //System.out.printf("Serialized data is saved in /tmp/employee.ser");
 	      }catch(IOException i)
 	      {
@@ -277,7 +310,7 @@ public class GUI extends JFrame {
 	      }
 	}
 	
-	public void load(){				//ladowanie pliku
+	public void open(){				//ladowanie pliku
 	      try
 	      {
 	    	 int returnVal = fc.showOpenDialog(GUI.this);
@@ -304,13 +337,14 @@ public class GUI extends JFrame {
 		     currQ = 0;
 		     renderQuestion();
 		     renderAuthorName();
+		     this.saved();
 	      }catch(IOException i)
 	      {
 	         i.printStackTrace();
 	         return;
 	      }catch(ClassNotFoundException c)
 	      {
-	         System.out.println("QBase class not found");
+	         System.out.println("Niepoprawny format");
 	         c.printStackTrace();
 	         return;
 	      }
@@ -324,7 +358,7 @@ public class GUI extends JFrame {
 	 * Create the frame.
 	 */
 	public GUI() {
-		setTitle("Creator");
+		setTitle("NewBase - Creator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 978, 662);
 		
@@ -355,7 +389,7 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				load();
+				open();
 			}
 			
 		});
@@ -725,7 +759,7 @@ public class GUI extends JFrame {
 		btnRemove.setBounds(619, 490, 89, 23);
 		contentPane.add(btnRemove);
 		
-		JButton btnImage = new JButton("Image");
+		JButton btnImage = new JButton("AddImage");
 		btnImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -736,7 +770,7 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		btnImage.setBounds(694, 176, 89, 23);
+		btnImage.setBounds(694, 156, 89, 23);
 		contentPane.add(btnImage);
 		
 		JButton btnNewButton = new JButton("Image");
@@ -755,9 +789,9 @@ public class GUI extends JFrame {
 		btnNewButton_2.setBounds(694, 418, 89, 23);
 		contentPane.add(btnNewButton_2);
 		
-		panel_previewImg = new ImagePanel(null);
-		panel_previewImg.setBounds(802, 150, 150, 70);
-		contentPane.add(panel_previewImg);
+		imagePanel = new ImagePanel(null);
+		imagePanel.setBounds(802, 150, 150, 70);
+		contentPane.add(imagePanel);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(802, 231, 150, 70);
@@ -770,6 +804,15 @@ public class GUI extends JFrame {
 		JPanel panel_3 = new JPanel();
 		panel_3.setBounds(802, 393, 150, 70);
 		contentPane.add(panel_3);
+		
+		JButton btnDelimage = new JButton("DeleteImg\r\n");
+		btnDelimage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				deleteContentImage();
+			}
+		});
+		btnDelimage.setBounds(694, 185, 89, 23);
+		contentPane.add(btnDelimage);
 		
 		this.newBase();
 	}

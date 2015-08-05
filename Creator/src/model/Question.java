@@ -19,7 +19,7 @@ public class Question implements Serializable {
 	private QuestionVariant varC;
 	private int correct;			//1 - A, 2 - B, 3 - C
 	
-	transient private BufferedImage imgContent;
+	transient private BufferedImage contentImg;
 	private byte[] imgInByte;
 	
 	
@@ -92,21 +92,26 @@ public class Question implements Serializable {
 	public void setCorrect(int correct) {
 		this.correct = correct;
 	}
-
-
-	public BufferedImage getImgContent() {
-		return imgContent;
-	}
-
-
-	public void setImgContent(BufferedImage imgContent) {
-		this.imgContent = imgContent;
-	}
 	
+	public BufferedImage getContentImg() {
+		return contentImg;
+	}
+
+
+	public void setContentImg(BufferedImage contentImg) {
+		this.contentImg = contentImg;
+	}
+
+
 	public void byteArrayToImg() throws IOException{
 		if(imgInByte != null){
-			imgContent = ImageIO.read(new ByteArrayInputStream(imgInByte));
+			this.contentImg = ImageIO.read(new ByteArrayInputStream(this.imgInByte));
 		}
+	}
+	
+	public void deleteImg(){
+		this.contentImg = null;
+		this.imgInByte = null;
 	}
 	
 	

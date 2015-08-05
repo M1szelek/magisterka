@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename field &apos;panel_previewImg&apos; in &apos;ui.GUI&apos; to &apos;imagePanel&apos;&#x0D;&#x0A;- Original project: &apos;Creator&apos;&#x0D;&#x0A;- Original element: &apos;ui.GUI.panel_previewImg&apos;&#x0D;&#x0A;- Renamed element: &apos;ui.GUI.imagePanel&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" delegate="false" deprecate="false" description="Rename field &apos;panel_previewImg&apos;" flags="589830" getter="false" id="org.eclipse.jdt.ui.rename.field" input="/src&lt;ui{GUI.java[GUI^panel_previewImg" name="imagePanel" references="true" setter="false" stamp="1438771891918" textual="false" version="1.0"/>
+</session>

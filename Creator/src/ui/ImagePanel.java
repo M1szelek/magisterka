@@ -14,6 +14,7 @@ public class ImagePanel extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 	private BufferedImage image;
+	private BufferedImage resizedImage;
 
     public ImagePanel(BufferedImage _image) {
        if(_image != null){
@@ -26,7 +27,7 @@ public class ImagePanel extends JPanel{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(image, 0, 0, null); // see javadoc for more info on the parameters            
+        g.drawImage(this.resizedImage, 0, 0, null); // see javadoc for more info on the parameters            
     }
 
 	public BufferedImage getImage() {
@@ -39,8 +40,10 @@ public class ImagePanel extends JPanel{
     
 	public void resizeImage(){
 		
-		if(image == null){
-			return;
+		if(this.image == null){
+			this.resizedImage = null;
+			this.repaint();
+			return;		
 		}
 		
 		int type = this.image.getType() == 0? BufferedImage.TYPE_INT_ARGB : this.image.getType();
@@ -53,8 +56,10 @@ public class ImagePanel extends JPanel{
 		
 		BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, type);
 		Graphics2D g = resizedImage.createGraphics();
-		g.drawImage(this.image, 0, 0, null);				//nie skaluje ale tylko wycinek pokazuje TODO: fix it
+		g.drawImage(this.image, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);				//nie skaluje ale tylko wycinek pokazuje TODO: fix it
 		g.dispose();
+		
+		this.resizedImage = resizedImage;
 		
 		this.repaint();
 	 
