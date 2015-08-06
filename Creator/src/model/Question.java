@@ -1,57 +1,28 @@
 package model;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.Serializable;
-
-import javax.imageio.ImageIO;
 
 
-public class Question implements Serializable {
+public class Question extends AbstractQuestion {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String content;
 	private QuestionVariant varA;
 	private QuestionVariant varB;
 	private QuestionVariant varC;
 	private int correct;			//1 - A, 2 - B, 3 - C
 	
-	transient private BufferedImage contentImg;
-	private byte[] imgInByte;
-	
-	
-	public byte[] getImgInByte() {
-		return imgInByte;
-	}
-
-
-	public void setImgInByte(byte[] imgInByte) {
-		this.imgInByte = imgInByte;
-	}
 
 
 	public Question() {
 		super();
-		this.content = new String();
 		this.varA = new QuestionVariant();
 		this.varB = new QuestionVariant();
 		this.varC = new QuestionVariant();
 		this.correct = 1;
 		
 	}
-
-
-	public String getContent() {
-		return content;
-	}
-
-
-	public void setContent(String content) {
-		this.content = content;
-	}
+	
+	
 
 
 	public QuestionVariant getVarA() {
@@ -59,9 +30,13 @@ public class Question implements Serializable {
 	}
 
 
+
+
 	public void setVarA(QuestionVariant varA) {
 		this.varA = varA;
 	}
+
+
 
 
 	public QuestionVariant getVarB() {
@@ -91,27 +66,6 @@ public class Question implements Serializable {
 
 	public void setCorrect(int correct) {
 		this.correct = correct;
-	}
-	
-	public BufferedImage getContentImg() {
-		return contentImg;
-	}
-
-
-	public void setContentImg(BufferedImage contentImg) {
-		this.contentImg = contentImg;
-	}
-
-
-	public void byteArrayToImg() throws IOException{
-		if(imgInByte != null){
-			this.contentImg = ImageIO.read(new ByteArrayInputStream(this.imgInByte));
-		}
-	}
-	
-	public void deleteImg(){
-		this.contentImg = null;
-		this.imgInByte = null;
 	}
 	
 	

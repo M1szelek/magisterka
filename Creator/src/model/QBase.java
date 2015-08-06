@@ -84,6 +84,9 @@ public class QBase implements Serializable {
 	public void byteArrayToImg() throws IOException{
 		for(Question q: questions){
 			q.byteArrayToImg();
+			q.getVarA().byteArrayToImg();
+			q.getVarB().byteArrayToImg();
+			q.getVarC().byteArrayToImg();
 		}
 	}
 	

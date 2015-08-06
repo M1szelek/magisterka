@@ -1,0 +1,21 @@
+package model;
+
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.Serializable;
+
+import javax.imageio.ImageIO;
+
+public class QuestionVariant extends AbstractQuestion {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	
+	public QuestionVariant(String content) {
+		super();
+	}
+	
+}

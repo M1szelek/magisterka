@@ -37,6 +37,8 @@ import javax.swing.event.DocumentListener;
 
 import model.QBase;
 import model.Question;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
 
 public class GUI extends JFrame {
@@ -64,9 +66,13 @@ public class GUI extends JFrame {
 	JSpinner spinner = new JSpinner();
 	
 	ImagePanel imagePanel;
+	ImagePanel imagePanelA;
+	ImagePanel imagePanelB;
+	ImagePanel imagePanelC;
 	
 	File currFile;
 	boolean saved = false;
+	boolean newBase = true;
 
 	/**
 	 * Launch the application.
@@ -94,8 +100,17 @@ public class GUI extends JFrame {
 		//dodajemy dla spinnera zawsze 1, zeby nie zaczynac od 0 pytania na HUDzie
 		spinner.setValue(this.currQ+1);
 		
-		this.imagePanel.setImage(q.getContentImg());
+		this.imagePanel.setImage(q.getImg());
 		this.imagePanel.resizeImage();
+		
+		this.imagePanelA.setImage(q.getVarA().getImg());
+		this.imagePanelA.resizeImage();
+		
+		this.imagePanelB.setImage(q.getVarB().getImg());
+		this.imagePanelB.resizeImage();
+		
+		this.imagePanelC.setImage(q.getVarC().getImg());
+		this.imagePanelC.resizeImage();
 		
 		switch(q.getCorrect()){
 			case 1:
@@ -114,11 +129,16 @@ public class GUI extends JFrame {
 	
 	public void notSaved(){
 		this.saved = false;
-		this.setTitle(currFile.getName() + "* - Creator");
+		if(this.newBase == false){
+			this.setTitle(currFile.getName() + "* - Creator");
+		}else{
+			this.setTitle("NewBase* - Creator");
+		}
 	}
 	
 	public void saved(){
 		this.saved = true;
+		this.newBase = false;
 		this.setTitle(currFile.getName() + " - Creator");
 	}
 	
@@ -182,9 +202,11 @@ public class GUI extends JFrame {
 	}
 	
 	public void newBase(){
-		this.qBase = new QBase("anonymous","example");
+		this.qBase = new QBase("QuestionBase","Anonymous");
 		this.currQ = 0;
 		this.currFile = null;
+		this.newBase = true;
+		notSaved();
 		renderAuthorName();
 		setQBaseSize();
 		renderQuestion();
@@ -216,7 +238,7 @@ public class GUI extends JFrame {
 	    return "UNKNOWN";
 	}
 	
-	public void setContentImage() throws IOException{
+	public void setImg(int choose) throws IOException{		//choose: 0 - content, 1 - varA, 2 - varB, 3 - varC
 		int returnVal = fc.showSaveDialog(GUI.this);
 		
 		 File file;
@@ -238,8 +260,27 @@ public class GUI extends JFrame {
 		 baos.flush();
 		 byte[] imageInByte = baos.toByteArray();
 		 baos.close();
-		 qBase.getQuestions().get(currQ).setImgInByte(imageInByte);
-		 qBase.getQuestions().get(currQ).setContentImg(originalImage);
+		 
+		 switch(choose){
+			 case 0:
+			 	qBase.getQuestions().get(currQ).setImgInByte(imageInByte);
+			 	qBase.getQuestions().get(currQ).setImg(originalImage);
+			 	break;
+			 
+			 case 1:
+				qBase.getQuestions().get(currQ).getVarA().setImgInByte(imageInByte);
+				qBase.getQuestions().get(currQ).getVarA().setImg(originalImage);
+				break;
+			
+			 case 2:
+				qBase.getQuestions().get(currQ).getVarB().setImgInByte(imageInByte);
+				qBase.getQuestions().get(currQ).getVarB().setImg(originalImage);
+				break;
+					
+			 case 3:
+				qBase.getQuestions().get(currQ).getVarC().setImgInByte(imageInByte);
+				qBase.getQuestions().get(currQ).getVarC().setImg(originalImage);
+		 }
 		 
 		 this.saved = false;
 		 
@@ -252,8 +293,17 @@ public class GUI extends JFrame {
 			
 	}
 	
-	public void deleteContentImage(){
-		qBase.getQuestions().get(currQ).deleteImg();
+	public void deleteImg(int choose){		//choose: 0 - content, 1 - varA, 2 - varB, 3 - varC
+		switch(choose){
+			case 0:
+				qBase.getQuestions().get(currQ).deleteImg();
+			case 1:
+				qBase.getQuestions().get(currQ).getVarA().deleteImg();
+			case 2:
+				qBase.getQuestions().get(currQ).getVarB().deleteImg();
+			case 3:
+				qBase.getQuestions().get(currQ).getVarC().deleteImg();
+		}
 		this.saved = false;
 		this.renderQuestion();
 	}
@@ -267,6 +317,7 @@ public class GUI extends JFrame {
 			 
 			 if (returnVal == JFileChooser.APPROVE_OPTION) {
 	                file = fc.getSelectedFile();
+	                this.currFile = file;
 	                //This is where a real application would open the file.
 	                //log.append("Opening: " + file.getName() + "." + newline);
 	            } else {
@@ -527,6 +578,7 @@ public class GUI extends JFrame {
 			public void insertUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).setContent(textArea_content.getText());
+				notSaved();
 				//System.out.println("Added character to" + currQ);
 				
 			}
@@ -535,6 +587,7 @@ public class GUI extends JFrame {
 			public void removeUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).setContent(textArea_content.getText());
+				notSaved();
 				//System.out.println("Removed character from" + currQ);
 				
 			}
@@ -559,6 +612,7 @@ public class GUI extends JFrame {
 			public void insertUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).getVarA().setContent(textArea_varA.getText());
+				notSaved();
 				//System.out.println("Added character to" + currQ);
 				
 			}
@@ -567,6 +621,7 @@ public class GUI extends JFrame {
 			public void removeUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).getVarA().setContent(textArea_varA.getText());
+				notSaved();
 				//System.out.println("Removed character from" + currQ);
 				
 			}
@@ -591,6 +646,7 @@ public class GUI extends JFrame {
 			public void insertUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).getVarB().setContent(textArea_varB.getText());
+				notSaved();
 				//System.out.println("Added character to" + currQ);
 				
 			}
@@ -599,6 +655,7 @@ public class GUI extends JFrame {
 			public void removeUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).getVarB().setContent(textArea_varB.getText());
+				notSaved();
 				//System.out.println("Removed character from" + currQ);
 				
 			}
@@ -623,6 +680,7 @@ public class GUI extends JFrame {
 			public void insertUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).getVarC().setContent(textArea_varC.getText());
+				notSaved();
 				//System.out.println("Added character to" + currQ);
 				
 			}
@@ -631,6 +689,7 @@ public class GUI extends JFrame {
 			public void removeUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).getVarC().setContent(textArea_varC.getText());
+				notSaved();
 				//System.out.println("Removed character from" + currQ);
 				
 			}
@@ -763,7 +822,7 @@ public class GUI extends JFrame {
 		btnImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					setContentImage();
+					setImg(0);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -773,46 +832,103 @@ public class GUI extends JFrame {
 		btnImage.setBounds(694, 156, 89, 23);
 		contentPane.add(btnImage);
 		
-		JButton btnNewButton = new JButton("Image");
+		JButton btnNewButton = new JButton("AddImage");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				try {
+					setImg(1);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
-		btnNewButton.setBounds(694, 256, 89, 23);
+		btnNewButton.setBounds(694, 237, 89, 23);
 		contentPane.add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("Image");
-		btnNewButton_1.setBounds(694, 336, 89, 23);
+		JButton btnNewButton_1 = new JButton("AddImage");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					setImg(2);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		btnNewButton_1.setBounds(694, 318, 89, 23);
 		contentPane.add(btnNewButton_1);
 		
-		JButton btnNewButton_2 = new JButton("Image");
-		btnNewButton_2.setBounds(694, 418, 89, 23);
+		JButton btnNewButton_2 = new JButton("AddImage");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					setImg(3);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton_2.setBounds(694, 399, 89, 23);
 		contentPane.add(btnNewButton_2);
 		
 		imagePanel = new ImagePanel(null);
+		imagePanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		imagePanel.setBounds(802, 150, 150, 70);
 		contentPane.add(imagePanel);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(802, 231, 150, 70);
-		contentPane.add(panel_1);
+		imagePanelA = new ImagePanel(null);
+		imagePanelA.setBorder(new LineBorder(new Color(0, 0, 0)));
+		imagePanelA.setBounds(802, 231, 150, 70);
+		contentPane.add(imagePanelA);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(802, 312, 150, 70);
-		contentPane.add(panel_2);
+		imagePanelB = new ImagePanel(null);
+		imagePanelB.setBorder(new LineBorder(new Color(0, 0, 0)));
+		imagePanelB.setBounds(802, 312, 150, 70);
+		contentPane.add(imagePanelB);
 		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBounds(802, 393, 150, 70);
-		contentPane.add(panel_3);
+		imagePanelC = new ImagePanel(null);
+		imagePanelC.setBorder(new LineBorder(new Color(0, 0, 0)));
+		imagePanelC.setBounds(802, 393, 150, 70);
+		contentPane.add(imagePanelC);
 		
 		JButton btnDelimage = new JButton("DeleteImg\r\n");
 		btnDelimage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				deleteContentImage();
+				deleteImg(0);
 			}
 		});
-		btnDelimage.setBounds(694, 185, 89, 23);
+		btnDelimage.setBounds(694, 186, 89, 23);
 		contentPane.add(btnDelimage);
+		
+		JButton btnNewButton_3 = new JButton("DeleteImg");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deleteImg(1);
+			}
+		});
+		btnNewButton_3.setBounds(694, 267, 89, 23);
+		contentPane.add(btnNewButton_3);
+		
+		JButton btnNewButton_4 = new JButton("DeleteImg");
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deleteImg(2);
+			}
+		});
+		btnNewButton_4.setBounds(694, 348, 89, 23);
+		contentPane.add(btnNewButton_4);
+		
+		JButton btnNewButton_5 = new JButton("DeleteImg");
+		btnNewButton_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deleteImg(3);
+			}
+		});
+		btnNewButton_5.setBounds(694, 429, 89, 23);
+		contentPane.add(btnNewButton_5);
 		
 		this.newBase();
 	}

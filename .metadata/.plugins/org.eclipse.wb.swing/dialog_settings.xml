@@ -6,6 +6,12 @@
 		<item value="274" key="y"/>
 		<item value="577" key="x"/>
 	</section>
+	<section name="org.eclipse.wb.internal.swing.model.property.editor.border.BorderDialog">
+		<item value="381" key="height"/>
+		<item value="482" key="width"/>
+		<item value="314" key="y"/>
+		<item value="599" key="x"/>
+	</section>
 	<section name="org.eclipse.wb.internal.swing.model.property.editor.accelerator.KeyStrokePropertyEditor$KeyStrokeDialog">
 		<item value="480" key="height"/>
 		<item value="382" key="width"/>
