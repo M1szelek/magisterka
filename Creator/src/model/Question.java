@@ -9,16 +9,13 @@ public class Question extends AbstractQuestion {
 	private QuestionVariant varA;
 	private QuestionVariant varB;
 	private QuestionVariant varC;
-	private int correct;			//1 - A, 2 - B, 3 - C
-	
-
 
 	public Question() {
 		super();
 		this.varA = new QuestionVariant();
 		this.varB = new QuestionVariant();
 		this.varC = new QuestionVariant();
-		this.correct = 1;
+		this.setCorrectA();
 		
 	}
 	
@@ -57,15 +54,26 @@ public class Question extends AbstractQuestion {
 	public void setVarC(QuestionVariant varC) {
 		this.varC = varC;
 	}
-
-
-	public int getCorrect() {
-		return correct;
+	
+	public void clearCorrect(){
+		this.varA.setCorrect(false);
+		this.varB.setCorrect(false);
+		this.varC.setCorrect(false);
+	}
+	
+	public void setCorrectA(){
+		this.clearCorrect();
+		this.varA.setCorrect(true);
+	}
+	
+	public void setCorrectB(){
+		this.clearCorrect();
+		this.varB.setCorrect(true);
 	}
 
-
-	public void setCorrect(int correct) {
-		this.correct = correct;
+	public void setCorrectC(){
+		this.clearCorrect();
+		this.varC.setCorrect(true);
 	}
 	
 	

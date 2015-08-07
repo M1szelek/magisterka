@@ -1,4 +1,5 @@
 package ui;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -30,15 +31,15 @@ import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import model.QBase;
 import model.Question;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
 
 
 public class GUI extends JFrame {
@@ -59,20 +60,22 @@ public class GUI extends JFrame {
 	private QBase qBase;
 	private int currQ;
 	
-	JTextArea textArea_content = new JTextArea();
-	JTextArea textArea_varA = new JTextArea();
-	JTextArea textArea_varB = new JTextArea();
-	JTextArea textArea_varC = new JTextArea();
-	JSpinner spinner = new JSpinner();
+	private JTextArea textArea_content = new JTextArea();
+	private JTextArea textArea_varA = new JTextArea();
+	private JTextArea textArea_varB = new JTextArea();
+	private JTextArea textArea_varC = new JTextArea();
 	
-	ImagePanel imagePanel;
-	ImagePanel imagePanelA;
-	ImagePanel imagePanelB;
-	ImagePanel imagePanelC;
+	private ImagePanel imagePanel;
+	private ImagePanel imagePanelA;
+	private ImagePanel imagePanelB;
+	private ImagePanel imagePanelC;
 	
-	File currFile;
-	boolean saved = false;
-	boolean newBase = true;
+	private File currFile;
+	private boolean saved = false;
+	private boolean newBase = true;
+	
+	private JLabel label_current;
+	private JSpinner spinner;
 
 	/**
 	 * Launch the application.
@@ -98,7 +101,8 @@ public class GUI extends JFrame {
 		textArea_varC.setText(q.getVarC().getContent());
 		//this.currQ = _currQ;
 		//dodajemy dla spinnera zawsze 1, zeby nie zaczynac od 0 pytania na HUDzie
-		spinner.setValue(this.currQ+1);
+		//spinner.setValue(this.currQ+1);
+		label_current.setText(Integer.toString(this.currQ+1));
 		
 		this.imagePanel.setImage(q.getImg());
 		this.imagePanel.resizeImage();
@@ -112,17 +116,16 @@ public class GUI extends JFrame {
 		this.imagePanelC.setImage(q.getVarC().getImg());
 		this.imagePanelC.resizeImage();
 		
-		switch(q.getCorrect()){
-			case 1:
-				rdbtn_corrA.setSelected(true);
-				break;
-			case 2:
-				rdbtn_corrB.setSelected(true);
-				break;
-			case 3:
-				rdbtn_corrC.setSelected(true);
-				
-				
+		if(q.getVarA().isCorrect()){
+			rdbtn_corrA.setSelected(true);
+		}
+		
+		if(q.getVarB().isCorrect()){
+			rdbtn_corrB.setSelected(true);
+		}
+		
+		if(q.getVarC().isCorrect()){
+			rdbtn_corrC.setSelected(true);
 		}
 		
 	}
@@ -175,6 +178,16 @@ public class GUI extends JFrame {
 		renderQuestion();
 	}
 	
+	public void jumpTo(int val){
+		val--;
+		if(val >= qBase.getQuestions().size()){
+			return;
+		}
+		
+		this.currQ = val;
+		renderQuestion();
+	}
+	
 	public void addQuestion(){
 		qBase.addQuestion();
 		this.currQ = qBase.getQuestions().size()-1;
@@ -188,6 +201,7 @@ public class GUI extends JFrame {
 			if(this.currQ == qBase.getQuestions().size()-1){	//jesli jestesmy na ostatnim pytaniu
 				this.currQ--;
 				qBase.removeQuestion(this.currQ+1);	
+				setQBaseSize();
 				renderQuestion();
 				return;
 			}
@@ -215,6 +229,7 @@ public class GUI extends JFrame {
 	public void setQBaseSize(){
 		String str = "/ " + Integer.toString(qBase.getQuestions().size());
 		this.lblqsize.setText(str);
+		
 	}
 	
 	public String getFormat(String imageName)
@@ -749,11 +764,6 @@ public class GUI extends JFrame {
 		btn_last.setBounds(425, 490, 89, 23);
 		contentPane.add(btn_last);
 		
-		//JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
-		spinner.setBounds(249, 491, 38, 20);
-		contentPane.add(spinner);
-		
 		lblqsize.setBounds(295, 494, 46, 14);
 		contentPane.add(lblqsize);
 		
@@ -774,7 +784,8 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				qBase.getQuestions().get(currQ).setCorrect(1);
+				
+				qBase.getQuestions().get(currQ).setCorrectA();
 			}
 			
 		});
@@ -788,7 +799,8 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				qBase.getQuestions().get(currQ).setCorrect(2);
+				
+				qBase.getQuestions().get(currQ).setCorrectB();
 			}
 			
 		});
@@ -802,7 +814,8 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				qBase.getQuestions().get(currQ).setCorrect(3);
+				
+				qBase.getQuestions().get(currQ).setCorrectC();
 			}
 			
 		});
@@ -929,6 +942,24 @@ public class GUI extends JFrame {
 		});
 		btnNewButton_5.setBounds(694, 429, 89, 23);
 		contentPane.add(btnNewButton_5);
+		
+		label_current = new JLabel("1");
+		label_current.setBounds(270, 494, 26, 14);
+		contentPane.add(label_current);
+		
+		JButton btnJumpTo = new JButton("Jump To");
+		btnJumpTo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				jumpTo((Integer)spinner.getValue());
+			}
+		});
+		btnJumpTo.setBounds(157, 524, 89, 23);
+		contentPane.add(btnJumpTo);
+		
+		spinner = new JSpinner();
+		spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+		spinner.setBounds(256, 525, 40, 20);
+		contentPane.add(spinner);
 		
 		this.newBase();
 	}

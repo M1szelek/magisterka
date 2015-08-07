@@ -1,0 +1,23 @@
+package model;
+
+
+public class QuestionVariant extends AbstractQuestion {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	boolean correct;
+
+	public QuestionVariant(){
+		super();
+		this.correct = false;
+	}
+	
+	public QuestionVariant(String content) {
+		super(content);
+		this.correct = false;
+	}
+	
+	
+}
