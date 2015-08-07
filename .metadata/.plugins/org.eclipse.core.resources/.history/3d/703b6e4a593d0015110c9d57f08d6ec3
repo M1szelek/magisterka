@@ -14,16 +14,10 @@ import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 import javax.swing.JSeparator;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.JTable;
 
 public class GUI extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -84,30 +78,5 @@ public class GUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		JButton btnAddBase = new JButton("Add Base");
-		btnAddBase.setBounds(10, 11, 89, 23);
-		contentPane.add(btnAddBase);
-		
-		JLabel lblNumberOfGroups = new JLabel("Number of groups");
-		lblNumberOfGroups.setBounds(10, 579, 94, 14);
-		contentPane.add(lblNumberOfGroups);
-		
-		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(1, 1, 4, 1));
-		spinner.setBounds(102, 576, 29, 20);
-		contentPane.add(spinner);
-		
-		table = new JTable();
-		table.setBounds(10, 45, 654, 358);
-		contentPane.add(table);
-		
-		JLabel lblDate = new JLabel("Date");
-		lblDate.setBounds(768, 15, 46, 14);
-		contentPane.add(lblDate);
-		
-		JLabel lblTuDodamyMoze = new JLabel("Tu dodamy moze jakis jCalendar");
-		lblTuDodamyMoze.setBounds(809, 15, 165, 72);
-		contentPane.add(lblTuDodamyMoze);
 	}
 }
