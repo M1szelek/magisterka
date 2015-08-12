@@ -1,15 +1,16 @@
 package ui;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+//import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -31,7 +32,6 @@ import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -40,6 +40,16 @@ import javax.swing.event.DocumentListener;
 
 import model.QBase;
 import model.Question;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
+
+
+
 
 
 public class GUI extends JFrame {
@@ -419,6 +429,8 @@ public class GUI extends JFrame {
 	      
 	}
 	
+	
+	
 
 	/**
 	 * Create the frame.
@@ -577,7 +589,7 @@ public class GUI extends JFrame {
 		});
 		
 		//JTextArea textArea_content = new JTextArea();
-		textArea_content.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		textArea_content.setFont(new java.awt.Font("Times New Roman", java.awt.Font.PLAIN, 20));
 		textArea_content.setBounds(58, 150, 551, 70);
 		textArea_content.getDocument().addDocumentListener(new DocumentListener(){
 
@@ -611,7 +623,7 @@ public class GUI extends JFrame {
 		contentPane.add(textArea_content);
 		
 		//JTextArea textArea_varA = new JTextArea();
-		textArea_varA.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		textArea_varA.setFont(new java.awt.Font("Times New Roman", java.awt.Font.PLAIN, 20));
 		textArea_varA.setBounds(58, 231, 551, 70);
 		textArea_varA.getDocument().addDocumentListener(new DocumentListener(){
 
@@ -645,7 +657,7 @@ public class GUI extends JFrame {
 		contentPane.add(textArea_varA);
 		
 		//JTextArea textArea_varB = new JTextArea();
-		textArea_varB.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		textArea_varB.setFont(new java.awt.Font("Times New Roman", java.awt.Font.PLAIN, 20));
 		textArea_varB.setBounds(58, 312, 551, 70);
 		textArea_varB.getDocument().addDocumentListener(new DocumentListener(){
 
@@ -679,7 +691,7 @@ public class GUI extends JFrame {
 		contentPane.add(textArea_varB);
 		
 		//JTextArea textArea_varC = new JTextArea();
-		textArea_varC.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		textArea_varC.setFont(new java.awt.Font("Times New Roman", java.awt.Font.PLAIN, 20));
 		textArea_varC.setBounds(58, 393, 551, 70);
 		textArea_varC.getDocument().addDocumentListener(new DocumentListener(){
 
@@ -961,6 +973,45 @@ public class GUI extends JFrame {
 		spinner.setBounds(256, 525, 40, 20);
 		contentPane.add(spinner);
 		
+		JButton btnGenerate = new JButton("Generate");
+		btnGenerate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+					try {
+						generatePDF();
+					} catch (DocumentException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			
+			}
+		});
+		btnGenerate.setBounds(326, 524, 89, 23);
+		contentPane.add(btnGenerate);
+		
 		this.newBase();
+	}
+	
+	public void generatePDF() throws DocumentException, IOException{
+		// step 1
+        Document document = new Document();
+        // step 2
+        PdfWriter.getInstance(document, new FileOutputStream("test.pdf"));
+        // step 3
+        document.open();
+        // step 4
+        BaseFont bf = BaseFont.createFont("arialuni.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
+        Paragraph p = new Paragraph("¯ó³æ", new Font(bf, 22));
+
+        document.add(p);
+       
+        
+        //Font f = new Font(bf,(float)22);
+        //Paragraph p = new Paragraph("¯ó³æ", new Font(bf, 22));
+        
+        //document.add(new Paragraph("Kiedy wybuch³a II Wojna Œwiatowa kasjhfajhf fslfhqofgh qqwfgqwgo iiqh qowijqwoigfjh qwdfoijqwfiqjwf qwoifjqwoifhj qwd qowidi oqidjoqiwhfoiqhf oiqwfhqoiwfh",new Font(bf, 22)));
+        // step 5
+        document.close();
 	}
 }
