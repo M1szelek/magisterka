@@ -5,6 +5,7 @@ INDEX VERSION 1.127+C:\Users\Miszelek\Dropbox\magisterka\.metadata\.plugins\org.
 3626931047.index
 384216248.index
 1144188029.index
+2306618721.index
 728132027.index
 683184654.index
 1820024274.index
@@ -14,7 +15,6 @@ INDEX VERSION 1.127+C:\Users\Miszelek\Dropbox\magisterka\.metadata\.plugins\org.
 3521617142.index
 2706502329.index
 4149142647.index
-665629122.index
 4018706093.index
 3256372620.index
 72798116.index

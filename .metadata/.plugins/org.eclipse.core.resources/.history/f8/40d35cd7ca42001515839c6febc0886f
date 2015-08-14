@@ -1,0 +1,17 @@
+package model;
+
+import java.util.ArrayList;
+
+public class SuperBase {
+	private ArrayList<QBase> qbcoll;
+
+	public ArrayList<QBase> getQbcoll() {
+		return qbcoll;
+	}
+
+	public void setQbcoll(ArrayList<QBase> qbcoll) {
+		this.qbcoll = qbcoll;
+	}
+	
+	
+}

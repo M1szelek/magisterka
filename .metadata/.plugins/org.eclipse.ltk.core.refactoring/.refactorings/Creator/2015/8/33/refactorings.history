@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 5 elements to &apos;Integrator/src/model&apos;&#x0D;&#x0A;- Original project: &apos;Creator&apos;&#x0D;&#x0A;- Destination element: &apos;Integrator/src/model&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     model.AbstractQuestion.java&#x0D;&#x0A;     model.Question.java&#x0D;&#x0A;     model.OutputDocument.java&#x0D;&#x0A;     model.QuestionVariant.java&#x0D;&#x0A;     model.QBase.java" description="Copy compilation units" destination="=Integrator/src&lt;model" element1="/src&lt;model{AbstractQuestion.java" element2="/src&lt;model{Question.java" element3="/src&lt;model{OutputDocument.java" element4="/src&lt;model{QuestionVariant.java" element5="/src&lt;model{QBase.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1439587273473" units="5" version="1.0"/>
+</session>

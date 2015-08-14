@@ -1,6 +1,0 @@
-package model;
-
-public interface QImage {
-	void byteArrayToImg();
-	void deleteImg();
-}
