@@ -5,4 +5,6 @@
 <fullyQualifiedTypeName name="com.itextpdf.text.Font"/>
 <fullyQualifiedTypeName name="java.awt.Font"/>
 <fullyQualifiedTypeName name="model.OutputDocument"/>
+<fullyQualifiedTypeName name="com.itextpdf.text.List"/>
+<fullyQualifiedTypeName name="com.itextpdf.text.Image"/>
 </qualifiedTypeNameHistroy>

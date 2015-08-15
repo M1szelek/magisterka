@@ -1,7 +1,0 @@
-package model;
-
-public class OutputDocument {
-	public static void createDocument(QBase qb){
-		
-	}
-}

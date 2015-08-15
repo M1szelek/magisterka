@@ -56,7 +56,7 @@ public class ImagePanel extends JPanel{
 		
 		BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, type);
 		Graphics2D g = resizedImage.createGraphics();
-		g.drawImage(this.image, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);				//nie skaluje ale tylko wycinek pokazuje TODO: fix it
+		g.drawImage(this.image, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);				
 		g.dispose();
 		
 		this.resizedImage = resizedImage;
