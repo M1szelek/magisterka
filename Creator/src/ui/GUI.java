@@ -589,7 +589,7 @@ public class GUI extends JFrame {
 		});
 		
 		//JTextArea textArea_content = new JTextArea();
-		textArea_content.setFont(new Font("Times New Roman", java.awt.Font.PLAIN, 20));
+		textArea_content.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
 		textArea_content.setBounds(58, 150, 551, 70);
 		textArea_content.getDocument().addDocumentListener(new DocumentListener(){
 
@@ -623,7 +623,7 @@ public class GUI extends JFrame {
 		contentPane.add(textArea_content);
 		
 		//JTextArea textArea_varA = new JTextArea();
-		textArea_varA.setFont(new Font("Times New Roman", java.awt.Font.PLAIN, 20));
+		textArea_varA.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
 		textArea_varA.setBounds(58, 231, 551, 70);
 		textArea_varA.getDocument().addDocumentListener(new DocumentListener(){
 
@@ -657,7 +657,7 @@ public class GUI extends JFrame {
 		contentPane.add(textArea_varA);
 		
 		//JTextArea textArea_varB = new JTextArea();
-		textArea_varB.setFont(new Font("Times New Roman", java.awt.Font.PLAIN, 20));
+		textArea_varB.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
 		textArea_varB.setBounds(58, 312, 551, 70);
 		textArea_varB.getDocument().addDocumentListener(new DocumentListener(){
 
@@ -691,7 +691,7 @@ public class GUI extends JFrame {
 		contentPane.add(textArea_varB);
 		
 		//JTextArea textArea_varC = new JTextArea();
-		textArea_varC.setFont(new java.awt.Font("Times New Roman", java.awt.Font.PLAIN, 20));
+		textArea_varC.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
 		textArea_varC.setBounds(58, 393, 551, 70);
 		textArea_varC.getDocument().addDocumentListener(new DocumentListener(){
 

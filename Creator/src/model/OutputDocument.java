@@ -25,11 +25,39 @@ public class OutputDocument {
         // step 3
         document.open();
         // step 4
-        BaseFont bf = BaseFont.createFont("arialuni.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        BaseFont bf = BaseFont.createFont("Arial Unicode MS.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
         Font font = new Font(bf, 12);
         
+        int i = 1;
+        float indent = 40;
+        
         for(Question q: qb.getQuestions()){
+        	List list_content = new List(List.ORDERED);
+        	list_content.setPostSymbol(".         ");
+	        list_content.setFirst(i);
+	        
+	        list_content.add(new ListItem(q.getContent(),font));
+	        
+	        List list_var = new List(List.ORDERED,List.ALPHABETICAL);
+	        
+	        list_var.setIndentationLeft(indent);
+	        list_var.setPostSymbol(")   ");
+	        
+	        list_var.add(new ListItem(q.getVarA().getContent(),font));
+	        list_var.add(new ListItem(q.getVarB().getContent(),font));
+	        list_var.add(new ListItem(q.getVarC().getContent(),font));
+	        
+	        list_content.add(list_var);
+	        
+	        document.add(list_content);
+	        document.add(Chunk.NEWLINE);
+	        
+	        i++;
+	        
+        }
+        
+        /*for(Question q: qb.getQuestions()){
         
 	        Paragraph questionContent = new Paragraph(q.getContent(), font);
 	
@@ -39,7 +67,6 @@ public class OutputDocument {
 	        Paragraph questionVarB = new Paragraph("b) " + q.getVarB().getContent(), font);
 	        Paragraph questionVarC = new Paragraph("c) " + q.getVarC().getContent(), font);
 	        
-	        float indent = 20;
 	        
 	        questionVarA.setIndentationLeft(indent);
 	        questionVarB.setIndentationLeft(indent);
@@ -56,6 +83,8 @@ public class OutputDocument {
 	        
 	        document.add( Chunk.NEWLINE );
 	        
+	        
+	        
 	        List list = new List(List.ORDERED);
 	        list.setFirst(1);
 	        
@@ -63,7 +92,7 @@ public class OutputDocument {
 	        
 	        List list2 = new List(List.ORDERED,List.ALPHABETICAL);
 	        
-	        list2.setIndentationLeft(20);
+	        list2.setIndentationLeft(indent);
 	        list2.setPostSymbol(")");
 	        
 	        list2.add(new ListItem("VarA"));
@@ -99,7 +128,7 @@ public class OutputDocument {
 	        
 	       
 	        document.add(list);
-        }
+        }*/
         //Font f = new Font(bf,(float)22);
         //Paragraph p = new Paragraph("¯ó³æ", new Font(bf, 22));
         
