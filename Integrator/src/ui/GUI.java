@@ -1,29 +1,42 @@
 package ui;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JToolBar;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
-import java.awt.event.KeyEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
-import javax.swing.JSeparator;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import model.QBase;
+import model.SuperBase;
 
 public class GUI extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
+	private SuperBase superBase;
+	private JFileChooser fc;
+	private File currFile;
 	
 	
 
@@ -42,11 +55,66 @@ public class GUI extends JFrame {
 			}
 		});
 	}
+	
+	public void addBase(){
+		try
+	      {
+	    	 
+			fc.setMultiSelectionEnabled(true);
+			int returnVal = fc.showOpenDialog(GUI.this);
+	    	 
+	    	 File files[];
+	    	 
+	    	 if (returnVal == JFileChooser.APPROVE_OPTION) {
+	                files = fc.getSelectedFiles();
+	                
+	                //This is where a real application would open the file.
+	                //log.append("Opening: " + file.getName() + "." + newline);
+	            } else {
+	                //log.append("Open command cancelled by user." + newline);
+	            	return;
+	         }
+	    	  
+	    	 for(File f: files){
+		    	 FileInputStream fileIn = new FileInputStream(f);
+		         ObjectInputStream in = new ObjectInputStream(fileIn);
+		         superBase.add((QBase) in.readObject());
+		         in.close();
+		         fileIn.close();
+	    	 }
+	         
+	         renderTable();
+		   
+		     //this.saved();
+	      }catch(IOException i)
+	      {
+	         i.printStackTrace();
+	         return;
+	      }catch(ClassNotFoundException c)
+	      {
+	         System.out.println("Niepoprawny format");
+	         c.printStackTrace();
+	         return;
+	      }
+	}
+	
+	public void renderTable(){
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		model.setRowCount(0);
+		
+		for(QBase qb: superBase.getQbcoll()){
+			
+			model.addRow(new Object[]{qb.getName(), qb.getAuthor(), qb.getQuestions().size(), new JButton("Meh")});
+		}
+	}
 
 	/**
 	 * Create the frame.
 	 */
 	public GUI() {
+		superBase = new SuperBase();
+		fc = new JFileChooser("C:\\Users\\Miszelek\\Desktop");
+		
 		setTitle("Integrator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1016, 664);
@@ -88,10 +156,20 @@ public class GUI extends JFrame {
 		contentPane.setLayout(null);
 		
 		JButton btnAddBase = new JButton("Add Base");
+		btnAddBase.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//DefaultTableModel model = (DefaultTableModel) table.getModel();
+				//model.addRow(new Object[]{"a", "b", "c", "d"});
+				
+				addBase();
+				
+				
+			}
+		});
 		btnAddBase.setBounds(10, 11, 89, 23);
 		contentPane.add(btnAddBase);
 		
-		JLabel lblNumberOfGroups = new JLabel("Number of groups");
+		JLabel lblNumberOfGroups = new JLabel("Amount of groups");
 		lblNumberOfGroups.setBounds(10, 579, 94, 14);
 		contentPane.add(lblNumberOfGroups);
 		
@@ -100,10 +178,6 @@ public class GUI extends JFrame {
 		spinner.setBounds(102, 576, 29, 20);
 		contentPane.add(spinner);
 		
-		table = new JTable();
-		table.setBounds(10, 45, 654, 358);
-		contentPane.add(table);
-		
 		JLabel lblDate = new JLabel("Date");
 		lblDate.setBounds(768, 15, 46, 14);
 		contentPane.add(lblDate);
@@ -111,5 +185,22 @@ public class GUI extends JFrame {
 		JLabel lblTuDodamyMoze = new JLabel("Tu dodamy moze jakis jCalendar");
 		lblTuDodamyMoze.setBounds(809, 15, 165, 72);
 		contentPane.add(lblTuDodamyMoze);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 45, 724, 474);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+					"Author", "Title", "Count", "Delete"
+			}
+		));
+		
+		
 	}
 }

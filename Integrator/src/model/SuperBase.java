@@ -8,8 +8,8 @@ public class SuperBase {
 	public ArrayList<QBase> getQbcoll() {
 		return qbcoll;
 	}
-
-	public SuperBase(ArrayList<QBase> qbcoll) {
+	
+	public SuperBase() {
 		super();
 		this.qbcoll = new ArrayList<QBase>();
 	}
