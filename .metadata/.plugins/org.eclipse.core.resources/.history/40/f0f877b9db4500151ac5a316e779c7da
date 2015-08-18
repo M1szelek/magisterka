@@ -32,10 +32,6 @@ import model.SuperBase;
 
 public class GUI extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
 	private SuperBase superBase;
@@ -170,7 +166,7 @@ public class GUI extends JFrame {
 				
 			}
 		});
-		btnAddBase.setBounds(10, 11, 175, 23);
+		btnAddBase.setBounds(10, 11, 89, 23);
 		contentPane.add(btnAddBase);
 		
 		JLabel lblNumberOfGroups = new JLabel("Amount of groups");
@@ -201,37 +197,9 @@ public class GUI extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Title", "Author", "# of Questions", "Delete"
+					"Title", "Author", "# of Questions", "Delete"
 			}
-		) {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, Integer.class, Boolean.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		
-		JButton btnDeleteSelected = new JButton("Delete Selected");
-		btnDeleteSelected.setBounds(195, 11, 175, 23);
-		contentPane.add(btnDeleteSelected);
-		
-		JButton btnGenerate = new JButton("Generate");
-		btnGenerate.setBounds(141, 575, 89, 23);
-		contentPane.add(btnGenerate);
-		
-		/*final JCheckBox checkBox = new JCheckBox();
-		table.getColumn("Delete").setCellRenderer(new DefaultTableCellRenderer() {
-		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
-		    {
-		      checkBox.setSelected(((Boolean)value).booleanValue()) ;
-		      return checkBox;
-		    }
-		});*/
+		));
 		
 		
 	}

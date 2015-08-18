@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,6 +27,7 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import model.QBase;
@@ -32,10 +35,6 @@ import model.SuperBase;
 
 public class GUI extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
 	private SuperBase superBase;
@@ -170,7 +169,7 @@ public class GUI extends JFrame {
 				
 			}
 		});
-		btnAddBase.setBounds(10, 11, 175, 23);
+		btnAddBase.setBounds(10, 11, 89, 23);
 		contentPane.add(btnAddBase);
 		
 		JLabel lblNumberOfGroups = new JLabel("Amount of groups");
@@ -201,28 +200,9 @@ public class GUI extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Title", "Author", "# of Questions", "Delete"
+					"Title", "Author", "# of Questions", "Delete"
 			}
-		) {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, Integer.class, Boolean.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		
-		JButton btnDeleteSelected = new JButton("Delete Selected");
-		btnDeleteSelected.setBounds(195, 11, 175, 23);
-		contentPane.add(btnDeleteSelected);
-		
-		JButton btnGenerate = new JButton("Generate");
-		btnGenerate.setBounds(141, 575, 89, 23);
-		contentPane.add(btnGenerate);
+		));
 		
 		/*final JCheckBox checkBox = new JCheckBox();
 		table.getColumn("Delete").setCellRenderer(new DefaultTableCellRenderer() {

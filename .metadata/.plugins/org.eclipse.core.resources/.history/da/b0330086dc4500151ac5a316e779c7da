@@ -170,7 +170,7 @@ public class GUI extends JFrame {
 				
 			}
 		});
-		btnAddBase.setBounds(10, 11, 175, 23);
+		btnAddBase.setBounds(10, 11, 89, 23);
 		contentPane.add(btnAddBase);
 		
 		JLabel lblNumberOfGroups = new JLabel("Amount of groups");
@@ -215,14 +215,6 @@ public class GUI extends JFrame {
 				return columnTypes[columnIndex];
 			}
 		});
-		
-		JButton btnDeleteSelected = new JButton("Delete Selected");
-		btnDeleteSelected.setBounds(195, 11, 175, 23);
-		contentPane.add(btnDeleteSelected);
-		
-		JButton btnGenerate = new JButton("Generate");
-		btnGenerate.setBounds(141, 575, 89, 23);
-		contentPane.add(btnGenerate);
 		
 		/*final JCheckBox checkBox = new JCheckBox();
 		table.getColumn("Delete").setCellRenderer(new DefaultTableCellRenderer() {
