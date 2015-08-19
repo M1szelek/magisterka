@@ -24,14 +24,6 @@ public class QBase implements Serializable {
 		addQuestion();
 	}
 	
-	public boolean isToDelete() {
-		return toDelete;
-	}
-
-	public void setToDelete(boolean toDelete) {
-		this.toDelete = toDelete;
-	}
-
 	public void addQuestion(){
 		questions.add(new Question());
 	}

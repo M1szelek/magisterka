@@ -114,18 +114,16 @@ public class GUI extends JFrame {
 	}
 	
 	public void deleteSelected(){
-		DefaultTableModel model = (DefaultTableModel) table.getModel();		
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		ArrayList<Integer> toDelete = new ArrayList<Integer>();
 		for(int i = 0; i < superBase.getQbcoll().size(); i++){
 			if((boolean)model.getValueAt(i, 3)){
-				superBase.getQbcoll().get(i).setToDelete(true);				
+				superBase.getQbcoll().get(i).setToDelete(true));				
 			}
 		}
 		
-		for(int i = 0; i < superBase.getQbcoll().size(); i++){
-			if(superBase.getQbcoll().get(i).isToDelete()){
-				superBase.getQbcoll().remove((int)i);
-				i--;
-			}
+		for(Integer i: toDelete){
+			superBase.getQbcoll().remove((int)i);
 		}
 		
 		renderTable();
