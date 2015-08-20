@@ -26,22 +26,8 @@ public class SuperBase {
 		qbcoll.remove(i);
 	}
 	
-	public int getAmountOfQuestions(){
-		int res = 0;
-		
-		for(QBase qb: qbcoll){
-			res += qb.getQuestions().size();
-		}
-		
-		return res;
-	}
-	
 	public QBase createTest(int count){
-		int aoq = getAmountOfQuestions();
-		for(QBase qb: qbcoll){
-			int tmp = count * qb.getQuestions().size() / aoq;
-			
-		}
+		
 		return null;
 	}
 }

@@ -37,9 +37,7 @@ public class SuperBase {
 	}
 	
 	public QBase createTest(int count){
-		int aoq = getAmountOfQuestions();
 		for(QBase qb: qbcoll){
-			int tmp = count * qb.getQuestions().size() / aoq;
 			
 		}
 		return null;

@@ -79,7 +79,7 @@ public class Question extends AbstractQuestion {
 		this.varC.setCorrect(true);
 	}
 	
-	public void shuffleVariants(){
+	public void shuffleVars(){
 		//TODO: mieszanie wariantów odpowiedzi
 		ArrayList<QuestionVariant> tmp = new ArrayList<QuestionVariant>();
 		tmp.add(this.varA);
@@ -88,9 +88,9 @@ public class Question extends AbstractQuestion {
 		
 		Collections.shuffle(tmp);
 		
-		this.varA = tmp.get(0);
-		this.varB = tmp.get(1);
-		this.varC = tmp.get(2);
+		this.varA = tmp.get(1);
+		this.varB = tmp.get(2);
+		this.varC = tmp.get(3);
 	}
 	
 	
