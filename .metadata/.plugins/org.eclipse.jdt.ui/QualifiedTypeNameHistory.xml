@@ -7,4 +7,5 @@
 <fullyQualifiedTypeName name="model.OutputDocument"/>
 <fullyQualifiedTypeName name="com.itextpdf.text.List"/>
 <fullyQualifiedTypeName name="com.itextpdf.text.Image"/>
+<fullyQualifiedTypeName name="java.util.Collections"/>
 </qualifiedTypeNameHistroy>

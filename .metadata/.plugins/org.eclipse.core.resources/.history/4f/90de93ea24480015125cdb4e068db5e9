@@ -37,45 +37,19 @@ public class SuperBase {
 		return res;
 	}
 	
-	public ArrayList<QBase> createTest(int count, int groups){
-		
-		int totalaoq = getAmountOfQuestions();
-		if(count > totalaoq){
-			System.out.println("Too many questions");
-			return null;
-		}
-		
-		if(count < qbcoll.size()){
-			System.out.println();
-		}
-		
+	public QBase createTest(int count){
 		QBase res = new QBase();
-		
+		int totalaoq = getAmountOfQuestions();
 		for(QBase qb: qbcoll){
 			int tmp = count * qb.getQuestions().size() / totalaoq;			//ilosc pytan z pojedynczej bazy do testu
-			System.out.println(tmp);
 			ArrayList<Integer> rndtab = new ArrayList<Integer>();
-			for(int i = 0; i < qb.getQuestions().size(); i++){			//cos trzeba z reszta zrobic
+			for(int i = 0; i < qb.getQuestions().size(); i++){
 				rndtab.add(i);
 			}
 			Collections.shuffle(rndtab);
-			for(int i = 0; i < tmp; i++){
-				res.getQuestions().add(qb.getQuestions().get(rndtab.get(i)));
-			}
+			
 			
 		}
-		
-		ArrayList<QBase>restab = new ArrayList<QBase>();
-		
-		
-		for(int i = 0; i < groups; i++){
-			res.shuffleVariants();
-			restab.add(res);
-		}
-		
-		
-		
-		
-		return restab;
+		return null;
 	}
 }

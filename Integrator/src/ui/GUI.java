@@ -245,6 +245,11 @@ public class GUI extends JFrame {
 		contentPane.add(btnDeleteSelected);
 		
 		JButton btnGenerate = new JButton("Generate");
+		btnGenerate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				superBase.createTest(30,1);
+			}
+		});
 		btnGenerate.setBounds(141, 575, 89, 23);
 		contentPane.add(btnGenerate);
 		
