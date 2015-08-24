@@ -438,7 +438,7 @@ public class GUI extends JFrame {
 	public GUI() {
 		setTitle("NewBase - Creator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 978, 662);
+		setBounds(100, 100, 1101, 720);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -524,11 +524,11 @@ public class GUI extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Name");
-		lblNewLabel.setBounds(10, 48, 46, 14);
+		lblNewLabel.setBounds(10, 14, 46, 14);
 		contentPane.add(lblNewLabel);
 		
 		textField_name = new JTextField();
-		textField_name.setBounds(58, 45, 332, 20);
+		textField_name.setBounds(58, 11, 332, 20);
 		contentPane.add(textField_name);
 		textField_name.setColumns(10);
 		
@@ -561,12 +561,12 @@ public class GUI extends JFrame {
 		});
 		
 		JLabel lblAuthor = new JLabel("Author");
-		lblAuthor.setBounds(10, 76, 46, 14);
+		lblAuthor.setBounds(10, 48, 46, 14);
 		contentPane.add(lblAuthor);
 		
 		textField_author = new JTextField();
 		textField_author.setColumns(10);
-		textField_author.setBounds(58, 73, 332, 20);
+		textField_author.setBounds(58, 45, 332, 20);
 		contentPane.add(textField_author);
 		
 		textField_author.getDocument().addDocumentListener(new DocumentListener(){
@@ -599,7 +599,7 @@ public class GUI extends JFrame {
 		
 		//JTextArea textArea_content = new JTextArea();
 		textArea_content.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
-		textArea_content.setBounds(58, 150, 551, 70);
+		textArea_content.setBounds(58, 92, 551, 114);
 		textArea_content.getDocument().addDocumentListener(new DocumentListener(){
 
 			@Override
@@ -633,7 +633,7 @@ public class GUI extends JFrame {
 		
 		//JTextArea textArea_varA = new JTextArea();
 		textArea_varA.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
-		textArea_varA.setBounds(58, 231, 551, 70);
+		textArea_varA.setBounds(58, 217, 551, 114);
 		textArea_varA.getDocument().addDocumentListener(new DocumentListener(){
 
 			@Override
@@ -667,7 +667,7 @@ public class GUI extends JFrame {
 		
 		//JTextArea textArea_varB = new JTextArea();
 		textArea_varB.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
-		textArea_varB.setBounds(58, 312, 551, 70);
+		textArea_varB.setBounds(58, 342, 551, 114);
 		textArea_varB.getDocument().addDocumentListener(new DocumentListener(){
 
 			@Override
@@ -701,7 +701,7 @@ public class GUI extends JFrame {
 		
 		//JTextArea textArea_varC = new JTextArea();
 		textArea_varC.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
-		textArea_varC.setBounds(58, 393, 551, 70);
+		textArea_varC.setBounds(58, 467, 551, 114);
 		textArea_varC.getDocument().addDocumentListener(new DocumentListener(){
 
 			@Override
@@ -734,7 +734,7 @@ public class GUI extends JFrame {
 		contentPane.add(textArea_varC);
 		
 		JLabel lblContent = new JLabel("Content");
-		lblContent.setBounds(10, 176, 46, 14);
+		lblContent.setBounds(10, 144, 46, 14);
 		contentPane.add(lblContent);
 		
 		JLabel lblA = new JLabel("A");
@@ -742,11 +742,11 @@ public class GUI extends JFrame {
 		contentPane.add(lblA);
 		
 		JLabel lblB = new JLabel("B");
-		lblB.setBounds(34, 340, 12, 14);
+		lblB.setBounds(34, 393, 12, 14);
 		contentPane.add(lblB);
 		
 		JLabel lblC = new JLabel("C");
-		lblC.setBounds(34, 422, 12, 14);
+		lblC.setBounds(34, 516, 12, 14);
 		contentPane.add(lblC);
 		
 		JButton btn_first = new JButton("|<");
@@ -755,7 +755,7 @@ public class GUI extends JFrame {
 				firstQuestion();
 			}
 		});
-		btn_first.setBounds(58, 490, 89, 23);
+		btn_first.setBounds(58, 592, 89, 23);
 		contentPane.add(btn_first);
 		
 		JButton btn_prev = new JButton("<");
@@ -764,7 +764,7 @@ public class GUI extends JFrame {
 				previousQuestion();
 			}
 		});
-		btn_prev.setBounds(157, 490, 89, 23);
+		btn_prev.setBounds(157, 592, 89, 23);
 		contentPane.add(btn_prev);
 		
 		JButton btn_next = new JButton(">");
@@ -773,7 +773,7 @@ public class GUI extends JFrame {
 				nextQuestion();
 			}
 		});
-		btn_next.setBounds(326, 490, 89, 23);
+		btn_next.setBounds(326, 592, 89, 23);
 		contentPane.add(btn_next);
 		
 		JButton btn_last = new JButton(">|");
@@ -782,24 +782,24 @@ public class GUI extends JFrame {
 				lastQuestion();
 			}
 		});
-		btn_last.setBounds(425, 490, 89, 23);
+		btn_last.setBounds(425, 592, 89, 23);
 		contentPane.add(btn_last);
 		
-		lblqsize.setBounds(295, 494, 46, 14);
+		lblqsize.setBounds(295, 596, 46, 14);
 		contentPane.add(lblqsize);
 		
-		JButton btnAdd = new JButton("Add");
+		JButton btnAdd = new JButton("Add Question");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				addQuestion();		
 			}
 		});
-		btnAdd.setBounds(520, 490, 89, 23);
+		btnAdd.setBounds(520, 592, 141, 23);
 		contentPane.add(btnAdd);
 		
 		
 		buttonGroup.add(rdbtn_corrA);
-		rdbtn_corrA.setBounds(615, 256, 61, 23);
+		rdbtn_corrA.setBounds(615, 256, 133, 23);
 		rdbtn_corrA.addActionListener(new ActionListener(){
 
 			@Override
@@ -814,7 +814,7 @@ public class GUI extends JFrame {
 		
 		
 		buttonGroup.add(rdbtn_corrB);
-		rdbtn_corrB.setBounds(615, 336, 61, 23);
+		rdbtn_corrB.setBounds(615, 389, 133, 23);
 		rdbtn_corrB.addActionListener(new ActionListener(){
 
 			@Override
@@ -829,7 +829,7 @@ public class GUI extends JFrame {
 		
 		
 		buttonGroup.add(rdbtn_corrC);
-		rdbtn_corrC.setBounds(615, 418, 61, 23);
+		rdbtn_corrC.setBounds(615, 512, 133, 23);
 		rdbtn_corrC.addActionListener(new ActionListener(){
 
 			@Override
@@ -842,14 +842,14 @@ public class GUI extends JFrame {
 		});
 		contentPane.add(rdbtn_corrC);
 		
-		JButton btnRemove = new JButton("Remove");
+		JButton btnRemove = new JButton("Remove Question");
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				removeQuestion();
 				
 			}
 		});
-		btnRemove.setBounds(619, 490, 89, 23);
+		btnRemove.setBounds(671, 592, 141, 23);
 		contentPane.add(btnRemove);
 		
 		JButton btnImage = new JButton("AddImage");
@@ -863,7 +863,7 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		btnImage.setBounds(694, 156, 89, 23);
+		btnImage.setBounds(754, 126, 161, 23);
 		contentPane.add(btnImage);
 		
 		JButton btnNewButton = new JButton("AddImage");
@@ -877,7 +877,7 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		btnNewButton.setBounds(694, 237, 89, 23);
+		btnNewButton.setBounds(754, 240, 161, 23);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("AddImage");
@@ -891,7 +891,7 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		btnNewButton_1.setBounds(694, 318, 89, 23);
+		btnNewButton_1.setBounds(754, 372, 161, 23);
 		contentPane.add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("AddImage");
@@ -905,27 +905,27 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		btnNewButton_2.setBounds(694, 399, 89, 23);
+		btnNewButton_2.setBounds(754, 492, 161, 23);
 		contentPane.add(btnNewButton_2);
 		
 		imagePanel = new ImagePanel(null);
 		imagePanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		imagePanel.setBounds(802, 150, 150, 70);
+		imagePanel.setBounds(925, 117, 150, 70);
 		contentPane.add(imagePanel);
 		
 		imagePanelA = new ImagePanel(null);
 		imagePanelA.setBorder(new LineBorder(new Color(0, 0, 0)));
-		imagePanelA.setBounds(802, 231, 150, 70);
+		imagePanelA.setBounds(925, 231, 150, 70);
 		contentPane.add(imagePanelA);
 		
 		imagePanelB = new ImagePanel(null);
 		imagePanelB.setBorder(new LineBorder(new Color(0, 0, 0)));
-		imagePanelB.setBounds(802, 312, 150, 70);
+		imagePanelB.setBounds(925, 363, 150, 70);
 		contentPane.add(imagePanelB);
 		
 		imagePanelC = new ImagePanel(null);
 		imagePanelC.setBorder(new LineBorder(new Color(0, 0, 0)));
-		imagePanelC.setBounds(802, 393, 150, 70);
+		imagePanelC.setBounds(925, 483, 150, 70);
 		contentPane.add(imagePanelC);
 		
 		JButton btnDelimage = new JButton("DeleteImg\r\n");
@@ -934,7 +934,7 @@ public class GUI extends JFrame {
 				deleteImg(0);
 			}
 		});
-		btnDelimage.setBounds(694, 186, 89, 23);
+		btnDelimage.setBounds(754, 160, 161, 23);
 		contentPane.add(btnDelimage);
 		
 		JButton btnNewButton_3 = new JButton("DeleteImg");
@@ -943,7 +943,7 @@ public class GUI extends JFrame {
 				deleteImg(1);
 			}
 		});
-		btnNewButton_3.setBounds(694, 267, 89, 23);
+		btnNewButton_3.setBounds(754, 274, 161, 23);
 		contentPane.add(btnNewButton_3);
 		
 		JButton btnNewButton_4 = new JButton("DeleteImg");
@@ -952,7 +952,7 @@ public class GUI extends JFrame {
 				deleteImg(2);
 			}
 		});
-		btnNewButton_4.setBounds(694, 348, 89, 23);
+		btnNewButton_4.setBounds(754, 406, 161, 23);
 		contentPane.add(btnNewButton_4);
 		
 		JButton btnNewButton_5 = new JButton("DeleteImg");
@@ -961,11 +961,11 @@ public class GUI extends JFrame {
 				deleteImg(3);
 			}
 		});
-		btnNewButton_5.setBounds(694, 429, 89, 23);
+		btnNewButton_5.setBounds(754, 526, 161, 23);
 		contentPane.add(btnNewButton_5);
 		
 		label_current = new JLabel("1");
-		label_current.setBounds(270, 494, 26, 14);
+		label_current.setBounds(270, 596, 26, 14);
 		contentPane.add(label_current);
 		
 		JButton btnJumpTo = new JButton("Jump To");
@@ -974,19 +974,19 @@ public class GUI extends JFrame {
 				jumpTo((Integer)spinner.getValue());
 			}
 		});
-		btnJumpTo.setBounds(157, 524, 89, 23);
+		btnJumpTo.setBounds(157, 626, 89, 23);
 		contentPane.add(btnJumpTo);
 		
 		spinner = new JSpinner();
 		spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
-		spinner.setBounds(256, 525, 40, 20);
+		spinner.setBounds(256, 627, 40, 20);
 		contentPane.add(spinner);
 		
-		JButton btnGenerate = new JButton("Generate");
+		JButton btnGenerate = new JButton("Preview PDF");
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-					
+						qBase.shuffleVariants();
 						try {
 							OutputDocument.createDocument(qBase);
 						} catch (DocumentException | IOException e) {
@@ -997,7 +997,7 @@ public class GUI extends JFrame {
 			
 			}
 		});
-		btnGenerate.setBounds(326, 524, 89, 23);
+		btnGenerate.setBounds(822, 592, 253, 23);
 		contentPane.add(btnGenerate);
 		
 		this.newBase();

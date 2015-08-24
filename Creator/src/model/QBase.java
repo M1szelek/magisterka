@@ -90,6 +90,12 @@ public class QBase implements Serializable {
 		}
 	}
 	
+	public void shuffleVariants(){
+		for(Question q: questions){
+			q.shuffleVariants();
+		}
+	}
+	
 	
 	
 	

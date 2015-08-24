@@ -34,7 +34,10 @@ public class OutputDocument {
         
         for(Question q: qb.getQuestions()){
         	List list_content = new List(List.ORDERED);
-        	list_content.setPostSymbol(".         ");
+        	if(1 <= i && i < 10)
+        		list_content.setPostSymbol(".         ");
+        	else
+        		list_content.setPostSymbol(".       ");
 	        list_content.setFirst(i);
 	        
 	        list_content.add(new ListItem(q.getContent(),font));

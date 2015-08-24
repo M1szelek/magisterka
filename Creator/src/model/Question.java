@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 
 public class Question extends AbstractQuestion {
 	/**
@@ -74,6 +77,20 @@ public class Question extends AbstractQuestion {
 	public void setCorrectC(){
 		this.clearCorrect();
 		this.varC.setCorrect(true);
+	}
+	
+	public void shuffleVariants(){
+		//TODO: mieszanie wariantów odpowiedzi
+		ArrayList<QuestionVariant> tmp = new ArrayList<QuestionVariant>();
+		tmp.add(this.varA);
+		tmp.add(this.varB);
+		tmp.add(this.varC);
+		
+		Collections.shuffle(tmp);
+		
+		this.varA = tmp.get(0);
+		this.varB = tmp.get(1);
+		this.varC = tmp.get(2);
 	}
 	
 	
