@@ -43,7 +43,8 @@ public class GUI extends JFrame {
 	private JFileChooser fc;
 	private File currFile;
 	
-	
+	JSpinner spinner_aoq = new JSpinner();
+	JSpinner spinner_groups = new JSpinner();
 
 	/**
 	 * Launch the application.
@@ -193,13 +194,13 @@ public class GUI extends JFrame {
 		contentPane.add(btnAddBase);
 		
 		JLabel lblNumberOfGroups = new JLabel("Amount of groups");
-		lblNumberOfGroups.setBounds(10, 579, 94, 14);
+		lblNumberOfGroups.setBounds(10, 579, 140, 14);
 		contentPane.add(lblNumberOfGroups);
 		
-		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(1, 1, 4, 1));
-		spinner.setBounds(102, 576, 29, 20);
-		contentPane.add(spinner);
+		
+		spinner_groups.setModel(new SpinnerNumberModel(1, 1, 4, 1));
+		spinner_groups.setBounds(156, 576, 29, 20);
+		contentPane.add(spinner_groups);
 		
 		JLabel lblDate = new JLabel("Date");
 		lblDate.setBounds(768, 15, 46, 14);
@@ -247,11 +248,19 @@ public class GUI extends JFrame {
 		JButton btnGenerate = new JButton("Generate");
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				superBase.createTest(30,1);
+				superBase.createTest((Integer)spinner_aoq.getValue(),(Integer)spinner_groups.getValue());
 			}
 		});
-		btnGenerate.setBounds(141, 575, 89, 23);
+		btnGenerate.setBounds(380, 11, 89, 23);
 		contentPane.add(btnGenerate);
+		
+		
+		spinner_aoq.setBounds(423, 576, 46, 20);
+		contentPane.add(spinner_aoq);
+		
+		JLabel lblAmountOfQuestions = new JLabel("Amount of questions on test");
+		lblAmountOfQuestions.setBounds(255, 579, 175, 14);
+		contentPane.add(lblAmountOfQuestions);
 		
 		/*final JCheckBox checkBox = new JCheckBox();
 		table.getColumn("Delete").setCellRenderer(new DefaultTableCellRenderer() {

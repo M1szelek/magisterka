@@ -73,7 +73,6 @@ public class SuperBase {
 		
 		for(int j = 0; j < qbcoll.size(); j++){
 			int tmp = count * qbcoll.get(j).getQuestions().size() / totalaoq;	//ilosc pytan z pojedynczej bazy do testu
-			
 			if(restbasesrnd.contains(j)){
 				   tmp++;													//dodajemy jedno pytanie z reszty
 			}

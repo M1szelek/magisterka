@@ -63,7 +63,7 @@ public class SuperBase {
 		
 		Collections.shuffle(restbasesrnd);						//rozpoczynamy losowanie baz, ktore dostana dodatkowe pytania z reszty
 		
-		for(int i = rest; i < restbasesrnd.size();){
+		for(int i = rest; i < qbcoll.size() + 1;){
 			restbasesrnd.remove(i);								//wylosowane indeksy sa pierwszymi w tabeli, reszte wywalamy
 		}
 		
@@ -73,7 +73,6 @@ public class SuperBase {
 		
 		for(int j = 0; j < qbcoll.size(); j++){
 			int tmp = count * qbcoll.get(j).getQuestions().size() / totalaoq;	//ilosc pytan z pojedynczej bazy do testu
-			
 			if(restbasesrnd.contains(j)){
 				   tmp++;													//dodajemy jedno pytanie z reszty
 			}
@@ -99,7 +98,7 @@ public class SuperBase {
 		}
 		
 		
-		System.out.println("-------------------------------------------------------------------------------");
+		
 		
 		return restab;
 	}
