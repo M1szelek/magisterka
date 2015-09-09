@@ -80,8 +80,6 @@ public class GUI extends JFrame {
 	
 	private JLabel label_current;
 	private JSpinner spinner;
-	private JTextField textField;
-	private JTextField textField_1;
 
 	/**
 	 * Launch the application.
@@ -976,16 +974,6 @@ public class GUI extends JFrame {
 				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 		textArea_varC.setBorder(BorderFactory.createCompoundBorder(border, 
 				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-		
-		textField = new JTextField();
-		textField.setBounds(536, 11, 292, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
-		
-		textField_1 = new JTextField();
-		textField_1.setBounds(536, 45, 292, 20);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
 		
 		this.newBase();
 	}

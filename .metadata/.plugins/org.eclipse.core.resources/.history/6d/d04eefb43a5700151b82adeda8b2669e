@@ -17,7 +17,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -27,13 +26,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
@@ -80,8 +79,6 @@ public class GUI extends JFrame {
 	
 	private JLabel label_current;
 	private JSpinner spinner;
-	private JTextField textField;
-	private JTextField textField_1;
 
 	/**
 	 * Launch the application.
@@ -125,6 +122,18 @@ public class GUI extends JFrame {
 		
 		this.imagePanelC.setImage(q.getVarC().getImg());
 		this.imagePanelC.resizeImage();
+		
+		if(q.getVarA().isCorrect()){
+			rdbtn_corrA.setSelected(true);
+		}
+		
+		if(q.getVarB().isCorrect()){
+			rdbtn_corrB.setSelected(true);
+		}
+		
+		if(q.getVarC().isCorrect()){
+			rdbtn_corrC.setSelected(true);
+		}
 		
 	}
 	
@@ -950,42 +959,6 @@ public class GUI extends JFrame {
 		JLabel lblNewLabel_1 = new JLabel("Kod przedmiotu");
 		lblNewLabel_1.setBounds(425, 48, 70, 15);
 		contentPane.add(lblNewLabel_1);
-		
-		JLabel lblCorrect = new JLabel("CORRECT");
-		lblCorrect.setForeground(new Color(0, 128, 0));
-		lblCorrect.setBackground(Color.GREEN);
-		lblCorrect.setBounds(619, 260, 89, 14);
-		contentPane.add(lblCorrect);
-		
-		JLabel lblIncorrect = new JLabel("INCORRECT");
-		lblIncorrect.setForeground(Color.RED);
-		lblIncorrect.setBounds(619, 393, 89, 14);
-		contentPane.add(lblIncorrect);
-		
-		JLabel lblIncorrect_1 = new JLabel("INCORRECT");
-		lblIncorrect_1.setForeground(Color.RED);
-		lblIncorrect_1.setBounds(619, 516, 89, 14);
-		contentPane.add(lblIncorrect_1);
-		
-		Border border = BorderFactory.createLineBorder(Color.BLACK);
-		textArea_content.setBorder(BorderFactory.createCompoundBorder(border, 
-		BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-		textArea_varA.setBorder(BorderFactory.createCompoundBorder(border, 
-				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-		textArea_varB.setBorder(BorderFactory.createCompoundBorder(border, 
-				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-		textArea_varC.setBorder(BorderFactory.createCompoundBorder(border, 
-				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-		
-		textField = new JTextField();
-		textField.setBounds(536, 11, 292, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
-		
-		textField_1 = new JTextField();
-		textField_1.setBounds(536, 45, 292, 20);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
 		
 		this.newBase();
 	}

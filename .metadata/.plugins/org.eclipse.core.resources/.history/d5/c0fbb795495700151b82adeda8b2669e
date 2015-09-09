@@ -110,7 +110,7 @@ public class GUI extends JFrame {
 		
 		for(QBase qb: superBase.getQbcoll()){
 			
-			model.addRow(new Object[]{qb.getName(), qb.getAuthor(), qb.getQuestions().size(), 0, new Boolean(false)});
+			model.addRow(new Object[]{qb.getName(), qb.getAuthor(), qb.getQuestions().size(), new Boolean(false)});
 		}
 	}
 	
@@ -213,7 +213,7 @@ public class GUI extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Title", "Author", "# of Questions","# to Test", "Delete"
+				"Title", "Author", "# of Questions", "Delete"
 			}
 		) {
 			/**
@@ -221,7 +221,7 @@ public class GUI extends JFrame {
 			 */
 			private static final long serialVersionUID = 1L;
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, Integer.class, Integer.class, Boolean.class
+				String.class, String.class, Integer.class, Boolean.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
