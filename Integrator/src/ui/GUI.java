@@ -30,6 +30,7 @@ import javax.swing.table.DefaultTableModel;
 
 import model.QBase;
 import model.SuperBase;
+import javax.swing.JTextField;
 
 public class GUI extends JFrame {
 
@@ -45,6 +46,7 @@ public class GUI extends JFrame {
 	
 	JSpinner spinner_aoq = new JSpinner();
 	JSpinner spinner_groups = new JSpinner();
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -117,7 +119,7 @@ public class GUI extends JFrame {
 	public void deleteSelected(){
 		DefaultTableModel model = (DefaultTableModel) table.getModel();		
 		for(int i = 0; i < superBase.getQbcoll().size(); i++){
-			if((boolean)model.getValueAt(i, 3)){
+			if((boolean)model.getValueAt(i, 4)){
 				superBase.getQbcoll().get(i).setToDelete(true);				
 			}
 		}
@@ -131,6 +133,15 @@ public class GUI extends JFrame {
 		
 		renderTable();
 	}
+	
+	public void setAmounts(){
+		DefaultTableModel model = (DefaultTableModel) table.getModel();	
+		for(int i = 0; i < superBase.getQbcoll().size(); i++){
+			
+				superBase.getQbcoll().get(i).setAmountToTest((int)model.getValueAt(i,3));;				
+			
+		}
+	}
 
 	/**
 	 * Create the frame.
@@ -139,7 +150,7 @@ public class GUI extends JFrame {
 		superBase = new SuperBase();
 		fc = new JFileChooser("C:\\Users\\Miszelek\\Desktop");
 		
-		setTitle("Integrator pytaÅ„ egzaminacyjnych");
+		setTitle("Integrator pytañ egzaminacyjnych");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1016, 664);
 		
@@ -240,7 +251,8 @@ public class GUI extends JFrame {
 		JButton btnGenerate = new JButton("Generate");
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				superBase.createTest((Integer)spinner_aoq.getValue(),(Integer)spinner_groups.getValue());
+				setAmounts();
+				superBase.createTest((Integer)spinner_groups.getValue());
 			}
 		});
 		btnGenerate.setBounds(380, 11, 89, 23);
@@ -254,6 +266,15 @@ public class GUI extends JFrame {
 		JLabel lblAmountOfQuestions = new JLabel("Amount of questions on test");
 		lblAmountOfQuestions.setBounds(255, 579, 175, 14);
 		contentPane.add(lblAmountOfQuestions);
+		
+		JLabel lblStartWithLetter = new JLabel("Start with letter");
+		lblStartWithLetter.setBounds(502, 579, 120, 14);
+		contentPane.add(lblStartWithLetter);
+		
+		textField = new JTextField();
+		textField.setBounds(598, 576, 86, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
 		
 		/*final JCheckBox checkBox = new JCheckBox();
 		table.getColumn("Delete").setCellRenderer(new DefaultTableCellRenderer() {

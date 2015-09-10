@@ -93,5 +93,43 @@ public class Question extends AbstractQuestion {
 		this.varC = tmp.get(2);
 	}
 	
+	public void setCorrectThenShuffle(int val){				//0 - A, 1 - B, 2 - C
+		ArrayList<QuestionVariant> tmp = new ArrayList<QuestionVariant>();
+		tmp.add(this.varA);
+		tmp.add(this.varB);
+		tmp.add(this.varC);
+		
+		Collections.shuffle(tmp);
+		
+		QuestionVariant correct = new QuestionVariant();
+		ArrayList<QuestionVariant> incorrect = new ArrayList<QuestionVariant>();
+		
+		for(QuestionVariant qv: tmp){
+			if(qv.isCorrect()){
+				correct = qv;
+			}else{
+				incorrect.add(qv);
+			}
+		}
+		
+		switch(val){
+			case 0:
+				this.varA = correct;
+				this.varB = incorrect.get(0);
+				this.varC = incorrect.get(1);
+				break;
+			case 1:
+				this.varA = incorrect.get(0);
+				this.varB = correct;
+				this.varC = incorrect.get(1);
+				break;
+			case 2:
+				this.varA = incorrect.get(0);
+				this.varB = incorrect.get(1);
+				this.varC = correct;
+				break;
+		}
+	}
+	
 	
 }

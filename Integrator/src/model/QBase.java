@@ -14,12 +14,23 @@ public class QBase implements Serializable {
 	ArrayList<Question> questions;
 	
 	transient private boolean toDelete;
+	transient private int amountToTest;
 	
+	
+	public int getAmountToTest() {
+		return amountToTest;
+	}
+
+	public void setAmountToTest(int amountToTest) {
+		this.amountToTest = amountToTest;
+	}
+
 	public QBase(String name, String author) {
 		super();
 		this.name = name;	
 		this.author = author;
 		this.toDelete = false;
+		this.amountToTest = 0;
 		questions = new ArrayList<Question>();
 		addQuestion();
 	}
@@ -109,8 +120,29 @@ public class QBase implements Serializable {
 	
 	public void shuffleVariants(){
 		for(Question q: questions){
-			q.shuffleVariants();
+			q.setCorrectThenShuffle(1);
 		}
+	}
+	
+	public void showCorrectPercentage(){
+		int a = 0;
+		int b = 0;
+		int c = 0;
+		int total = questions.size();
+		
+		for(Question q: questions){
+			if(q.getVarA().isCorrect()){
+				a++;
+			}
+			if(q.getVarB().isCorrect()){
+				b++;
+			}
+			if(q.getVarC().isCorrect()){
+				c++;
+			}
+		}
+		
+		System.out.println((float)a/(float)total + " " + (float)b/(float)total + " " + (float)c/(float)total);
 	}
 	
 	
