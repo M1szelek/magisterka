@@ -65,17 +65,6 @@ public class GUI extends JFrame {
 		});
 	}
 	
-	public void newBase(){
-		this.superBase = new SuperBase();
-	
-		this.currFile = null;
-	//	this.newBase = true;
-	//	notSaved();
-	//	renderAuthorName();
-	//	setQBaseSize();
-		renderTable();
-	}
-	
 	public void saveAs(){				//zapisz jako
 		try
 	      {
@@ -95,10 +84,10 @@ public class GUI extends JFrame {
 			
 			 FileOutputStream fileOut = new FileOutputStream(file);
 	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-	         out.writeObject(this.superBase);
+	         out.writeObject(this.qBase);
 	         out.close();
 	         fileOut.close();
-	         //this.saved();
+	         this.saved();
 	         //System.out.printf("Serialized data is saved in /tmp/employee.ser");
 	      }catch(IOException i)
 	      {
@@ -118,10 +107,10 @@ public class GUI extends JFrame {
 			
 			 FileOutputStream fileOut = new FileOutputStream(this.currFile);
 	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-	         out.writeObject(this.superBase);
+	         out.writeObject(this.qBase);
 	         out.close();
 	         fileOut.close();
-	        // this.saved();
+	         this.saved();
 	         //System.out.printf("Serialized data is saved in /tmp/employee.ser");
 	      }catch(IOException i)
 	      {
@@ -273,29 +262,9 @@ public class GUI extends JFrame {
 		mntmNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
 		mnFile.add(mntmNew);
 		
-		mntmNew.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				newBase();
-			}
-			
-		});
-		
 		JMenuItem mntmOpenFile = new JMenuItem("Open File...");
 		mntmOpenFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		mnFile.add(mntmOpenFile);
-		
-		mntmOpenFile.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				open();
-			}
-			
-		});
 		
 		JSeparator separator = new JSeparator();
 		mnFile.add(separator);
@@ -304,29 +273,9 @@ public class GUI extends JFrame {
 		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		mnFile.add(mntmSave);
 		
-		mntmSave.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				save();
-			}
-			
-		});
-		
 		JMenuItem mntmSaveAs = new JMenuItem("Save As...");
 		mntmSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
 		mnFile.add(mntmSaveAs);
-		
-		mntmSaveAs.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				saveAs();
-			}
-			
-		});
 		
 		JSeparator separator_1 = new JSeparator();
 		mnFile.add(separator_1);
@@ -334,15 +283,6 @@ public class GUI extends JFrame {
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
 		mnFile.add(mntmExit);
-		mntmExit.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				System.exit(0);
-			}
-			
-		});
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
