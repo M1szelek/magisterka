@@ -44,8 +44,6 @@ public class GUI extends JFrame {
 	private SuperBase superBase;
 	private JFileChooser fc;
 	private File currFile;
-	
-	JSpinner spinner_aoq = new JSpinner();
 	JSpinner spinner_groups = new JSpinner();
 	private JTextField textField;
 
@@ -415,22 +413,13 @@ public class GUI extends JFrame {
 		});
 		btnGenerate.setBounds(380, 11, 89, 23);
 		contentPane.add(btnGenerate);
-		spinner_aoq.setModel(new SpinnerNumberModel(30, 1, 1000, 1));
-		
-		
-		spinner_aoq.setBounds(423, 576, 46, 20);
-		contentPane.add(spinner_aoq);
-		
-		JLabel lblAmountOfQuestions = new JLabel("Amount of questions on test");
-		lblAmountOfQuestions.setBounds(255, 579, 175, 14);
-		contentPane.add(lblAmountOfQuestions);
 		
 		JLabel lblStartWithLetter = new JLabel("Start with letter");
-		lblStartWithLetter.setBounds(502, 579, 120, 14);
+		lblStartWithLetter.setBounds(250, 579, 120, 14);
 		contentPane.add(lblStartWithLetter);
 		
 		textField = new JTextField();
-		textField.setBounds(598, 576, 86, 20);
+		textField.setBounds(380, 576, 86, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		

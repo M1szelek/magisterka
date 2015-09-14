@@ -27,6 +27,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -82,6 +83,10 @@ public class GUI extends JFrame {
 	private JSpinner spinner;
 	private JTextField textField;
 	private JTextField textField_1;
+	private JScrollPane scrollPane;
+	private JScrollPane scrollPane_1;
+	private JScrollPane scrollPane_2;
+	private JScrollPane scrollPane_3;
 
 	/**
 	 * Launch the application.
@@ -101,12 +106,16 @@ public class GUI extends JFrame {
 	
 	public void renderQuestion(){
 		Question q = qBase.getQuestions().get(this.currQ);
+		scrollPane.setViewportView(textArea_content);
 		textArea_content.setLineWrap(true);
 		textArea_content.setText(q.getContent());
+		scrollPane_1.setViewportView(textArea_varA);
 		textArea_varA.setLineWrap(true);
 		textArea_varA.setText(q.getVarA().getContent());
+		scrollPane_2.setViewportView(textArea_varB);
 		textArea_varB.setLineWrap(true);
 		textArea_varB.setText(q.getVarB().getContent());
+		scrollPane_3.setViewportView(textArea_varC);
 		textArea_varC.setLineWrap(true);
 		textArea_varC.setText(q.getVarC().getContent());
 		//this.currQ = _currQ;
@@ -310,10 +319,13 @@ public class GUI extends JFrame {
 		switch(choose){
 			case 0:
 				qBase.getQuestions().get(currQ).deleteImg();
+				break;
 			case 1:
 				qBase.getQuestions().get(currQ).getVarA().deleteImg();
+				break;
 			case 2:
 				qBase.getQuestions().get(currQ).getVarB().deleteImg();
+				break;
 			case 3:
 				qBase.getQuestions().get(currQ).getVarC().deleteImg();
 		}
@@ -512,11 +524,11 @@ public class GUI extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Nazwa przedmiotu");
-		lblNewLabel.setBounds(10, 14, 46, 14);
+		lblNewLabel.setBounds(10, 14, 99, 14);
 		contentPane.add(lblNewLabel);
 		
 		textField_name = new JTextField();
-		textField_name.setBounds(58, 11, 332, 20);
+		textField_name.setBounds(119, 11, 332, 20);
 		contentPane.add(textField_name);
 		textField_name.setColumns(10);
 		
@@ -548,13 +560,13 @@ public class GUI extends JFrame {
 			
 		});
 		
-		JLabel lblAuthor = new JLabel("Prowadzący");
-		lblAuthor.setBounds(10, 48, 46, 14);
+		JLabel lblAuthor = new JLabel("Prowadz\u0105cy");
+		lblAuthor.setBounds(10, 48, 99, 14);
 		contentPane.add(lblAuthor);
 		
 		textField_author = new JTextField();
 		textField_author.setColumns(10);
-		textField_author.setBounds(58, 45, 332, 20);
+		textField_author.setBounds(119, 45, 332, 20);
 		contentPane.add(textField_author);
 		
 		textField_author.getDocument().addDocumentListener(new DocumentListener(){
@@ -584,142 +596,6 @@ public class GUI extends JFrame {
 			}
 			
 		});
-		
-		//JTextArea textArea_content = new JTextArea();
-		textArea_content.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
-		textArea_content.setBounds(58, 92, 551, 114);
-		textArea_content.getDocument().addDocumentListener(new DocumentListener(){
-
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-				
-				
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				qBase.getQuestions().get(currQ).setContent(textArea_content.getText());
-				notSaved();
-				//System.out.println("Added character to" + currQ);
-				
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				qBase.getQuestions().get(currQ).setContent(textArea_content.getText());
-				notSaved();
-				//System.out.println("Removed character from" + currQ);
-				
-			}
-			
-		});
-		contentPane.add(textArea_content);
-		
-		//JTextArea textArea_varA = new JTextArea();
-		textArea_varA.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
-		textArea_varA.setBounds(58, 217, 551, 114);
-		textArea_varA.getDocument().addDocumentListener(new DocumentListener(){
-
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-				
-				
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				qBase.getQuestions().get(currQ).getVarA().setContent(textArea_varA.getText());
-				notSaved();
-				//System.out.println("Added character to" + currQ);
-				
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				qBase.getQuestions().get(currQ).getVarA().setContent(textArea_varA.getText());
-				notSaved();
-				//System.out.println("Removed character from" + currQ);
-				
-			}
-			
-		});
-		contentPane.add(textArea_varA);
-		
-		//JTextArea textArea_varB = new JTextArea();
-		textArea_varB.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
-		textArea_varB.setBounds(58, 342, 551, 114);
-		textArea_varB.getDocument().addDocumentListener(new DocumentListener(){
-
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-				
-				
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				qBase.getQuestions().get(currQ).getVarB().setContent(textArea_varB.getText());
-				notSaved();
-				//System.out.println("Added character to" + currQ);
-				
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				qBase.getQuestions().get(currQ).getVarB().setContent(textArea_varB.getText());
-				notSaved();
-				//System.out.println("Removed character from" + currQ);
-				
-			}
-			
-		});
-		contentPane.add(textArea_varB);
-		
-		//JTextArea textArea_varC = new JTextArea();
-		textArea_varC.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
-		textArea_varC.setBounds(58, 467, 551, 114);
-		textArea_varC.getDocument().addDocumentListener(new DocumentListener(){
-
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-				
-				
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				qBase.getQuestions().get(currQ).getVarC().setContent(textArea_varC.getText());
-				notSaved();
-				//System.out.println("Added character to" + currQ);
-				
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				qBase.getQuestions().get(currQ).getVarC().setContent(textArea_varC.getText());
-				notSaved();
-				//System.out.println("Removed character from" + currQ);
-				
-			}
-			
-		});
-		contentPane.add(textArea_varC);
 		
 		JLabel lblContent = new JLabel("Content");
 		lblContent.setBounds(10, 144, 46, 14);
@@ -925,7 +801,7 @@ public class GUI extends JFrame {
 		spinner.setBounds(256, 627, 40, 20);
 		contentPane.add(spinner);
 		
-		JButton btnGenerate = new JButton("Preview PDF");
+		JButton btnGenerate = new JButton("Preview Entire Base");
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -943,12 +819,12 @@ public class GUI extends JFrame {
 		btnGenerate.setBounds(822, 592, 253, 23);
 		contentPane.add(btnGenerate);
 		
-		JLabel lblKierunekKsztacenia = new JLabel("Kierunek kształcenia");
-		lblKierunekKsztacenia.setBounds(425, 14, 184, 15);
+		JLabel lblKierunekKsztacenia = new JLabel("Kierunek kszta\u0142cenia");
+		lblKierunekKsztacenia.setBounds(589, 14, 184, 15);
 		contentPane.add(lblKierunekKsztacenia);
 		
 		JLabel lblNewLabel_1 = new JLabel("Kod przedmiotu");
-		lblNewLabel_1.setBounds(425, 48, 70, 15);
+		lblNewLabel_1.setBounds(589, 48, 101, 15);
 		contentPane.add(lblNewLabel_1);
 		
 		JLabel lblCorrect = new JLabel("CORRECT");
@@ -968,24 +844,177 @@ public class GUI extends JFrame {
 		contentPane.add(lblIncorrect_1);
 		
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
-		textArea_content.setBorder(BorderFactory.createCompoundBorder(border, 
-		BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-		textArea_varA.setBorder(BorderFactory.createCompoundBorder(border, 
-				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-		textArea_varB.setBorder(BorderFactory.createCompoundBorder(border, 
-				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-		textArea_varC.setBorder(BorderFactory.createCompoundBorder(border, 
-				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 		
 		textField = new JTextField();
-		textField.setBounds(536, 11, 292, 20);
+		textField.setBounds(783, 11, 292, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(536, 45, 292, 20);
+		textField_1.setBounds(783, 45, 292, 20);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(58, 73, 551, 133);
+		contentPane.add(scrollPane);
+		
+		//JTextArea textArea_content = new JTextArea();
+		textArea_content.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
+		textArea_content.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.getQuestions().get(currQ).setContent(textArea_content.getText());
+				notSaved();
+				//System.out.println("Added character to" + currQ);
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.getQuestions().get(currQ).setContent(textArea_content.getText());
+				notSaved();
+				//System.out.println("Removed character from" + currQ);
+				
+			}
+			
+		});
+		textArea_content.setBorder(BorderFactory.createCompoundBorder(border, 
+		BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(58, 217, 551, 114);
+		contentPane.add(scrollPane_1);
+		
+		//JTextArea textArea_varA = new JTextArea();
+		textArea_varA.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
+		textArea_varA.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.getQuestions().get(currQ).getVarA().setContent(textArea_varA.getText());
+				notSaved();
+				//System.out.println("Added character to" + currQ);
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.getQuestions().get(currQ).getVarA().setContent(textArea_varA.getText());
+				notSaved();
+				//System.out.println("Removed character from" + currQ);
+				
+			}
+			
+		});
+		textArea_varA.setBorder(BorderFactory.createCompoundBorder(border, 
+				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		
+		scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(58, 342, 551, 114);
+		contentPane.add(scrollPane_2);
+		
+		//JTextArea textArea_varB = new JTextArea();
+		textArea_varB.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
+		textArea_varB.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.getQuestions().get(currQ).getVarB().setContent(textArea_varB.getText());
+				notSaved();
+				//System.out.println("Added character to" + currQ);
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.getQuestions().get(currQ).getVarB().setContent(textArea_varB.getText());
+				notSaved();
+				//System.out.println("Removed character from" + currQ);
+				
+			}
+			
+		});
+		textArea_varB.setBorder(BorderFactory.createCompoundBorder(border, 
+				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		
+		scrollPane_3 = new JScrollPane();
+		scrollPane_3.setBounds(58, 467, 551, 114);
+		contentPane.add(scrollPane_3);
+		
+		//JTextArea textArea_varC = new JTextArea();
+		textArea_varC.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
+		textArea_varC.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.getQuestions().get(currQ).getVarC().setContent(textArea_varC.getText());
+				notSaved();
+				//System.out.println("Added character to" + currQ);
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.getQuestions().get(currQ).getVarC().setContent(textArea_varC.getText());
+				notSaved();
+				//System.out.println("Removed character from" + currQ);
+				
+			}
+			
+		});
+		textArea_varC.setBorder(BorderFactory.createCompoundBorder(border, 
+				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		
+		JButton btnNewButton_6 = new JButton("Preview Single Question");
+		btnNewButton_6.setBounds(822, 626, 253, 23);
+		contentPane.add(btnNewButton_6);
+		
+//		JScrollPane scroll = new JScrollPane (textArea_content, 
+//				   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+//		
+//		contentPane.add(scroll);
 		
 		this.newBase();
 	}

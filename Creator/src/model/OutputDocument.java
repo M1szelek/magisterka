@@ -18,8 +18,10 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 public class OutputDocument {
 	public static void createDocument(QBase qb) throws DocumentException, IOException{
-		// step 1
-        Document document = new Document(PageSize.A4);
+		
+        
+     // step 1
+        Document document = new Document();
         // step 2
         PdfWriter.getInstance(document, new FileOutputStream("test.pdf"));
         // step 3
@@ -28,115 +30,66 @@ public class OutputDocument {
         BaseFont bf = BaseFont.createFont("Arial Unicode MS.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
         Font font = new Font(bf, 12);
+        float indent = 30;
         
-        int i = 1;
-        float indent = 40;
-        
+        List list = new List(List.ORDERED);
+        list.setAutoindent(false);
+        list.setSymbolIndent(indent);
+       // list.set
+       // Image img = Image.getInstance(new URL("http://zdjecia.pl.sftcdn.net/pl/scrn/76000/76818/microsoft-small-basic-22.jpg"));
+        //img.setAlignment(Image.RIGHT);
+        //img.setScaleToFitHeight(false);
         for(Question q: qb.getQuestions()){
-        	List list_content = new List(List.ORDERED);
-        	if(1 <= i && i < 10)
-        		list_content.setPostSymbol(".         ");
-        	else
-        		list_content.setPostSymbol(".       ");
-	        list_content.setFirst(i);
-	        
-	        list_content.add(new ListItem(q.getContent(),font));
-	        
-	        List list_var = new List(List.ORDERED,List.ALPHABETICAL);
-	        
-	        list_var.setIndentationLeft(indent);
-	        list_var.setPostSymbol(")   ");
-	        
-	        list_var.add(new ListItem(q.getVarA().getContent(),font));
-	        list_var.add(new ListItem(q.getVarB().getContent(),font));
-	        list_var.add(new ListItem(q.getVarC().getContent(),font));
-	        
-	        list_content.add(list_var);
-	        
-	        document.add(list_content);
-	        document.add(Chunk.NEWLINE);
-	        
-	        i++;
+        	
+        	
+        	ListItem item = new ListItem(q.getContent(),font);
+        	if(q.getImgInByte() != null){
+        		Image img = Image.getInstance(q.getImgInByte());
+        		item.add(new ListItem(new Chunk(img,0,0,true)));
+        	}
+        	
+        	List vars = new List(List.ORDERED, List.ALPHABETICAL);
+        	vars.setAutoindent(false);
+            vars.setSymbolIndent(indent);
+            vars.setLowercase(true);
+        	
+        	ListItem varA = new ListItem(q.getVarA().getContent(),font);
+        	
+        	if(q.getVarA().getImgInByte() != null){
+        		Image img = Image.getInstance(q.getVarA().getImgInByte());
+        		varA.add(new ListItem(new Chunk(img,0,0,true)));
+        	}
+        	vars.add(varA);
+        	
+        	ListItem varB = new ListItem(q.getVarB().getContent(),font);
+        	
+        	if(q.getVarB().getImgInByte() != null){
+        		Image img = Image.getInstance(q.getVarB().getImgInByte());
+        		varB.add(new ListItem(new Chunk(img,0,0,true)));
+        	}
+        	vars.add(varB);
+        	
+        	ListItem varC = new ListItem(q.getVarC().getContent(),font);
+        	
+        	if(q.getVarC().getImgInByte() != null){
+        		Image img = Image.getInstance(q.getVarC().getImgInByte());
+        		varC.add(new ListItem(new Chunk(img,0,0,true)));
+        	}
+        	vars.add(varC);
+        	
+        	
+        	item.add(vars);
+        	item.add(Chunk.NEWLINE);
+
+        	list.add(item);
+	       
 	        
         }
         
-        /*for(Question q: qb.getQuestions()){
+        document.add(list);
+       
+        document.close();
         
-	        Paragraph questionContent = new Paragraph(q.getContent(), font);
-	
-	        document.add(questionContent);
-	        
-	        Paragraph questionVarA = new Paragraph("a) " + q.getVarA().getContent(), font);
-	        Paragraph questionVarB = new Paragraph("b) " + q.getVarB().getContent(), font);
-	        Paragraph questionVarC = new Paragraph("c) " + q.getVarC().getContent(), font);
-	        
-	        
-	        questionVarA.setIndentationLeft(indent);
-	        questionVarB.setIndentationLeft(indent);
-	        questionVarC.setIndentationLeft(indent);
-	       
-	        //p = new Paragraph("a) " + q.getVarA().getContent(), font);
-	        
-	        document.add(questionVarA);
-	        document.add(questionVarB);
-	        document.add(questionVarC);
-	        
-	        
-	       
-	        
-	        document.add( Chunk.NEWLINE );
-	        
-	        
-	        
-	        List list = new List(List.ORDERED);
-	        list.setFirst(1);
-	        
-	        list.add(new ListItem("Cos tam"));
-	        
-	        List list2 = new List(List.ORDERED,List.ALPHABETICAL);
-	        
-	        list2.setIndentationLeft(indent);
-	        list2.setPostSymbol(")");
-	        
-	        list2.add(new ListItem("VarA"));
-	        list2.add(new ListItem("VarB"));
-	        list2.add(new ListItem("VarC"));
-	        
-	        Image img = Image.getInstance(new URL("http://zdjecia.pl.sftcdn.net/pl/scrn/76000/76818/microsoft-small-basic-22.jpg"));
-	        
-	        list2.add(img);
-	        list2.add(new ListItem(new Chunk(img,0,-100)));
-	   
-	        list.add(list2);
-	        
-	        document.add(list);
-	        document.add(Chunk.NEWLINE);
-	        
-	        list = new List(List.ORDERED);
-	        list.setFirst(2);
-	        
-	        list.add(new ListItem("Cos tam as asd f asd asd fqwwqd qwdqwd fqwfqwdqw qwdqfq wfqw qwd qwd qwdqwfdf qwdqwd qwdqwd qw fqw qwd."));
-	        
-	        List list3 = new List(List.ORDERED,List.ALPHABETICAL);
-	        
-	        list3.setIndentationLeft(20);
-	        
-	        list3.add(new ListItem("VarA"));
-	        list3.add(new ListItem("VarB"));
-	        list3.add(new ListItem("VarC"));
-	        
-	   
-	        
-	        list.add(list3);
-	        
-	       
-	        document.add(list);
-        }*/
-        //Font f = new Font(bf,(float)22);
-        //Paragraph p = new Paragraph("¯ó³æ", new Font(bf, 22));
-        
-        //document.add(new Paragraph("Kiedy wybuch³a II Wojna Œwiatowa kasjhfajhf fslfhqofgh qqwfgqwgo iiqh qowijqwoigfjh qwdfoijqwfiqjwf qwoifjqwoifhj qwd qowidi oqidjoqiwhfoiqhf oiqwfhqoiwfh",new Font(bf, 22)));
-        // step 5
         document.close();
 	}
 	

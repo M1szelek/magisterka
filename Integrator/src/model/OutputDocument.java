@@ -15,7 +15,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 public class OutputDocument {
 	public static void createDocument(QBase qb) throws DocumentException, IOException{
 		// step 1
-        Document document = new Document(PageSize.A4);
+        Document document = new Document();
         // step 2
         PdfWriter.getInstance(document, new FileOutputStream("test.pdf"));
         // step 3
