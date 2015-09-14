@@ -116,7 +116,11 @@ public class OutputDocument {
         	
         	cell = new PdfPCell();
         	table.addCell(cell);
+        	
+        	cell = new PdfPCell();
         	table.addCell(cell);
+        	
+        	cell = new PdfPCell();
         	table.addCell(cell);
         	
         

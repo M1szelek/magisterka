@@ -98,30 +98,19 @@ public class OutputDocument {
         // step 3
         document.open();
         
-        PdfPTable table = new PdfPTable(4);
-        PdfPCell cell = new PdfPCell();
+        PdfPTable table = new PdfPTable(3);
+        PdfPCell cell;
+        cell = new PdfPCell(new Phrase("Cell with colspan 3"));
+        cell.setColspan(3);
         table.addCell(cell);
+        cell = new PdfPCell(new Phrase("Cell with rowspan 2"));
+        cell.setRowspan(2);
+        table.addCell(cell);
+        table.addCell("row 1; cell 1");
+        table.addCell("row 1; cell 2");
+        table.addCell("row 2; cell 1");
+        table.addCell("row 2; cell 2");
         
-        cell = new PdfPCell(new Phrase("A"));
-        table.addCell(cell);
-        cell = new PdfPCell(new Phrase("B"));
-        table.addCell(cell);
-        cell = new PdfPCell(new Phrase("C"));
-        table.addCell(cell);
-        
-        int i = 1;
-        for(Question q: qb.getQuestions()){
-        	cell = new PdfPCell(new Phrase(Integer.toString(i)));
-        	table.addCell(cell);
-        	
-        	cell = new PdfPCell();
-        	table.addCell(cell);
-        	table.addCell(cell);
-        	table.addCell(cell);
-        	
-        
-        	i++;
-        }
         document.add(table);
         
         document.close();

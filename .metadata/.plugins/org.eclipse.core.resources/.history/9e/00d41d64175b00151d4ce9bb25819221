@@ -808,7 +808,6 @@ public class GUI extends JFrame {
 						qBase.shuffleVariants();
 						try {
 							OutputDocument.createDocument(qBase);
-							OutputDocument.createCalque(qBase);
 						} catch (DocumentException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
