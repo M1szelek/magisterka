@@ -9,4 +9,5 @@
 <fullyQualifiedTypeName name="com.itextpdf.text.Image"/>
 <fullyQualifiedTypeName name="org.apache.commons.lang3.Range"/>
 <fullyQualifiedTypeName name="java.util.Collections"/>
+<fullyQualifiedTypeName name="com.itextpdf.text.Element"/>
 </qualifiedTypeNameHistroy>

@@ -55,6 +55,8 @@ public class GUI extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField_name;
 	private JTextField textField_author;
+	private JTextField textField_profile = new JTextField();
+	private JTextField textField_subjectcode = new JTextField();
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	
 	private final JLabel lblqsize = new JLabel("/ 1");
@@ -81,8 +83,7 @@ public class GUI extends JFrame {
 	
 	private JLabel label_current;
 	private JSpinner spinner;
-	private JTextField textField;
-	private JTextField textField_1;
+	
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane_1;
 	private JScrollPane scrollPane_2;
@@ -155,6 +156,10 @@ public class GUI extends JFrame {
 	public void renderAuthorName(){
 		textField_name.setText(qBase.getName());
 		textField_author.setText(qBase.getAuthor());
+		textField_profile.setText(qBase.getProfile());
+		textField_subjectcode.setText(qBase.getSubjectCode());
+		
+		
 	}
 	
 	public void nextQuestion(){
@@ -223,7 +228,7 @@ public class GUI extends JFrame {
 	}
 	
 	public void newBase(){
-		this.qBase = new QBase("QuestionBase","Anonymous");
+		this.qBase = new QBase("QuestionBase","Anonymous", "Profile", "ABCD");
 		this.currQ = 0;
 		this.currFile = null;
 		this.newBase = true;
@@ -597,6 +602,62 @@ public class GUI extends JFrame {
 			
 		});
 		
+		textField_profile.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.setProfile(textField_profile.getText());
+				//System.out.println("Added character to" + currQ);
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.setProfile(textField_profile.getText());
+				//System.out.println("Removed character from" + currQ);
+				
+			}
+			
+		});
+		
+		textField_subjectcode.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.setSubjectCode(textField_subjectcode.getText());
+				//System.out.println("Added character to" + currQ);
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.setSubjectCode(textField_subjectcode.getText());
+				//System.out.println("Removed character from" + currQ);
+				
+			}
+			
+		});
+		
 		JLabel lblContent = new JLabel("Content");
 		lblContent.setBounds(10, 144, 46, 14);
 		contentPane.add(lblContent);
@@ -808,7 +869,7 @@ public class GUI extends JFrame {
 						qBase.shuffleVariants();
 						try {
 							OutputDocument.createDocument(qBase);
-							OutputDocument.createCalque(qBase);
+							OutputDocument.createCalque2(qBase);
 						} catch (DocumentException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -846,15 +907,15 @@ public class GUI extends JFrame {
 		
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
 		
-		textField = new JTextField();
-		textField.setBounds(783, 11, 292, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		textField_profile = new JTextField();
+		textField_profile.setBounds(783, 11, 292, 20);
+		contentPane.add(textField_profile);
+		textField_profile.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(783, 45, 292, 20);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
+		textField_subjectcode = new JTextField();
+		textField_subjectcode.setBounds(783, 45, 292, 20);
+		contentPane.add(textField_subjectcode);
+		textField_subjectcode.setColumns(10);
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(58, 73, 551, 133);

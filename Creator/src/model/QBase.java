@@ -11,16 +11,46 @@ public class QBase implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private String author;
+	transient private String profile;						//FINALNIE WYWALIC TRANSIENT!!!!
+	transient private String subjectCode;					//FINALNIE WYWALIC TRANSIENT!!!!
 	ArrayList<Question> questions;
 	
-	public QBase(String name, String author) {
+	public QBase(String name, String author, String profile, String subjectCode) {
 		super();
-		this.name = name;	
+		this.name = name;
 		this.author = author;
+		this.profile = profile;
+		this.subjectCode = subjectCode;
 		questions = new ArrayList<Question>();
 		addQuestion();
 	}
-	
+
+
+
+	public String getProfile() {
+		return profile;
+	}
+
+
+
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
+
+
+
+	public String getSubjectCode() {
+		return subjectCode;
+	}
+
+
+
+	public void setSubjectCode(String subjectCode) {
+		this.subjectCode = subjectCode;
+	}
+
+
+
 	public void addQuestion(){
 		questions.add(new Question());
 	}
@@ -29,28 +59,28 @@ public class QBase implements Serializable {
 		if(i < questions.size())
 			questions.get(i).setContent(var);
 		else
-			System.out.println("Poza tablico");
+			System.out.println("Poza tablica");
 	}
 	
 	public void setVarA(int i, String var){
 		if(i < questions.size())
 			questions.get(i).setVarA(new QuestionVariant(var));
 		else
-			System.out.println("Poza tablico");
+			System.out.println("Poza tablica");
 	}
 	
 	public void setVarB(int i, String var){
 		if(i < questions.size())
 			questions.get(i).setVarB(new QuestionVariant(var));
 		else
-			System.out.println("Poza tablico");
+			System.out.println("Poza tablica");
 	}
 	
 	public void setVarC(int i, String var){
 		if(i < questions.size())
 			questions.get(i).setVarC(new QuestionVariant(var));
 		else
-			System.out.println("Poza tablico");
+			System.out.println("Poza tablica");
 	}
 	
 	public void removeQuestion(int i){
@@ -92,7 +122,7 @@ public class QBase implements Serializable {
 	
 	public void shuffleVariants(){
 		for(Question q: questions){
-			q.setCorrectThenShuffle(0);
+			q.shuffleVariants();;
 		}
 	}
 	
