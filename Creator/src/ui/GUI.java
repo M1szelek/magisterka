@@ -43,6 +43,7 @@ import javax.swing.event.DocumentListener;
 import model.OutputDocument;
 import model.QBase;
 import model.Question;
+import util.DeepCopy;
 
 import com.itextpdf.text.DocumentException;
 
@@ -55,8 +56,8 @@ public class GUI extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField_name;
 	private JTextField textField_author;
-	private JTextField textField_profile = new JTextField();
-	private JTextField textField_subjectcode = new JTextField();
+	private JTextField textField_profile;
+	private JTextField textField_subjectcode;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	
 	private final JLabel lblqsize = new JLabel("/ 1");
@@ -551,6 +552,7 @@ public class GUI extends JFrame {
 			public void insertUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.setName(textField_name.getText());
+				notSaved();
 				//System.out.println("Added character to" + currQ);
 				
 			}
@@ -559,6 +561,7 @@ public class GUI extends JFrame {
 			public void removeUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.setName(textField_name.getText());
+				notSaved();
 				//System.out.println("Removed character from" + currQ);
 				
 			}
@@ -588,6 +591,7 @@ public class GUI extends JFrame {
 			public void insertUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.setAuthor(textField_author.getText());
+				notSaved();
 				//System.out.println("Added character to" + currQ);
 				
 			}
@@ -596,67 +600,21 @@ public class GUI extends JFrame {
 			public void removeUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.setAuthor(textField_author.getText());
+				notSaved();
 				//System.out.println("Removed character from" + currQ);
 				
 			}
 			
 		});
 		
-		textField_profile.getDocument().addDocumentListener(new DocumentListener(){
-
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-				
-				
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				qBase.setProfile(textField_profile.getText());
-				//System.out.println("Added character to" + currQ);
-				
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				qBase.setProfile(textField_profile.getText());
-				//System.out.println("Removed character from" + currQ);
-				
-			}
-			
-		});
+		//textField_profile = new JTextField();
 		
-		textField_subjectcode.getDocument().addDocumentListener(new DocumentListener(){
-
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-				
-				
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				qBase.setSubjectCode(textField_subjectcode.getText());
-				//System.out.println("Added character to" + currQ);
-				
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-				// TODO Auto-generated method stub
-				qBase.setSubjectCode(textField_subjectcode.getText());
-				//System.out.println("Removed character from" + currQ);
-				
-			}
-			
-		});
+		
+		
+		//textField_subjectcode = new JTextField();
+		
+		
+	
 		
 		JLabel lblContent = new JLabel("Content");
 		lblContent.setBounds(10, 144, 46, 14);
@@ -866,10 +824,12 @@ public class GUI extends JFrame {
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-						qBase.shuffleVariants();
+						
+						QBase tmpBase =  (QBase) DeepCopy.copy(qBase);
+						tmpBase.shuffleVariants();
 						try {
-							OutputDocument.createDocument(qBase);
-							OutputDocument.createCalque2(qBase);
+							OutputDocument.createDocument(tmpBase);
+							OutputDocument.createCalque2(tmpBase);
 						} catch (DocumentException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -912,10 +872,68 @@ public class GUI extends JFrame {
 		contentPane.add(textField_profile);
 		textField_profile.setColumns(10);
 		
+		textField_profile.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.setProfile(textField_profile.getText());
+				//System.out.println("Added character to" + currQ);
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.setProfile(textField_profile.getText());
+				//System.out.println("Removed character from" + currQ);
+				
+			}
+			
+		});
+		
 		textField_subjectcode = new JTextField();
 		textField_subjectcode.setBounds(783, 45, 292, 20);
 		contentPane.add(textField_subjectcode);
 		textField_subjectcode.setColumns(10);
+		
+		textField_subjectcode.getDocument().addDocumentListener(new DocumentListener(){
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.setSubjectCode(textField_subjectcode.getText());
+				//System.out.println("Added character to" + currQ);
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				qBase.setSubjectCode(textField_subjectcode.getText());
+				//System.out.println("Removed character from" + currQ);
+				
+			}
+			
+		});
+		
+		
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(58, 73, 551, 133);

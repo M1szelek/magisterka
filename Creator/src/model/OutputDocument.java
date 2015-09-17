@@ -60,6 +60,7 @@ public class OutputDocument {
 			ListItem varA = new ListItem(q.getVarA().getContent(), font);
 
 			if (q.getVarA().getImgInByte() != null) {
+				varA.add(Chunk.NEWLINE);
 				Image img = Image.getInstance(q.getVarA().getImgInByte());
 				varA.add(new ListItem(new Chunk(img, 0, 0, true)));
 			}
@@ -68,6 +69,7 @@ public class OutputDocument {
 			ListItem varB = new ListItem(q.getVarB().getContent(), font);
 
 			if (q.getVarB().getImgInByte() != null) {
+				varB.add(Chunk.NEWLINE);
 				Image img = Image.getInstance(q.getVarB().getImgInByte());
 				varB.add(new ListItem(new Chunk(img, 0, 0, true)));
 			}
@@ -76,6 +78,7 @@ public class OutputDocument {
 			ListItem varC = new ListItem(q.getVarC().getContent(), font);
 
 			if (q.getVarC().getImgInByte() != null) {
+				varC.add(Chunk.NEWLINE);
 				Image img = Image.getInstance(q.getVarC().getImgInByte());
 				varC.add(new ListItem(new Chunk(img, 0, 0, true)));
 			}
