@@ -5,8 +5,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import util.DeepCopy;
-
 import com.itextpdf.text.DocumentException;
 
 public class SuperBase implements Serializable{
@@ -67,7 +65,7 @@ public class SuperBase implements Serializable{
 	
 	public QBase createTest(char setletter){
 		
-		QBase resbase = new QBase();							
+		QBase resbase = new QBase();							//TODO: DEEP COPY!!!!!!!!!!!!!!!
 		
 		resbase.setSetLetter(setletter);
 		
@@ -116,8 +114,6 @@ public class SuperBase implements Serializable{
 		}
 		
 		resbase.showCorrectPercentage();
-		
-		resbase = (QBase)DeepCopy.copy(resbase);				//DEEP COPY FOR THE RESCUE!!!!!!!!!!!!!!!
 		
 		return resbase;
 		

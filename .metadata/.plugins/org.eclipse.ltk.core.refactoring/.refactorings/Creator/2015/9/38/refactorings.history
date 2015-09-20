@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;DeepCopy.java&apos; to &apos;Integrator/src/util&apos;&#x0D;&#x0A;- Original project: &apos;Creator&apos;&#x0D;&#x0A;- Destination element: &apos;Integrator/src/util&apos;&#x0D;&#x0A;- Original element: &apos;util.DeepCopy.java&apos;" description="Copy compilation unit" destination="=Integrator/src&lt;util" element1="/src&lt;util{DeepCopy.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1442774304337" units="1" version="1.0"/>
+</session>

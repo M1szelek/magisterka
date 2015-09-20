@@ -67,7 +67,7 @@ public class SuperBase implements Serializable{
 	
 	public QBase createTest(char setletter){
 		
-		QBase resbase = new QBase();							
+		QBase resbase = new QBase();							//TODO: DEEP COPY FOR THE RESCUE!!!!!!!!!!!!!!!
 		
 		resbase.setSetLetter(setletter);
 		
@@ -117,7 +117,7 @@ public class SuperBase implements Serializable{
 		
 		resbase.showCorrectPercentage();
 		
-		resbase = (QBase)DeepCopy.copy(resbase);				//DEEP COPY FOR THE RESCUE!!!!!!!!!!!!!!!
+		resbase = (QBase)DeepCopy.copy(resbase);
 		
 		return resbase;
 		

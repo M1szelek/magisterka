@@ -11,4 +11,5 @@
 <fullyQualifiedTypeName name="java.util.Collections"/>
 <fullyQualifiedTypeName name="com.itextpdf.text.Element"/>
 <fullyQualifiedTypeName name="javax.swing.filechooser.FileFilter"/>
+<fullyQualifiedTypeName name="util.DeepCopy"/>
 </qualifiedTypeNameHistroy>
