@@ -15,6 +15,7 @@ public abstract class AbstractQuestion implements Serializable{
 	private static final long serialVersionUID = 1L;
 	transient private BufferedImage img;
 	private byte[] imgInByte;
+	private int imgScalePercent;
 	
 	public void byteArrayToImg() throws IOException{
 		if(imgInByte != null){
@@ -57,12 +58,24 @@ public abstract class AbstractQuestion implements Serializable{
 	public AbstractQuestion() {
 		super();
 		this.content = new String();
+		this.imgScalePercent = 100;
 	}
 
 	public AbstractQuestion(String content) {
 		super();
 		this.content = content;
+		this.imgScalePercent = 100;
 	}
+
+	public int getImgScalePercent() {
+		return imgScalePercent;
+	}
+
+	public void setImgScalePercent(int imgScalePercent) {
+		this.imgScalePercent = imgScalePercent;
+	}
+	
+	
 	
 	
 	

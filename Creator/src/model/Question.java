@@ -92,6 +92,7 @@ public class Question extends AbstractQuestion {
 		this.varB = tmp.get(1);
 		this.varC = tmp.get(2);
 	}
+	
 	public void setCorrectThenShuffle(int val){				//0 - A, 1 - B, 2 - C
 		ArrayList<QuestionVariant> tmp = new ArrayList<QuestionVariant>();
 		tmp.add(this.varA);

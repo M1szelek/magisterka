@@ -11,19 +11,25 @@ public class QBase implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private String author;
+	private String profile;						
+	private String subjectCode;					
 	ArrayList<Question> questions;
 	
-	transient private boolean toDelete;
-	transient private int amountToTest;
+	transient char setLetter;
 	
-	
-	public int getAmountToTest() {
-		return amountToTest;
+	public char getSetLetter() {
+		return setLetter;
 	}
 
-	public void setAmountToTest(int amountToTest) {
-		this.amountToTest = amountToTest;
+	public void setSetLetter(char setLetter) {
+		this.setLetter = setLetter;
 	}
+
+	transient private boolean toDelete;
+	private int amountToTest;
+	
+	
+	
 
 	public QBase(String name, String author) {
 		super();
@@ -109,6 +115,30 @@ public class QBase implements Serializable {
 		this.questions = questions;
 	}
 	
+	public String getProfile() {
+		return profile;
+	}
+
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
+
+	public String getSubjectCode() {
+		return subjectCode;
+	}
+
+	public void setSubjectCode(String subjectCode) {
+		this.subjectCode = subjectCode;
+	}
+	
+	public int getAmountToTest() {
+		return amountToTest;
+	}
+
+	public void setAmountToTest(int amountToTest) {
+		this.amountToTest = amountToTest;
+	}
+	
 	public void byteArrayToImg() throws IOException{
 		for(Question q: questions){
 			q.byteArrayToImg();
@@ -141,7 +171,7 @@ public class QBase implements Serializable {
 				c++;
 			}
 		}
-		
+		System.out.println("Total: " + total + " A: " + a + " B: " + b + " C: " + c);
 		System.out.println((float)a/(float)total + " " + (float)b/(float)total + " " + (float)c/(float)total);
 	}
 	

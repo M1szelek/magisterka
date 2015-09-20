@@ -28,7 +28,13 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+
+import com.itextpdf.text.DocumentException;
 
 import model.QBase;
 import model.SuperBase;
@@ -45,7 +51,9 @@ public class GUI extends JFrame {
 	private JFileChooser fc;
 	private File currFile;
 	JSpinner spinner_groups = new JSpinner();
-	private JTextField textField;
+	private JTextField txtA;
+	
+	private boolean renderTable = false;
 
 	/**
 	 * Launch the application.
@@ -83,6 +91,7 @@ public class GUI extends JFrame {
 			 
 			 if (returnVal == JFileChooser.APPROVE_OPTION) {
 	                file = fc.getSelectedFile();
+	                file = new File(file.getAbsolutePath()+".integrator");
 	                this.currFile = file;
 	                //This is where a real application would open the file.
 	                //log.append("Opening: " + file.getName() + "." + newline);
@@ -155,6 +164,7 @@ public class GUI extends JFrame {
 		    // renderQuestion();
 		    // renderAuthorName();
 		    // this.saved();
+	         renderTable = true;
 	         renderTable();
 	      }catch(IOException i)
 	      {
@@ -174,7 +184,9 @@ public class GUI extends JFrame {
 	public void addBase(){
 		try
 	      {
-	    	 
+	    	JFileChooser fc = new JFileChooser("C:\\Users\\Miszelek\\Desktop");    //TODO: ZMIENIC FINALNIE!!!!
+	    	FileFilter fileFilter = new FileNameExtensionFilter("Creator file", "creator");
+	    	fc.setFileFilter(fileFilter);
 			fc.setMultiSelectionEnabled(true);
 			int returnVal = fc.showOpenDialog(GUI.this);
 	    	 
@@ -197,7 +209,7 @@ public class GUI extends JFrame {
 		         in.close();
 		         fileIn.close();
 	    	 }
-	         
+	         renderTable = true;
 	         renderTable();
 		   
 		     //this.saved();
@@ -218,15 +230,15 @@ public class GUI extends JFrame {
 		model.setRowCount(0);
 		
 		for(QBase qb: superBase.getQbcoll()){
-			
-			model.addRow(new Object[]{qb.getName(), qb.getAuthor(), qb.getQuestions().size(), 0, new Boolean(false)});
+			renderTable = true;
+			model.addRow(new Object[]{qb.getName(), qb.getAuthor(), qb.getProfile(), qb.getSubjectCode(), qb.getQuestions().size(), qb.getAmountToTest(), new Boolean(false)});
 		}
 	}
 	
 	public void deleteSelected(){
 		DefaultTableModel model = (DefaultTableModel) table.getModel();		
 		for(int i = 0; i < superBase.getQbcoll().size(); i++){
-			if((boolean)model.getValueAt(i, 4)){
+			if((boolean)model.getValueAt(i, 6)){
 				superBase.getQbcoll().get(i).setToDelete(true);				
 			}
 		}
@@ -237,7 +249,7 @@ public class GUI extends JFrame {
 				i--;
 			}
 		}
-		
+		renderTable = true;
 		renderTable();
 	}
 	
@@ -245,7 +257,7 @@ public class GUI extends JFrame {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();	
 		for(int i = 0; i < superBase.getQbcoll().size(); i++){
 			
-				superBase.getQbcoll().get(i).setAmountToTest((int)model.getValueAt(i,3));;				
+				superBase.getQbcoll().get(i).setAmountToTest((int)model.getValueAt(i,5));;				
 			
 		}
 	}
@@ -255,7 +267,10 @@ public class GUI extends JFrame {
 	 */
 	public GUI() {
 		superBase = new SuperBase();
-		fc = new JFileChooser("C:\\Users\\Miszelek\\Desktop");
+		
+		FileFilter fileFilter = new FileNameExtensionFilter("Integrator file", "integrator");
+		fc = new JFileChooser("C:\\Users\\Miszelek\\Desktop");									//TODO: ZMIENIC FINALNIE!!!!
+		fc.setFileFilter(fileFilter);
 		
 		setTitle("Integrator pytañ egzaminacyjnych");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -360,7 +375,7 @@ public class GUI extends JFrame {
 		btnAddBase.setBounds(10, 11, 175, 23);
 		contentPane.add(btnAddBase);
 		
-		JLabel lblNumberOfGroups = new JLabel("Amount of groups");
+		JLabel lblNumberOfGroups = new JLabel("Amount of sets");
 		lblNumberOfGroups.setBounds(10, 579, 140, 14);
 		contentPane.add(lblNumberOfGroups);
 		
@@ -370,7 +385,7 @@ public class GUI extends JFrame {
 		contentPane.add(spinner_groups);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 45, 734, 523);
+		scrollPane.setBounds(10, 45, 980, 523);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -380,7 +395,7 @@ public class GUI extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Title", "Author", "# of Questions","# to Test", "Delete"
+				"Nazwa przedmiotu", "Prowadz¹cy", "Kierunek kszta³cenia","Kod przedmiotu", "Iloœæ pytañ w bazie","Iloœæ pytañ do testu", "Usuñ"
 			}
 		) {
 			/**
@@ -388,7 +403,7 @@ public class GUI extends JFrame {
 			 */
 			private static final long serialVersionUID = 1L;
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, Integer.class, Integer.class, Boolean.class
+				String.class, String.class, String.class, String.class, Integer.class, Integer.class, Boolean.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
@@ -408,20 +423,45 @@ public class GUI extends JFrame {
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setAmounts();
-				superBase.createTest((Integer)spinner_groups.getValue());
+				//superBase.createTest((Integer)spinner_groups.getValue());
+				//superBase.createTest('a');
+				try {
+					superBase.createSets('a', (Integer)spinner_groups.getValue());
+				} catch (DocumentException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
-		btnGenerate.setBounds(380, 11, 89, 23);
+		btnGenerate.setBounds(520, 575, 89, 23);
 		contentPane.add(btnGenerate);
 		
 		JLabel lblStartWithLetter = new JLabel("Start with letter");
 		lblStartWithLetter.setBounds(250, 579, 120, 14);
 		contentPane.add(lblStartWithLetter);
 		
-		textField = new JTextField();
-		textField.setBounds(380, 576, 86, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		txtA = new JTextField();
+		txtA.setText("A");
+		txtA.setBounds(380, 576, 86, 20);
+		contentPane.add(txtA);
+		txtA.setColumns(10);
+		
+		table.getModel().addTableModelListener(new TableModelListener(){
+
+			@Override
+			public void tableChanged(TableModelEvent arg0) {
+				// TODO Auto-generated method stub
+				if(!renderTable){
+					for(int i = 0; i < superBase.getQbcoll().size(); i++){					
+						superBase.getQbcoll().get(i).setAmountToTest((int)table.getModel().getValueAt(i, 5));
+					}
+				}
+				
+				renderTable = false;
+				
+			}
+		
+		});
 		
 		/*final JCheckBox checkBox = new JCheckBox();
 		table.getColumn("Delete").setCellRenderer(new DefaultTableCellRenderer() {

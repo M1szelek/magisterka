@@ -37,8 +37,12 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.OutputDocument;
 import model.QBase;
@@ -46,6 +50,7 @@ import model.Question;
 import util.DeepCopy;
 
 import com.itextpdf.text.DocumentException;
+import javax.swing.border.BevelBorder;
 
 
 
@@ -62,7 +67,7 @@ public class GUI extends JFrame {
 	
 	private final JLabel lblqsize = new JLabel("/ 1");
 	
-	private JFileChooser fc = new JFileChooser("C:\\Users\\Miszelek\\Desktop");
+	private JFileChooser fc;
 	
 	
 	private QBase qBase;
@@ -89,6 +94,12 @@ public class GUI extends JFrame {
 	private JScrollPane scrollPane_1;
 	private JScrollPane scrollPane_2;
 	private JScrollPane scrollPane_3;
+	
+	private JSpinner spinner_scaleContent = new JSpinner();
+	private JSpinner spinner_scaleVarA = new JSpinner();
+	private JSpinner spinner_scaleVarB = new JSpinner();
+	private JSpinner spinner_scaleVarC = new JSpinner();
+	
 
 	/**
 	 * Launch the application.
@@ -108,22 +119,22 @@ public class GUI extends JFrame {
 	
 	public void renderQuestion(){
 		Question q = qBase.getQuestions().get(this.currQ);
-		scrollPane.setViewportView(textArea_content);
-		textArea_content.setLineWrap(true);
-		textArea_content.setText(q.getContent());
-		scrollPane_1.setViewportView(textArea_varA);
-		textArea_varA.setLineWrap(true);
-		textArea_varA.setText(q.getVarA().getContent());
-		scrollPane_2.setViewportView(textArea_varB);
-		textArea_varB.setLineWrap(true);
-		textArea_varB.setText(q.getVarB().getContent());
-		scrollPane_3.setViewportView(textArea_varC);
-		textArea_varC.setLineWrap(true);
-		textArea_varC.setText(q.getVarC().getContent());
+		this.scrollPane.setViewportView(textArea_content);
+		this.textArea_content.setLineWrap(true);
+		this.textArea_content.setText(q.getContent());
+		this.scrollPane_1.setViewportView(textArea_varA);
+		this.textArea_varA.setLineWrap(true);
+		this.textArea_varA.setText(q.getVarA().getContent());
+		this.scrollPane_2.setViewportView(textArea_varB);
+		this.textArea_varB.setLineWrap(true);
+		this.textArea_varB.setText(q.getVarB().getContent());
+		this.scrollPane_3.setViewportView(textArea_varC);
+		this.textArea_varC.setLineWrap(true);
+		this.textArea_varC.setText(q.getVarC().getContent());
 		//this.currQ = _currQ;
 		//dodajemy dla spinnera zawsze 1, zeby nie zaczynac od 0 pytania na HUDzie
 		//spinner.setValue(this.currQ+1);
-		label_current.setText(Integer.toString(this.currQ+1));
+		this.label_current.setText(Integer.toString(this.currQ+1));
 		
 		this.imagePanel.setImage(q.getImg());
 		this.imagePanel.resizeImage();
@@ -136,6 +147,13 @@ public class GUI extends JFrame {
 		
 		this.imagePanelC.setImage(q.getVarC().getImg());
 		this.imagePanelC.resizeImage();
+		
+		this.spinner_scaleContent.setValue(q.getImgScalePercent());
+		this.spinner_scaleVarA.setValue(q.getVarA().getImgScalePercent());
+		this.spinner_scaleVarB.setValue(q.getVarB().getImgScalePercent());
+		this.spinner_scaleVarC.setValue(q.getVarC().getImgScalePercent());
+		
+		
 		
 	}
 	
@@ -348,6 +366,7 @@ public class GUI extends JFrame {
 			 
 			 if (returnVal == JFileChooser.APPROVE_OPTION) {
 	                file = fc.getSelectedFile();
+	                file = new File(file.getAbsolutePath()+".creator");
 	                this.currFile = file;
 	                //This is where a real application would open the file.
 	                //log.append("Opening: " + file.getName() + "." + newline);
@@ -442,6 +461,10 @@ public class GUI extends JFrame {
 	 * Create the frame.
 	 */
 	public GUI() {
+		FileFilter fileFilter = new FileNameExtensionFilter("Creator file", "creator");
+		fc = new JFileChooser("C:\\Users\\Miszelek\\Desktop");									//TODO: ZMIENIC FINALNIE!!!!
+		fc.setFileFilter(fileFilter);
+		
 		setTitle("NewBase - Creator pytañ egzaminacyjnych");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1101, 720);
@@ -1008,8 +1031,7 @@ public class GUI extends JFrame {
 			}
 			
 		});
-		textArea_varA.setBorder(BorderFactory.createCompoundBorder(border, 
-				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		textArea_varA.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(0, 255, 0), new Color(0, 255, 0), new Color(0, 255, 0), new Color(0, 255, 0)));
 		
 		scrollPane_2 = new JScrollPane();
 		scrollPane_2.setBounds(58, 342, 551, 114);
@@ -1046,8 +1068,7 @@ public class GUI extends JFrame {
 			}
 			
 		});
-		textArea_varB.setBorder(BorderFactory.createCompoundBorder(border, 
-				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		textArea_varB.setBorder(new BevelBorder(BevelBorder.RAISED, Color.RED, Color.RED, Color.RED, Color.RED));
 		
 		scrollPane_3 = new JScrollPane();
 		scrollPane_3.setBounds(58, 467, 551, 114);
@@ -1084,12 +1105,77 @@ public class GUI extends JFrame {
 			}
 			
 		});
-		textArea_varC.setBorder(BorderFactory.createCompoundBorder(border, 
-				BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		textArea_varC.setBorder(new BevelBorder(BevelBorder.LOWERED, Color.RED, Color.RED, Color.RED, Color.RED));
 		
 		JButton btnNewButton_6 = new JButton("Preview Single Question");
 		btnNewButton_6.setBounds(822, 626, 253, 23);
 		contentPane.add(btnNewButton_6);
+		
+		JLabel lblScale = new JLabel("Scale (%)");
+		lblScale.setBounds(858, 201, 107, 14);
+		contentPane.add(lblScale);
+		
+		JLabel label = new JLabel("Scale (%)");
+		label.setBounds(858, 315, 107, 14);
+		contentPane.add(label);
+		
+		JLabel label_1 = new JLabel("Scale (%)");
+		label_1.setBounds(858, 447, 107, 14);
+		contentPane.add(label_1);
+		
+		JLabel label_2 = new JLabel("Scale (%)");
+		label_2.setBounds(858, 564, 107, 14);
+		contentPane.add(label_2);
+		
+		
+		spinner_scaleContent.setModel(new SpinnerNumberModel(100, 1, 1000, 1));
+		spinner_scaleContent.setBounds(925, 198, 63, 20);
+		
+		spinner_scaleContent.addChangeListener(new ChangeListener() {
+
+	        @Override
+	        public void stateChanged(ChangeEvent e) {
+	            qBase.getQuestions().get(currQ).setImgScalePercent((int)spinner_scaleContent.getValue());
+	        }
+	    });
+		
+		contentPane.add(spinner_scaleContent);
+		
+		
+		spinner_scaleVarA.setModel(new SpinnerNumberModel(100, 1, 1000, 1));
+		spinner_scaleVarA.setBounds(925, 312, 63, 20);
+		spinner_scaleVarA.addChangeListener(new ChangeListener() {
+
+	        @Override
+	        public void stateChanged(ChangeEvent e) {
+	            qBase.getQuestions().get(currQ).getVarA().setImgScalePercent((int)spinner_scaleVarA.getValue());
+	        }
+	    });
+		contentPane.add(spinner_scaleVarA);
+		
+		
+		spinner_scaleVarB.setModel(new SpinnerNumberModel(100, 1, 1000, 1));
+		spinner_scaleVarB.setBounds(925, 444, 63, 20);
+		spinner_scaleVarB.addChangeListener(new ChangeListener() {
+
+	        @Override
+	        public void stateChanged(ChangeEvent e) {
+	            qBase.getQuestions().get(currQ).getVarB().setImgScalePercent((int)spinner_scaleVarB.getValue());
+	        }
+	    });
+		contentPane.add(spinner_scaleVarB);
+		
+		
+		spinner_scaleVarC.setModel(new SpinnerNumberModel(100, 1, 1000, 1));
+		spinner_scaleVarC.setBounds(925, 561, 63, 20);
+		spinner_scaleVarC.addChangeListener(new ChangeListener() {
+
+	        @Override
+	        public void stateChanged(ChangeEvent e) {
+	            qBase.getQuestions().get(currQ).getVarC().setImgScalePercent((int)spinner_scaleVarC.getValue());
+	        }
+	    });
+		contentPane.add(spinner_scaleVarC);
 		
 //		JScrollPane scroll = new JScrollPane (textArea_content, 
 //				   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -1098,8 +1184,5 @@ public class GUI extends JFrame {
 		
 		this.newBase();
 	}
-	
-	public void generatePDF() throws DocumentException, IOException{
-		
-	}
+
 }

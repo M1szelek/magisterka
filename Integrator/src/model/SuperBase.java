@@ -1,8 +1,11 @@
 package model;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import com.itextpdf.text.DocumentException;
 
 public class SuperBase implements Serializable{
 	/**
@@ -42,73 +45,29 @@ public class SuperBase implements Serializable{
 		return res;
 	}
 	
-	public QBase createTest(int sets){
+	public void generateDocuments(ArrayList<QBase> tests) throws DocumentException, IOException{
+		for(QBase qb: tests){
+			OutputDocument.createDocumentAndCalque(qb);
+		}
+	}
+	
+	public void createSets(char setStartLetter, int count) throws DocumentException, IOException{
+		ArrayList<QBase> res = new ArrayList<QBase>();
 		
-//		int totalaoq = getAmountOfQuestions();
-//		if(count > totalaoq){
-//			System.out.println("Too many questions requested");
-//			return null;
-//		}
-//		
-//		if(count < qbcoll.size()){
-//			System.out.println("Too few questions in base");
-//			return null;
-//		}
-//		
-//		QBase res = new QBase();
-//		
-//		int rest = count % qbcoll.size();				//reszta z ilosci pytan na baze
-//		
-//		ArrayList<Integer> restbasesrnd = new ArrayList<Integer>();			// tablica losujaca jest pusta, nastepuje zwolnienie blokady
-//		//ArrayList<Integer> restbases = new ArrayList<Integer>();
-//		
-//		for(int i = 0; i < qbcoll.size(); i++){
-//			restbasesrnd.add(i);										
-//		}
-//		
-//		Collections.shuffle(restbasesrnd);						//rozpoczynamy losowanie baz, ktore dostana dodatkowe pytania z reszty
-//		
-//		for(int i = rest; i < restbasesrnd.size();){
-//			restbasesrnd.remove(i);								//wylosowane indeksy sa pierwszymi w tabeli, reszte wywalamy
-//		}
-//		
-//		//for(int i = 0; i < rest; i++){
-//		//	restbases.add(restbasesrnd.get(i));
-//		//}
-//		
-//		for(int j = 0; j < qbcoll.size(); j++){
-//			int tmp = count * qbcoll.get(j).getQuestions().size() / totalaoq;	//ilosc pytan z pojedynczej bazy do testu
-//			
-//			if(restbasesrnd.contains(j)){
-//				   tmp++;													//dodajemy jedno pytanie z reszty
-//			}
-//			
-//			System.out.println(tmp);
-//			ArrayList<Integer> rndtab = new ArrayList<Integer>();
-//			for(int i = 0; i < qbcoll.get(j).getQuestions().size(); i++){			//cos trzeba z reszta zrobic
-//				rndtab.add(i);
-//			}
-//			Collections.shuffle(rndtab);
-//			for(int i = 0; i < tmp; i++){
-//				res.getQuestions().add(qbcoll.get(j).getQuestions().get(rndtab.get(i)));
-//			}
-//			
-//		}
-//		
-//		ArrayList<QBase>restab = new ArrayList<QBase>();
-//		
-//		
-//		for(int i = 0; i < groups; i++){				//tworzenie grup
-//			res.shuffleVariants();
-//			restab.add(res);
-//		}
-//		
-//		
-//		System.out.println("-------------------------------------------------------------------------------");
-//		
-//		return restab;
+		for(int i = (int)setStartLetter; i < (int)setStartLetter + count; i++){
+			res.add(createTest((char)i));
+		}
+		
+		generateDocuments(res);
+		
+		//return res;
+	}
+	
+	public QBase createTest(char setletter){
 		
 		QBase resbase = new QBase();
+		
+		resbase.setSetLetter(setletter);
 		
 		for(QBase qb: qbcoll){
 			
@@ -131,17 +90,26 @@ public class SuperBase implements Serializable{
 		}
 		Collections.shuffle(tmp);
 		
+		ArrayList<Integer> tmp2 = new ArrayList<Integer>();
+		
+		for(int i = 0; i < 3; i++){
+			tmp2.add(i);
+		}
+		Collections.shuffle(tmp2);
+		
 		int div = (int) Math.round((float)resbase.getQuestions().size() / 3.0);
+		
+		
 		
 		for(int i = 0; i < resbase.getQuestions().size(); i++){
 			if(i < div){
-				resbase.getQuestions().get(tmp.get(i)).setCorrectThenShuffle(0);
+				resbase.getQuestions().get(tmp.get(i)).setCorrectThenShuffle(tmp2.get(0));
 			}
 			if(div <= i && i < div*2){
-				resbase.getQuestions().get(tmp.get(i)).setCorrectThenShuffle(1);
+				resbase.getQuestions().get(tmp.get(i)).setCorrectThenShuffle(tmp2.get(1));
 			}
 			if(div*2 <= i){
-				resbase.getQuestions().get(tmp.get(i)).setCorrectThenShuffle(2);
+				resbase.getQuestions().get(tmp.get(i)).setCorrectThenShuffle(tmp2.get(2));
 			}
 		}
 		
