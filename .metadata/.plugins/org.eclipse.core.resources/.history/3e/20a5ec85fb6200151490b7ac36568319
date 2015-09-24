@@ -17,11 +17,11 @@ public class QBase implements Serializable {
 	
 	char letterOfSet;
 	
-	public char getLetterOfSet() {
+	public char getSetLetter() {
 		return letterOfSet;
 	}
 
-	public void setLetterOfSet(char setLetter) {
+	public void setSetLetter(char setLetter) {
 		this.letterOfSet = setLetter;
 	}
 

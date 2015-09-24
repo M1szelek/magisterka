@@ -50,9 +50,8 @@ public class GUI extends JFrame {
 	private SuperBase superBase;
 	private JFileChooser fc;
 	private File currFile;
-	private JSpinner spinner_groups = new JSpinner();
+	JSpinner spinner_groups = new JSpinner();
 	private JTextField txtA;
-	private JLabel lblTotal;
 	
 	private boolean renderTable = false;
 
@@ -234,8 +233,6 @@ public class GUI extends JFrame {
 			renderTable = true;
 			model.addRow(new Object[]{qb.getName(), qb.getAuthor(), qb.getProfile(), qb.getSubjectCode(), qb.getQuestions().size(), qb.getAmountToTest(), new Boolean(false)});
 		}
-		
-		setTotal();
 	}
 	
 	public void deleteSelected(){
@@ -279,11 +276,6 @@ public class GUI extends JFrame {
 		}
 		
 		return res;
-	}
-	
-	public void setTotal(){
-		this.lblTotal.setText("Total: " + calcTotal());
-		
 	}
 
 	/**
@@ -470,7 +462,7 @@ public class GUI extends JFrame {
 		contentPane.add(txtA);
 		txtA.setColumns(10);
 		
-		lblTotal = new JLabel("Total: 0");
+		JLabel lblTotal = new JLabel("Total: 0");
 		lblTotal.setBounds(723, 579, 46, 14);
 		contentPane.add(lblTotal);
 		
@@ -483,7 +475,6 @@ public class GUI extends JFrame {
 					for(int i = 0; i < superBase.getQbcoll().size(); i++){					
 						superBase.getQbcoll().get(i).setAmountToTest((int)table.getModel().getValueAt(i, 5));
 					}
-					setTotal();
 				}
 				
 				renderTable = false;

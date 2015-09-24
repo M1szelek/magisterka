@@ -112,7 +112,7 @@ public class OutputDocument {
 			IOException {
 		Document document = new Document();
 		// step 2
-		PdfWriter.getInstance(document, new FileOutputStream("kalka"+qb.getLetterOfSet()+".pdf"));
+		PdfWriter.getInstance(document, new FileOutputStream("kalka"+qb.getSetLetter()+".pdf"));
 		// step 3
 		document.open();
 
@@ -159,7 +159,7 @@ public class OutputDocument {
 		Document document = new Document(PageSize.A4.rotate());
 		// step 2
 		PdfWriter writer = PdfWriter.getInstance(document,
-				new FileOutputStream("kalka"+qb.getLetterOfSet()+".pdf"));
+				new FileOutputStream("kalka"+qb.getSetLetter()+".pdf"));
 		// step 3
 		document.open();
 		
@@ -241,7 +241,7 @@ public class OutputDocument {
 	        header.setWidthPercentage(100);
 	        header.getDefaultCell().setBackgroundColor(BaseColor.WHITE);
 	        Font font = new Font(FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
-	        Phrase p = new Phrase("Zestaw "+qb.getLetterOfSet(), font);
+	        Phrase p = new Phrase("Zestaw "+qb.getSetLetter(), font);
 	        header.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
 	        header.addCell(p);
 	       // p = new Phrase(day.toString(), font);

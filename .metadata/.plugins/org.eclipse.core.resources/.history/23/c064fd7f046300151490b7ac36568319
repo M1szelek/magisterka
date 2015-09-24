@@ -483,9 +483,8 @@ public class GUI extends JFrame {
 					for(int i = 0; i < superBase.getQbcoll().size(); i++){					
 						superBase.getQbcoll().get(i).setAmountToTest((int)table.getModel().getValueAt(i, 5));
 					}
-					setTotal();
 				}
-				
+				setTotal();
 				renderTable = false;
 				
 			}

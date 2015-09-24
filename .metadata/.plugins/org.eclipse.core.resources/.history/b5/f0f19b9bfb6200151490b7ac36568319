@@ -69,7 +69,7 @@ public class SuperBase implements Serializable{
 		
 		QBase resbase = new QBase();							
 		
-		resbase.setLetterOfSet(setletter);
+		resbase.setSetLetter(setletter);
 		
 		for(QBase qb: qbcoll){
 			

@@ -234,8 +234,6 @@ public class GUI extends JFrame {
 			renderTable = true;
 			model.addRow(new Object[]{qb.getName(), qb.getAuthor(), qb.getProfile(), qb.getSubjectCode(), qb.getQuestions().size(), qb.getAmountToTest(), new Boolean(false)});
 		}
-		
-		setTotal();
 	}
 	
 	public void deleteSelected(){
@@ -483,7 +481,6 @@ public class GUI extends JFrame {
 					for(int i = 0; i < superBase.getQbcoll().size(); i++){					
 						superBase.getQbcoll().get(i).setAmountToTest((int)table.getModel().getValueAt(i, 5));
 					}
-					setTotal();
 				}
 				
 				renderTable = false;
