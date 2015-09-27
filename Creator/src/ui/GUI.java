@@ -44,12 +44,13 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import model.OutputDocument;
 import model.QBase;
 import model.Question;
 import util.DeepCopy;
+import util.OutputDocument;
 
 import com.itextpdf.text.DocumentException;
+
 import javax.swing.border.BevelBorder;
 
 

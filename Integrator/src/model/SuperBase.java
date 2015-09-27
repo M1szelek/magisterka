@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import util.DeepCopy;
+import util.OutputDocument;
 
 import com.itextpdf.text.DocumentException;
 

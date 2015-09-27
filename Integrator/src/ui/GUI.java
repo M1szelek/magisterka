@@ -399,7 +399,7 @@ public class GUI extends JFrame {
 		btnAddBase.setBounds(10, 11, 175, 23);
 		contentPane.add(btnAddBase);
 		
-		JLabel lblNumberOfGroups = new JLabel("Amount of sets");
+		JLabel lblNumberOfGroups = new JLabel("Amount of sets:");
 		lblNumberOfGroups.setBounds(10, 579, 140, 14);
 		contentPane.add(lblNumberOfGroups);
 		
@@ -460,7 +460,7 @@ public class GUI extends JFrame {
 		btnGenerate.setBounds(520, 575, 89, 23);
 		contentPane.add(btnGenerate);
 		
-		JLabel lblStartWithLetter = new JLabel("Start with letter");
+		JLabel lblStartWithLetter = new JLabel("Start with letter:");
 		lblStartWithLetter.setBounds(250, 579, 120, 14);
 		contentPane.add(lblStartWithLetter);
 		
@@ -471,7 +471,7 @@ public class GUI extends JFrame {
 		txtA.setColumns(10);
 		
 		lblTotal = new JLabel("Total: 0");
-		lblTotal.setBounds(723, 579, 46, 14);
+		lblTotal.setBounds(723, 579, 267, 14);
 		contentPane.add(lblTotal);
 		
 		table.getModel().addTableModelListener(new TableModelListener(){

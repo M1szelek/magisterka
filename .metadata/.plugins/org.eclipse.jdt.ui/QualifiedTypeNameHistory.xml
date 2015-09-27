@@ -9,7 +9,8 @@
 <fullyQualifiedTypeName name="com.itextpdf.text.Image"/>
 <fullyQualifiedTypeName name="org.apache.commons.lang3.Range"/>
 <fullyQualifiedTypeName name="java.util.Collections"/>
-<fullyQualifiedTypeName name="com.itextpdf.text.Element"/>
 <fullyQualifiedTypeName name="javax.swing.filechooser.FileFilter"/>
 <fullyQualifiedTypeName name="util.DeepCopy"/>
+<fullyQualifiedTypeName name="com.itextpdf.text.Rectangle"/>
+<fullyQualifiedTypeName name="com.itextpdf.text.Element"/>
 </qualifiedTypeNameHistroy>
