@@ -1,6 +1,8 @@
 *.class
 *.ttf
 *.pdf
+*.creator
+*.integrator
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
