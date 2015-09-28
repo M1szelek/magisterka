@@ -43,7 +43,7 @@ public class OutputDocument {
 	    public void onEndPage(PdfWriter writer,Document document) {
 	    	Rectangle rect = writer.getBoxSize("art");
 	        //ColumnText.showTextAligned(writer.getDirectContent(),Element.ALIGN_CENTER, new Phrase("Bottom Left"), rect.getLeft(), rect.getBottom(), 0);
-	        ColumnText.showTextAligned(writer.getDirectContent(),Element.ALIGN_CENTER, new Phrase(new Phrase(letter + "/" + String.format("%d", writer.getCurrentPageNumber()))), rect.getRight(), rect.getBottom(), 0);
+	        ColumnText.showTextAligned(writer.getDirectContent(),Element.ALIGN_CENTER, new Phrase(new Phrase(Character.toUpperCase(letter) + "/" + String.format("%d", writer.getCurrentPageNumber()))), rect.getRight(), rect.getBottom(), 0);
 	    }
 	} 
 	
@@ -58,7 +58,7 @@ public class OutputDocument {
 		// step 1
 		Document document = new Document();
 		// step 2
-		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("test"+qb.getLetterOfSet()+".pdf"));
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("test"+Character.toUpperCase(qb.getLetterOfSet())+".pdf"));
 		Rectangle rect = new Rectangle(30, 30, 550, 800);
 	    writer.setBoxSize("art", rect);
 		// step 3
@@ -73,7 +73,7 @@ public class OutputDocument {
 
 		Font font = new Font(bf, 12);
 		
-		Paragraph title = new Paragraph("Egzamin in¿ynierski - zestaw "+qb.getLetterOfSet(), font);
+		Paragraph title = new Paragraph("Egzamin in¿ynierski - zestaw "+Character.toUpperCase(qb.getLetterOfSet()), font);
 		title.setAlignment(Element.ALIGN_CENTER);
 		document.add(title);
 		document.add(Chunk.NEWLINE);
@@ -141,7 +141,7 @@ public class OutputDocument {
 			IOException {
 		Document document = new Document();
 		// step 2
-		PdfWriter.getInstance(document, new FileOutputStream("kalka"+qb.getLetterOfSet()+".pdf"));
+		PdfWriter.getInstance(document, new FileOutputStream("kalka"+Character.toUpperCase(qb.getLetterOfSet())+".pdf"));
 		// step 3
 		document.open();
 
@@ -188,7 +188,7 @@ public class OutputDocument {
 		Document document = new Document(/*PageSize.A4.rotate()*/);
 		// step 2
 		PdfWriter writer = PdfWriter.getInstance(document,
-				new FileOutputStream("kalka"+qb.getLetterOfSet()+".pdf"));
+				new FileOutputStream("kalka"+Character.toUpperCase(qb.getLetterOfSet())+".pdf"));
 		// step 3
 		document.open();
 		

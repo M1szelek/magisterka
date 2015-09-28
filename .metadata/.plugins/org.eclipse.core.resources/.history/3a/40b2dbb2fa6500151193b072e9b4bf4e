@@ -57,8 +57,6 @@ public class SuperBase implements Serializable{
 	public void createSets(char setStartLetter, int count) throws DocumentException, IOException{
 		ArrayList<QBase> res = new ArrayList<QBase>();
 		
-		setStartLetter = Character.toUpperCase(setStartLetter);
-		
 		for(int i = (int)setStartLetter; i < (int)setStartLetter + count; i++){
 			res.add(createTest((char)i));
 		}

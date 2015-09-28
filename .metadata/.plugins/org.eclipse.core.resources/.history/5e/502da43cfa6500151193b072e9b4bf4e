@@ -404,8 +404,8 @@ public class GUI extends JFrame {
 		contentPane.add(lblNumberOfGroups);
 		
 		
-		spinner_groups.setModel(new SpinnerNumberModel(1, 1, 99, 1));
-		spinner_groups.setBounds(140, 576, 45, 20);
+		spinner_groups.setModel(new SpinnerNumberModel(1, 1, 4, 1));
+		spinner_groups.setBounds(156, 576, 29, 20);
 		contentPane.add(spinner_groups);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -450,8 +450,8 @@ public class GUI extends JFrame {
 				//superBase.createTest((Integer)spinner_groups.getValue());
 				//superBase.createTest('a');
 				try {
-					char letter = txt_letterofset.getText().charAt(0);
-					superBase.createSets(letter, (Integer)spinner_groups.getValue());
+					String letter = txt_letterofset.getText().charAt(0);
+					superBase.createSets('a', (Integer)spinner_groups.getValue());
 				} catch (DocumentException | IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

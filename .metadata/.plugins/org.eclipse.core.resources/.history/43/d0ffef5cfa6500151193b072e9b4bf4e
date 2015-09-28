@@ -404,8 +404,8 @@ public class GUI extends JFrame {
 		contentPane.add(lblNumberOfGroups);
 		
 		
-		spinner_groups.setModel(new SpinnerNumberModel(1, 1, 99, 1));
-		spinner_groups.setBounds(140, 576, 45, 20);
+		spinner_groups.setModel(new SpinnerNumberModel(1, 1, 4, 1));
+		spinner_groups.setBounds(156, 576, 29, 20);
 		contentPane.add(spinner_groups);
 		
 		JScrollPane scrollPane = new JScrollPane();

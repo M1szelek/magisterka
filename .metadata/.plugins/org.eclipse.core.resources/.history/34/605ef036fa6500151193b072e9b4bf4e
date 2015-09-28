@@ -51,7 +51,7 @@ public class GUI extends JFrame {
 	private JFileChooser fc;
 	private File currFile;
 	private JSpinner spinner_groups = new JSpinner();
-	private JTextField txt_letterofset;
+	private JTextField txtA;
 	private JLabel lblTotal;
 	
 	private boolean renderTable = false;
@@ -404,8 +404,8 @@ public class GUI extends JFrame {
 		contentPane.add(lblNumberOfGroups);
 		
 		
-		spinner_groups.setModel(new SpinnerNumberModel(1, 1, 99, 1));
-		spinner_groups.setBounds(140, 576, 45, 20);
+		spinner_groups.setModel(new SpinnerNumberModel(1, 1, 4, 1));
+		spinner_groups.setBounds(156, 576, 29, 20);
 		contentPane.add(spinner_groups);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -450,8 +450,7 @@ public class GUI extends JFrame {
 				//superBase.createTest((Integer)spinner_groups.getValue());
 				//superBase.createTest('a');
 				try {
-					char letter = txt_letterofset.getText().charAt(0);
-					superBase.createSets(letter, (Integer)spinner_groups.getValue());
+					superBase.createSets('a', (Integer)spinner_groups.getValue());
 				} catch (DocumentException | IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -465,11 +464,11 @@ public class GUI extends JFrame {
 		lblStartWithLetter.setBounds(250, 579, 120, 14);
 		contentPane.add(lblStartWithLetter);
 		
-		txt_letterofset = new JTextField();
-		txt_letterofset.setText("A");
-		txt_letterofset.setBounds(380, 576, 86, 20);
-		contentPane.add(txt_letterofset);
-		txt_letterofset.setColumns(10);
+		txtA = new JTextField();
+		txtA.setText("A");
+		txtA.setBounds(380, 576, 86, 20);
+		contentPane.add(txtA);
+		txtA.setColumns(10);
 		
 		lblTotal = new JLabel("Total: 0");
 		lblTotal.setBounds(723, 579, 267, 14);
