@@ -275,14 +275,9 @@ public class GUI extends JFrame {
 		
 		for(int i = 0; i < superBase.getQbcoll().size(); i++){
 			
-			int size = (int)model.getValueAt(i, 4);
-			int val = (int)model.getValueAt(i, 5);
-			
-			if(val > 0 && val <= size){
-				res += val;
-			}
+				res += (int)model.getValueAt(i, 5);
 				
-			//(int)model.getValueAt(i, 5);
+				//(int)model.getValueAt(i, 5);
 			
 		}
 		
@@ -428,17 +423,19 @@ public class GUI extends JFrame {
 
 			@Override
 		    public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {
-		        Component comp = super.prepareRenderer(renderer, row, col);
+		        Component comp = super.prepareRenderer(renderer, 4, col);
 		        Object value = getModel().getValueAt(row, 4);
 		        Object value2 = getModel().getValueAt(row, 5);
 		        
-		        
-		            if ((int)value < (int)value2 || (int)value2 <= 0) {
+		        if (getSelectedRow() == row) {
+		            if ((int)value < (int)value2) {
 		                comp.setBackground(Color.red);
 		            }else{
 		            	comp.setBackground(Color.white);
 		            }
-		        
+		        } else {
+		            comp.setBackground(Color.white);
+		        }
 		        return comp;
 		    }
 		};

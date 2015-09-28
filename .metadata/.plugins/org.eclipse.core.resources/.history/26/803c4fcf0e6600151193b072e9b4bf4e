@@ -275,10 +275,9 @@ public class GUI extends JFrame {
 		
 		for(int i = 0; i < superBase.getQbcoll().size(); i++){
 			
-			int size = (int)model.getValueAt(i, 4);
 			int val = (int)model.getValueAt(i, 5);
 			
-			if(val > 0 && val <= size){
+			if(val > 0){
 				res += val;
 			}
 				
