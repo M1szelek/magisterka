@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename method &apos;util.OutputDocument.createDocumentAndCalque(...)&apos; to &apos;createDocuments&apos;&#x0A;- Original project: &apos;Integrator&apos;&#x0A;- Original element: &apos;util.OutputDocument.createDocumentAndCalque(...)&apos;&#x0A;- Renamed element: &apos;util.OutputDocument.createDocuments(...)&apos;&#x0A;- Update references to refactored element" delegate="false" deprecate="true" description="Rename method &apos;createDocumentAndCalque&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.method" input="/src&lt;util{OutputDocument.java[OutputDocument~createDocumentAndCalque~QQBase;" name="createDocuments" references="true" stamp="1443472145957" version="1.0"/>
+</session>

@@ -50,7 +50,7 @@ public class SuperBase implements Serializable{
 	
 	public void generateDocuments(ArrayList<QBase> tests) throws DocumentException, IOException{
 		for(QBase qb: tests){
-			OutputDocument.createDocumentAndCalque(qb);
+			OutputDocument.createDocuments(qb);
 		}
 	}
 	

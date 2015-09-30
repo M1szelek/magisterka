@@ -13,6 +13,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -51,13 +53,18 @@ public class GUI extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private SuperBase superBase;
-	private JFileChooser fc;
+	//private JFileChooser fc;
 	private File currFile;
 	private JSpinner spinner_groups = new JSpinner();
 	private JTextField txt_letterofset;
 	private JLabel lblTotal;
 	
 	private boolean renderTable = false;
+	
+	private ResourceBundle messages;
+	
+	private String defaultPath = "C:\\Users\\Miszelek\\Desktop";
+	
 
 	/**
 	 * Launch the application.
@@ -89,6 +96,9 @@ public class GUI extends JFrame {
 	public void saveAs(){				//zapisz jako
 		try
 	      {
+			JFileChooser fc = new JFileChooser(this.defaultPath);
+			FileFilter fileFilter = new FileNameExtensionFilter("Integrator file", "integrator");
+			fc.setFileFilter(fileFilter);
 			int returnVal = fc.showSaveDialog(GUI.this);
 			
 			 File file;
@@ -143,6 +153,9 @@ public class GUI extends JFrame {
 	public void open(){				//ladowanie pliku
 	      try
 	      {
+	        JFileChooser fc = new JFileChooser(this.defaultPath);
+			FileFilter fileFilter = new FileNameExtensionFilter("Integrator file", "integrator");
+			fc.setFileFilter(fileFilter);
 	    	 int returnVal = fc.showOpenDialog(GUI.this);
 	    	 
 	    	 File file;
@@ -176,7 +189,7 @@ public class GUI extends JFrame {
 	         return;
 	      }catch(ClassNotFoundException c)
 	      {
-	         System.out.println("Niepoprawny format");
+	         System.out.println("Incorrect format");
 	         c.printStackTrace();
 	         return;
 	      }
@@ -223,7 +236,7 @@ public class GUI extends JFrame {
 	         return;
 	      }catch(ClassNotFoundException c)
 	      {
-	         System.out.println("Niepoprawny format");
+	         System.out.println("Incorrect format");
 	         c.printStackTrace();
 	         return;
 	      }
@@ -290,7 +303,7 @@ public class GUI extends JFrame {
 	}
 	
 	public void setTotal(){
-		this.lblTotal.setText("Total: " + calcTotal());
+		this.lblTotal.setText(messages.getString("total") + ": " + calcTotal());
 		
 	}
 
@@ -300,9 +313,12 @@ public class GUI extends JFrame {
 	public GUI() {
 		superBase = new SuperBase();
 		
-		FileFilter fileFilter = new FileNameExtensionFilter("Integrator file", "integrator");
-		fc = new JFileChooser("C:\\Users\\Miszelek\\Desktop");									//TODO: ZMIENIC FINALNIE!!!!
-		fc.setFileFilter(fileFilter);
+		 Locale currentLocale;
+	     
+
+	     currentLocale = new Locale("en", "US");
+
+	     messages = ResourceBundle.getBundle("i18n.MessagesBundle", currentLocale);
 		
 		setTitle("Integrator pytañ egzaminacyjnych");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -311,10 +327,10 @@ public class GUI extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnFile = new JMenu("File");
+		JMenu mnFile = new JMenu(messages.getString("file"));
 		menuBar.add(mnFile);
 		
-		JMenuItem mntmNew = new JMenuItem("New");
+		JMenuItem mntmNew = new JMenuItem(messages.getString("new"));
 		mntmNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
 		mnFile.add(mntmNew);
 		
@@ -328,7 +344,7 @@ public class GUI extends JFrame {
 			
 		});
 		
-		JMenuItem mntmOpenFile = new JMenuItem("Open File...");
+		JMenuItem mntmOpenFile = new JMenuItem(messages.getString("openFile"));
 		mntmOpenFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		mnFile.add(mntmOpenFile);
 		
@@ -345,7 +361,7 @@ public class GUI extends JFrame {
 		JSeparator separator = new JSeparator();
 		mnFile.add(separator);
 		
-		JMenuItem mntmSave = new JMenuItem("Save");
+		JMenuItem mntmSave = new JMenuItem(messages.getString("save"));
 		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		mnFile.add(mntmSave);
 		
@@ -359,7 +375,7 @@ public class GUI extends JFrame {
 			
 		});
 		
-		JMenuItem mntmSaveAs = new JMenuItem("Save As...");
+		JMenuItem mntmSaveAs = new JMenuItem(messages.getString("saveAs"));
 		mntmSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
 		mnFile.add(mntmSaveAs);
 		
@@ -376,7 +392,7 @@ public class GUI extends JFrame {
 		JSeparator separator_1 = new JSeparator();
 		mnFile.add(separator_1);
 		
-		JMenuItem mntmExit = new JMenuItem("Exit");
+		JMenuItem mntmExit = new JMenuItem(messages.getString("exit"));
 		mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
 		mnFile.add(mntmExit);
 		mntmExit.addActionListener(new ActionListener(){
@@ -393,7 +409,7 @@ public class GUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnAddBase = new JButton("Add Base");
+		JButton btnAddBase = new JButton(messages.getString("addBase"));
 		btnAddBase.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -407,7 +423,7 @@ public class GUI extends JFrame {
 		btnAddBase.setBounds(10, 11, 175, 23);
 		contentPane.add(btnAddBase);
 		
-		JLabel lblNumberOfGroups = new JLabel("Amount of sets:");
+		JLabel lblNumberOfGroups = new JLabel(messages.getString("amountOfSets"));
 		lblNumberOfGroups.setBounds(10, 579, 140, 14);
 		contentPane.add(lblNumberOfGroups);
 		
@@ -433,10 +449,14 @@ public class GUI extends JFrame {
 		        Object value2 = getModel().getValueAt(row, 5);
 		        
 		        
-		            if ((int)value < (int)value2 || (int)value2 <= 0) {
+		            if ((int)value < (int)value2) {
 		                comp.setBackground(Color.red);
 		            }else{
-		            	comp.setBackground(Color.white);
+		            	if((int)value2 <= 0){	
+		            		comp.setBackground(Color.orange);
+		            	}else{
+		            		comp.setBackground(Color.white);
+		            	}
 		            }
 		        
 		        return comp;
@@ -448,7 +468,7 @@ public class GUI extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Nazwa przedmiotu", "Prowadz¹cy", "Kierunek kszta³cenia","Kod przedmiotu", "Iloœæ pytañ w bazie","Iloœæ pytañ do testu", "Usuñ"
+					messages.getString("subject"), messages.getString("teacher"), messages.getString("profile"), messages.getString("code"), messages.getString("amountInBase"), messages.getString("amountToTest"), messages.getString("delete")
 			}
 		) {
 			/**
@@ -463,7 +483,7 @@ public class GUI extends JFrame {
 			}
 		});
 		
-		JButton btnDeleteSelected = new JButton("Delete Selected");
+		JButton btnDeleteSelected = new JButton(messages.getString("deleteSelected"));
 		btnDeleteSelected.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				deleteSelected();
@@ -472,7 +492,7 @@ public class GUI extends JFrame {
 		btnDeleteSelected.setBounds(195, 11, 175, 23);
 		contentPane.add(btnDeleteSelected);
 		
-		JButton btnGenerate = new JButton("Generate");
+		JButton btnGenerate = new JButton(messages.getString("generateSets"));
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setAmounts();
@@ -487,20 +507,20 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		btnGenerate.setBounds(520, 575, 89, 23);
+		btnGenerate.setBounds(520, 575, 193, 23);
 		contentPane.add(btnGenerate);
 		
-		JLabel lblStartWithLetter = new JLabel("Start with letter:");
-		lblStartWithLetter.setBounds(250, 579, 120, 14);
+		JLabel lblStartWithLetter = new JLabel(messages.getString("firstLetter"));
+		lblStartWithLetter.setBounds(250, 579, 164, 14);
 		contentPane.add(lblStartWithLetter);
 		
 		txt_letterofset = new JTextField();
 		txt_letterofset.setText("A");
-		txt_letterofset.setBounds(380, 576, 86, 20);
+		txt_letterofset.setBounds(424, 576, 86, 20);
 		contentPane.add(txt_letterofset);
 		txt_letterofset.setColumns(10);
 		
-		lblTotal = new JLabel("Total: 0");
+		lblTotal = new JLabel(messages.getString("total") + ": 0");
 		lblTotal.setBounds(723, 579, 267, 14);
 		contentPane.add(lblTotal);
 		

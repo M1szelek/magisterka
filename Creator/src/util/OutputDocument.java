@@ -40,7 +40,7 @@ public class OutputDocument {
 
 		Font font = new Font(bf, 12);
 		
-		Paragraph title = new Paragraph("Egzamin in¿ynierski", font);
+		Paragraph title = new Paragraph("Wydruk testowy", font);
 		title.setAlignment(Element.ALIGN_CENTER);
 		
 		document.add(title);

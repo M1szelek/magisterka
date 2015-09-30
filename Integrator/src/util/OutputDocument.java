@@ -47,9 +47,10 @@ public class OutputDocument {
 	    }
 	} 
 	
-	public static void createDocumentAndCalque(QBase qb) throws DocumentException, IOException{
+	public static void createDocuments(QBase qb) throws DocumentException, IOException{
 		createDocument(qb);
 		createCalque2(qb);
+		createAnswerCard(qb);
 	}
 	
 	public static void createDocument(QBase qb) throws DocumentException,
@@ -73,7 +74,7 @@ public class OutputDocument {
 
 		Font font = new Font(bf, 12);
 		
-		Paragraph title = new Paragraph("Egzamin in¿ynierski - zestaw "+qb.getLetterOfSet(), font);
+		Paragraph title = new Paragraph("Egzamin inï¿½ynierski - zestaw "+qb.getLetterOfSet(), font);
 		title.setAlignment(Element.ALIGN_CENTER);
 		document.add(title);
 		document.add(Chunk.NEWLINE);
@@ -191,11 +192,7 @@ public class OutputDocument {
 				new FileOutputStream("kalka"+qb.getLetterOfSet()+".pdf"));
 		// step 3
 		document.open();
-		
-		BaseFont bf = BaseFont.createFont("Arial Unicode MS.ttf",
-				BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
-		Font font = new Font(bf, 12);
 		document.add(Chunk.NEWLINE);
 
 		PdfPTable table = new PdfPTable(4);
@@ -285,8 +282,71 @@ public class OutputDocument {
 	        return header.getTotalHeight();
 	    }
 	
-	static public void createAnswerCard(QBase qb){
+	static public void createAnswerCard(QBase qb) throws DocumentException, IOException{
+		Document document = new Document(/*PageSize.A4.rotate()*/);
+		// step 2
+		PdfWriter writer = PdfWriter.getInstance(document,
+				new FileOutputStream("kartaodpowiedzi"+qb.getLetterOfSet()+".pdf"));
+		// step 3
+		document.open();
 		
+		document.add(Chunk.NEWLINE);
+
+		PdfPTable table = new PdfPTable(4);
+		table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+		PdfPCell cell = new PdfPCell();
+		table.addCell(cell);
+
+		cell = new PdfPCell(new Phrase("A"));
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase("B"));
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase("C"));
+		table.addCell(cell);
+		
+		table.setHeaderRows(1);
+		
+		for (int i = 0; i < qb.getQuestions().size(); i++) {
+			cell = new PdfPCell(new Phrase(Integer.toString(i)));
+			table.addCell(cell);
+
+			cell = new PdfPCell();
+			
+			table.addCell(cell);
+			table.addCell(cell);
+			table.addCell(cell);
+
+			
+		}
+
+		ColumnText column = new ColumnText(writer.getDirectContent());
+		// List days = PojoFactory.getDays(connection);
+//		float[][] x = { { document.left(), document.left() + 380 },
+//				{ document.right() - 380, document.right() } };
+		
+		float[][] x = { { document.left(), document.left() + 250 },
+				{ document.right() - 250, document.right() } };
+		
+			column.addElement(table);
+			int count = 0;
+			float height = 0;
+			int status = ColumnText.START_COLUMN;
+			while (ColumnText.hasMoreText(status)) {
+				if (count == 0) {
+				height = addHeaderTable(document,qb);
+				}
+				column.setSimpleColumn(x[count][0], document.bottom(),
+						x[count][1], document.top() - height - 10);
+				status = column.go();
+				if (++count > 1) {
+					count = 0;
+					document.newPage();
+				}
+			}
+		
+		
+
+		document.close();
 	}
 
 }

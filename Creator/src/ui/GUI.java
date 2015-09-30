@@ -15,6 +15,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -34,6 +36,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -51,8 +54,6 @@ import util.OutputDocument;
 
 import com.itextpdf.text.DocumentException;
 
-import javax.swing.border.BevelBorder;
-
 
 
 
@@ -68,7 +69,10 @@ public class GUI extends JFrame {
 	
 	private final JLabel lblqsize = new JLabel("/ 1");
 	
-	private JFileChooser fc;
+	private String defaultPath = "C:\\Users\\Miszelek\\Desktop";
+	private FileFilter fileFilter = new FileNameExtensionFilter("Creator file", "creator");
+	
+	//private JFileChooser fc;
 	
 	
 	private QBase qBase;
@@ -100,6 +104,8 @@ public class GUI extends JFrame {
 	private JSpinner spinner_scaleVarA = new JSpinner();
 	private JSpinner spinner_scaleVarB = new JSpinner();
 	private JSpinner spinner_scaleVarC = new JSpinner();
+	
+	private ResourceBundle messages;
 	
 
 	/**
@@ -286,6 +292,9 @@ public class GUI extends JFrame {
 	}
 	
 	public void setImg(int choose) throws IOException{		//choose: 0 - content, 1 - varA, 2 - varB, 3 - varC
+		JFileChooser fc = new JFileChooser(defaultPath);
+		fc.setFileFilter(fileFilter);
+		
 		int returnVal = fc.showSaveDialog(GUI.this);
 		
 		 File file;
@@ -361,6 +370,8 @@ public class GUI extends JFrame {
 	public void saveAs(){				//zapisz jako
 		try
 	      {
+			JFileChooser fc = new JFileChooser(defaultPath);
+			fc.setFileFilter(fileFilter);
 			int returnVal = fc.showSaveDialog(GUI.this);
 			
 			 File file;
@@ -394,6 +405,7 @@ public class GUI extends JFrame {
 	public void save(){					//zapis pliku
 		try
 	      {
+			
 			 if(this.currFile == null){				//jesli jeszcze plik nie powstal
 				 saveAs();
 				 return;
@@ -415,6 +427,9 @@ public class GUI extends JFrame {
 	public void open(){				//ladowanie pliku
 	      try
 	      {
+	    	  
+	    	  JFileChooser fc = new JFileChooser(defaultPath);
+	    	  fc.setFileFilter(fileFilter);
 	    	 int returnVal = fc.showOpenDialog(GUI.this);
 	    	 
 	    	 File file;
@@ -462,21 +477,28 @@ public class GUI extends JFrame {
 	 * Create the frame.
 	 */
 	public GUI() {
-		FileFilter fileFilter = new FileNameExtensionFilter("Creator file", "creator");
-		fc = new JFileChooser("C:\\Users\\Miszelek\\Desktop");									//TODO: ZMIENIC FINALNIE!!!!
-		fc.setFileFilter(fileFilter);
+		//FileFilter fileFilter = new FileNameExtensionFilter("Creator file", "creator");
+		//fc = new JFileChooser("C:\\Users\\Miszelek\\Desktop");									//TODO: ZMIENIC FINALNIE!!!!
+		//fc.setFileFilter(fileFilter);
 		
-		setTitle("NewBase - Creator pytañ egzaminacyjnych");
+		Locale currentLocale;
+	     
+
+	     currentLocale = new Locale("pl", "PL");
+
+	     messages = ResourceBundle.getBundle("i18n.MessagesBundle", currentLocale);
+		
+		setTitle("NewBase - Creator pytaï¿½ egzaminacyjnych");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1101, 720);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnFile = new JMenu("File");
+		JMenu mnFile = new JMenu(messages.getString("file"));
 		menuBar.add(mnFile);
 		
-		JMenuItem mntmNew = new JMenuItem("New");
+		JMenuItem mntmNew = new JMenuItem(messages.getString("new"));
 		mntmNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
 		mnFile.add(mntmNew);
 		mntmNew.addActionListener(new ActionListener(){
@@ -489,7 +511,7 @@ public class GUI extends JFrame {
 			
 		});
 		
-		JMenuItem mntmOpenFile = new JMenuItem("Open File...");
+		JMenuItem mntmOpenFile = new JMenuItem(messages.getString("openFile"));
 		mntmOpenFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		mnFile.add(mntmOpenFile);
 		mntmOpenFile.addActionListener(new ActionListener(){
@@ -505,7 +527,7 @@ public class GUI extends JFrame {
 		JSeparator separator = new JSeparator();
 		mnFile.add(separator);
 		
-		JMenuItem mntmSave = new JMenuItem("Save");
+		JMenuItem mntmSave = new JMenuItem(messages.getString("save"));
 		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		mnFile.add(mntmSave);
 		
@@ -519,7 +541,7 @@ public class GUI extends JFrame {
 			
 		});
 		
-		JMenuItem mntmSaveAs = new JMenuItem("Save As...");
+		JMenuItem mntmSaveAs = new JMenuItem(messages.getString("saveAs"));
 		mntmSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
 		mnFile.add(mntmSaveAs);
 		
@@ -536,7 +558,7 @@ public class GUI extends JFrame {
 		JSeparator separator_1 = new JSeparator();
 		mnFile.add(separator_1);
 		
-		JMenuItem mntmExit = new JMenuItem("Exit");
+		JMenuItem mntmExit = new JMenuItem(messages.getString("exit"));
 		mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
 		mntmExit.addActionListener(new ActionListener(){
 
@@ -553,7 +575,7 @@ public class GUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Nazwa przedmiotu");
+		JLabel lblNewLabel = new JLabel(messages.getString("subject"));
 		lblNewLabel.setBounds(10, 14, 99, 14);
 		contentPane.add(lblNewLabel);
 		
@@ -592,7 +614,7 @@ public class GUI extends JFrame {
 			
 		});
 		
-		JLabel lblAuthor = new JLabel("Prowadz\u0105cy");
+		JLabel lblAuthor = new JLabel(messages.getString("teacher"));
 		lblAuthor.setBounds(10, 48, 99, 14);
 		contentPane.add(lblAuthor);
 		
@@ -640,7 +662,7 @@ public class GUI extends JFrame {
 		
 	
 		
-		JLabel lblContent = new JLabel("Content");
+		JLabel lblContent = new JLabel(messages.getString("content"));
 		lblContent.setBounds(10, 144, 46, 14);
 		contentPane.add(lblContent);
 		
@@ -695,7 +717,7 @@ public class GUI extends JFrame {
 		lblqsize.setBounds(295, 596, 46, 14);
 		contentPane.add(lblqsize);
 		
-		JButton btnAdd = new JButton("Add Question");
+		JButton btnAdd = new JButton(messages.getString("addQuestion"));
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				addQuestion();		
@@ -704,7 +726,7 @@ public class GUI extends JFrame {
 		btnAdd.setBounds(520, 592, 141, 23);
 		contentPane.add(btnAdd);
 		
-		JButton btnRemove = new JButton("Remove Question");
+		JButton btnRemove = new JButton(messages.getString("removeQuestion"));
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				removeQuestion();
@@ -714,7 +736,7 @@ public class GUI extends JFrame {
 		btnRemove.setBounds(671, 592, 141, 23);
 		contentPane.add(btnRemove);
 		
-		JButton btnImage = new JButton("AddImage");
+		JButton btnImage = new JButton(messages.getString("addImage"));
 		btnImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -728,7 +750,7 @@ public class GUI extends JFrame {
 		btnImage.setBounds(754, 126, 161, 23);
 		contentPane.add(btnImage);
 		
-		JButton btnNewButton = new JButton("AddImage");
+		JButton btnNewButton = new JButton(messages.getString("addImage"));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -742,7 +764,7 @@ public class GUI extends JFrame {
 		btnNewButton.setBounds(754, 240, 161, 23);
 		contentPane.add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("AddImage");
+		JButton btnNewButton_1 = new JButton(messages.getString("addImage"));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -756,7 +778,7 @@ public class GUI extends JFrame {
 		btnNewButton_1.setBounds(754, 372, 161, 23);
 		contentPane.add(btnNewButton_1);
 		
-		JButton btnNewButton_2 = new JButton("AddImage");
+		JButton btnNewButton_2 = new JButton(messages.getString("addImage"));
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -790,7 +812,7 @@ public class GUI extends JFrame {
 		imagePanelC.setBounds(925, 483, 150, 70);
 		contentPane.add(imagePanelC);
 		
-		JButton btnDelimage = new JButton("DeleteImg\r\n");
+		JButton btnDelimage = new JButton(messages.getString("deleteImage"));
 		btnDelimage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				deleteImg(0);
@@ -799,7 +821,7 @@ public class GUI extends JFrame {
 		btnDelimage.setBounds(754, 160, 161, 23);
 		contentPane.add(btnDelimage);
 		
-		JButton btnNewButton_3 = new JButton("DeleteImg");
+		JButton btnNewButton_3 = new JButton(messages.getString("deleteImage"));
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				deleteImg(1);
@@ -808,7 +830,7 @@ public class GUI extends JFrame {
 		btnNewButton_3.setBounds(754, 274, 161, 23);
 		contentPane.add(btnNewButton_3);
 		
-		JButton btnNewButton_4 = new JButton("DeleteImg");
+		JButton btnNewButton_4 = new JButton(messages.getString("deleteImage"));
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				deleteImg(2);
@@ -817,7 +839,7 @@ public class GUI extends JFrame {
 		btnNewButton_4.setBounds(754, 406, 161, 23);
 		contentPane.add(btnNewButton_4);
 		
-		JButton btnNewButton_5 = new JButton("DeleteImg");
+		JButton btnNewButton_5 = new JButton(messages.getString("deleteImage"));
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				deleteImg(3);
@@ -830,7 +852,7 @@ public class GUI extends JFrame {
 		label_current.setBounds(270, 596, 26, 14);
 		contentPane.add(label_current);
 		
-		JButton btnJumpTo = new JButton("Jump To");
+		JButton btnJumpTo = new JButton(messages.getString("jumpTo"));
 		btnJumpTo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				jumpTo((Integer)spinner.getValue());
@@ -844,7 +866,7 @@ public class GUI extends JFrame {
 		spinner.setBounds(256, 627, 40, 20);
 		contentPane.add(spinner);
 		
-		JButton btnGenerate = new JButton("Preview Entire Base");
+		JButton btnGenerate = new JButton(messages.getString("previewEntireBase"));
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -865,26 +887,26 @@ public class GUI extends JFrame {
 		btnGenerate.setBounds(822, 592, 253, 23);
 		contentPane.add(btnGenerate);
 		
-		JLabel lblKierunekKsztacenia = new JLabel("Kierunek kszta\u0142cenia");
+		JLabel lblKierunekKsztacenia = new JLabel(messages.getString("profile"));
 		lblKierunekKsztacenia.setBounds(589, 14, 184, 15);
 		contentPane.add(lblKierunekKsztacenia);
 		
-		JLabel lblNewLabel_1 = new JLabel("Kod przedmiotu");
-		lblNewLabel_1.setBounds(589, 48, 101, 15);
+		JLabel lblNewLabel_1 = new JLabel(messages.getString("code"));
+		lblNewLabel_1.setBounds(589, 48, 161, 15);
 		contentPane.add(lblNewLabel_1);
 		
-		JLabel lblCorrect = new JLabel("CORRECT");
+		JLabel lblCorrect = new JLabel(messages.getString("correct"));
 		lblCorrect.setForeground(new Color(0, 128, 0));
 		lblCorrect.setBackground(Color.GREEN);
 		lblCorrect.setBounds(619, 260, 89, 14);
 		contentPane.add(lblCorrect);
 		
-		JLabel lblIncorrect = new JLabel("INCORRECT");
+		JLabel lblIncorrect = new JLabel(messages.getString("incorrect"));
 		lblIncorrect.setForeground(Color.RED);
 		lblIncorrect.setBounds(619, 393, 89, 14);
 		contentPane.add(lblIncorrect);
 		
-		JLabel lblIncorrect_1 = new JLabel("INCORRECT");
+		JLabel lblIncorrect_1 = new JLabel(messages.getString("incorrect"));
 		lblIncorrect_1.setForeground(Color.RED);
 		lblIncorrect_1.setBounds(619, 516, 89, 14);
 		contentPane.add(lblIncorrect_1);
@@ -1108,23 +1130,23 @@ public class GUI extends JFrame {
 		});
 		textArea_varC.setBorder(new BevelBorder(BevelBorder.LOWERED, Color.RED, Color.RED, Color.RED, Color.RED));
 		
-		JButton btnNewButton_6 = new JButton("Preview Single Question");
+		JButton btnNewButton_6 = new JButton(messages.getString("previewSingleQuestion"));
 		btnNewButton_6.setBounds(822, 626, 253, 23);
 		contentPane.add(btnNewButton_6);
 		
-		JLabel lblScale = new JLabel("Scale (%)");
+		JLabel lblScale = new JLabel(messages.getString("scale") + " (%)");
 		lblScale.setBounds(858, 201, 107, 14);
 		contentPane.add(lblScale);
 		
-		JLabel label = new JLabel("Scale (%)");
+		JLabel label = new JLabel(messages.getString("scale") + " (%)");
 		label.setBounds(858, 315, 107, 14);
 		contentPane.add(label);
 		
-		JLabel label_1 = new JLabel("Scale (%)");
+		JLabel label_1 = new JLabel(messages.getString("scale") + " (%)");
 		label_1.setBounds(858, 447, 107, 14);
 		contentPane.add(label_1);
 		
-		JLabel label_2 = new JLabel("Scale (%)");
+		JLabel label_2 = new JLabel(messages.getString("scale") + " (%)");
 		label_2.setBounds(858, 564, 107, 14);
 		contentPane.add(label_2);
 		
