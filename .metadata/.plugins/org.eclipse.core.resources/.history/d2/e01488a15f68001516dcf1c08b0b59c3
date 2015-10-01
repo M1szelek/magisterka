@@ -1,0 +1,8 @@
+package util;
+
+public class Config {
+	private String lang;
+	private String country;
+	
+	
+}

@@ -28,6 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -49,6 +50,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import model.QBase;
 import model.Question;
+import util.Config;
 import util.DeepCopy;
 import util.OutputDocument;
 
@@ -106,6 +108,8 @@ public class GUI extends JFrame {
 	private JSpinner spinner_scaleVarC = new JSpinner();
 	
 	private ResourceBundle messages;
+	
+	Config config;
 	
 
 	/**
@@ -167,16 +171,16 @@ public class GUI extends JFrame {
 	public void notSaved(){
 		this.saved = false;
 		if(this.newBase == false){
-			this.setTitle(currFile.getName() + "* - Creator");
+			this.setTitle(currFile.getName() + "* - Creator pyta\u0144 egzaminacyjnych");
 		}else{
-			this.setTitle("NewBase* - Creator");
+			this.setTitle("NewBase* - Creator pyta\u0144 egzaminacyjnych");
 		}
 	}
 	
 	public void saved(){
 		this.saved = true;
 		this.newBase = false;
-		this.setTitle(currFile.getName() + " - Creator");
+		this.setTitle(currFile.getName() + " - Creator pyta\u0144 egzaminacyjnych");
 	}
 	
 	public void renderAuthorName(){
@@ -470,25 +474,86 @@ public class GUI extends JFrame {
 	      
 	}
 	
+	public void loadConfig() throws IOException, ClassNotFoundException{
+		//Config config;
+		
+		File file = new File("config");
+		
+		if(!file.exists() || file.isDirectory()) {
+			/* do something */ 
+			config = new Config("en","US");
+			FileOutputStream fileOut = new FileOutputStream(file);
+	        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+	        out.writeObject(config);
+	        out.close();
+	        fileOut.close();
+		}
+		
+		FileInputStream fileIn = new FileInputStream(file);
+        ObjectInputStream in = new ObjectInputStream(fileIn);
+        config = (Config) in.readObject();
+        in.close();
+        fileIn.close();
+        
+        //return config;
+	}
+	
+	public void setEnglish() throws IOException{
+		if(config.getLang() == "en"){
+			return;
+		}
+		
+		config = new Config("en","US");
+		File file = new File("config");
+		FileOutputStream fileOut = new FileOutputStream(file);
+        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        out.writeObject(config);
+        out.close();
+        fileOut.close();
+        System.out.println("Lang changed to EN");
+        JOptionPane.showMessageDialog(null, messages.getString("changeLang"));
+	}
+	
+	public void setPolish() throws IOException{
+		if(config.getLang() == "pl"){
+			return;
+		}
+		
+		config = new Config("pl","PL");
+		File file = new File("config");
+		FileOutputStream fileOut = new FileOutputStream(file);
+        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        out.writeObject(config);
+        out.close();
+        fileOut.close();
+        System.out.println("Lang changed to PL");
+        JOptionPane.showMessageDialog(null, messages.getString("changeLang"));
+	}
 	
 	
 
 	/**
 	 * Create the frame.
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public GUI() {
+	public GUI() throws ClassNotFoundException, IOException {
 		//FileFilter fileFilter = new FileNameExtensionFilter("Creator file", "creator");
 		//fc = new JFileChooser("C:\\Users\\Miszelek\\Desktop");									//TODO: ZMIENIC FINALNIE!!!!
 		//fc.setFileFilter(fileFilter);
 		
+		//Config config = loadConfig();
+		
+		loadConfig();
+		
 		Locale currentLocale;
 	     
 
-	     currentLocale = new Locale("pl", "PL");
+	     currentLocale = new Locale(this.config.getLang(), this.config.getCountry());
 
 	     messages = ResourceBundle.getBundle("i18n.MessagesBundle", currentLocale);
 		
-		setTitle("NewBase - Creator pyta� egzaminacyjnych");
+		setTitle("NewBase - Creator pyta\u0144 egzaminacyjnych");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1101, 720);
 		
@@ -570,17 +635,55 @@ public class GUI extends JFrame {
 			
 		});
 		mnFile.add(mntmExit);
+		
+		JMenu mnLanguage = new JMenu(messages.getString("language"));
+		menuBar.add(mnLanguage);
+		
+		JMenuItem mntmEnglish = new JMenuItem(messages.getString("english"));
+		mnLanguage.add(mntmEnglish);
+		
+		mntmEnglish.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					setEnglish();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+		});
+		
+		JMenuItem mntmPolish = new JMenuItem(messages.getString("polish"));
+		mnLanguage.add(mntmPolish);
+		mntmPolish.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					setPolish();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+		});
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel(messages.getString("subject"));
-		lblNewLabel.setBounds(10, 14, 99, 14);
+		lblNewLabel.setBounds(10, 14, 162, 14);
 		contentPane.add(lblNewLabel);
 		
 		textField_name = new JTextField();
-		textField_name.setBounds(119, 11, 332, 20);
+		textField_name.setBounds(182, 11, 332, 20);
 		contentPane.add(textField_name);
 		textField_name.setColumns(10);
 		
@@ -615,12 +718,12 @@ public class GUI extends JFrame {
 		});
 		
 		JLabel lblAuthor = new JLabel(messages.getString("teacher"));
-		lblAuthor.setBounds(10, 48, 99, 14);
+		lblAuthor.setBounds(10, 48, 162, 14);
 		contentPane.add(lblAuthor);
 		
 		textField_author = new JTextField();
 		textField_author.setColumns(10);
-		textField_author.setBounds(119, 45, 332, 20);
+		textField_author.setBounds(182, 42, 332, 20);
 		contentPane.add(textField_author);
 		
 		textField_author.getDocument().addDocumentListener(new DocumentListener(){
@@ -1207,5 +1310,4 @@ public class GUI extends JFrame {
 		
 		this.newBase();
 	}
-
 }

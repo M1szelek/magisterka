@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -41,6 +42,7 @@ import javax.swing.table.TableCellRenderer;
 
 import model.QBase;
 import model.SuperBase;
+import util.Config;
 
 import com.itextpdf.text.DocumentException;
 
@@ -64,6 +66,8 @@ public class GUI extends JFrame {
 	private ResourceBundle messages;
 	
 	private String defaultPath = "C:\\Users\\Miszelek\\Desktop";
+	
+	Config config;
 	
 
 	/**
@@ -306,17 +310,75 @@ public class GUI extends JFrame {
 		this.lblTotal.setText(messages.getString("total") + ": " + calcTotal());
 		
 	}
+	
+	public void loadConfig() throws IOException, ClassNotFoundException{
+		//Config config;
+		
+		File file = new File("config");
+		
+		if(!file.exists() || file.isDirectory()) {
+			/* do something */ 
+			config = new Config("en","US");
+			FileOutputStream fileOut = new FileOutputStream(file);
+	        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+	        out.writeObject(config);
+	        out.close();
+	        fileOut.close();
+		}
+		
+		FileInputStream fileIn = new FileInputStream(file);
+        ObjectInputStream in = new ObjectInputStream(fileIn);
+        config = (Config) in.readObject();
+        in.close();
+        fileIn.close();
+        
+        //return config;
+	}
+	
+	public void setEnglish() throws IOException{
+		if(config.getLang() == "en"){
+			return;
+		}
+		
+		config = new Config("en","US");
+		File file = new File("config");
+		FileOutputStream fileOut = new FileOutputStream(file);
+        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        out.writeObject(config);
+        out.close();
+        fileOut.close();
+        System.out.println("Lang changed to EN");
+        JOptionPane.showMessageDialog(null, messages.getString("changeLang"));
+	}
+	
+	public void setPolish() throws IOException{
+		if(config.getLang() == "pl"){
+			return;
+		}
+		
+		config = new Config("pl","PL");
+		File file = new File("config");
+		FileOutputStream fileOut = new FileOutputStream(file);
+        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        out.writeObject(config);
+        out.close();
+        fileOut.close();
+        System.out.println("Lang changed to PL");
+        JOptionPane.showMessageDialog(null, messages.getString("changeLang"));
+	}
 
 	/**
 	 * Create the frame.
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public GUI() {
+	public GUI() throws ClassNotFoundException, IOException {
 		superBase = new SuperBase();
 		
 		 Locale currentLocale;
 	     
-
-	     currentLocale = new Locale("en", "US");
+		 loadConfig();
+	     currentLocale = new Locale(config.getLang(), config.getCountry());
 
 	     messages = ResourceBundle.getBundle("i18n.MessagesBundle", currentLocale);
 		
@@ -395,6 +457,44 @@ public class GUI extends JFrame {
 		JMenuItem mntmExit = new JMenuItem(messages.getString("exit"));
 		mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
 		mnFile.add(mntmExit);
+		
+		JMenu mnLanguage = new JMenu(messages.getString("language"));
+		menuBar.add(mnLanguage);
+		
+		JMenuItem mntmEnglish = new JMenuItem(messages.getString("english"));
+		mnLanguage.add(mntmEnglish);
+		
+		mntmEnglish.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					setEnglish();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+		});
+		
+		JMenuItem mntmPolish = new JMenuItem(messages.getString("polish"));
+		mnLanguage.add(mntmPolish);
+		mntmPolish.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					setPolish();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+		});
 		mntmExit.addActionListener(new ActionListener(){
 
 			@Override
@@ -523,6 +623,14 @@ public class GUI extends JFrame {
 		lblTotal = new JLabel(messages.getString("total") + ": 0");
 		lblTotal.setBounds(723, 579, 267, 14);
 		contentPane.add(lblTotal);
+		
+		JButton btnNewButton = new JButton(messages.getString("generateEntireBase"));
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnNewButton.setBounds(380, 11, 221, 23);
+		contentPane.add(btnNewButton);
 		
 		table.getModel().addTableModelListener(new TableModelListener(){
 

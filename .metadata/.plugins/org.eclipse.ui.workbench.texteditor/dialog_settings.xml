@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wholeword"/>
-		<item value="" key="selection"/>
+		<item value="language" key="selection"/>
 		<list key="findhistory">
+			<item value="language"/>
+			<item value="Language"/>
+			<item value="File"/>
+			<item value="GUI"/>
+			<item value="Exception"/>
+			<item value="Add Base"/>
 			<item value="toUpper"/>
 			<item value="spinner_scaleContent"/>
-			<item value="spinner_scale"/>
-			<item value="notSaved"/>
-			<item value="textField_subjectcode"/>
-			<item value="textField_profile"/>
-			<item value="textField_subjectCode"/>
-			<item value="textField_name"/>
 		</list>
 		<list key="replacehistory">
 		</list>
