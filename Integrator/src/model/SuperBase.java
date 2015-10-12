@@ -38,17 +38,7 @@ public class SuperBase implements Serializable{
 		qbcoll.remove(i);
 	}
 	
-	public int getAmountOfQuestions(){
-		int res = 0;
-		
-		for(QBase qb: qbcoll){
-			res += qb.getQuestions().size();
-		}
-		
-		return res;
-	}
-	
-	public void generateDocuments(ArrayList<QBase> tests) throws DocumentException, IOException{
+	private void generateDocuments(ArrayList<QBase> tests) throws DocumentException, IOException{
 		for(QBase qb: tests){
 			OutputDocument.createDocuments(qb);
 		}
@@ -68,7 +58,7 @@ public class SuperBase implements Serializable{
 		//return res;
 	}
 	
-	public QBase createTest(char setletter){
+	private QBase createTest(char setletter){
 		
 		QBase resbase = new QBase();							
 		
@@ -123,6 +113,20 @@ public class SuperBase implements Serializable{
 		resbase = (QBase)DeepCopy.copy(resbase);				//DEEP COPY FOR THE RESCUE!!!!!!!!!!!!!!!
 		
 		return resbase;
+		
+	}
+	
+	private void setAllMaxAmountToTest(){
+		for(QBase qb: qbcoll){
+			qb.setAmountToTest(qb.getQuestions().size());
+		}
+	}
+	
+	public void createDocumentForWeb() throws DocumentException, IOException{
+		setAllMaxAmountToTest();
+		QBase qb = createTest('A');
+		qb.setProfile(qbcoll.get(0).getProfile());
+		OutputDocument.createDocumentForWeb(qb);
 		
 	}
 }

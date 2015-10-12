@@ -131,6 +131,14 @@ public class GUI extends JFrame {
 	      }
 	}
 	
+	public void setAmounts(){
+		DefaultTableModel model = (DefaultTableModel) table.getModel();	
+		for(int i = 0; i < superBase.getQbcoll().size(); i++){
+			
+				superBase.getQbcoll().get(i).setAmountToTest((int)model.getValueAt(i,5));;				
+			
+		}
+	}
 	
 	
 	public void save(){					//zapis pliku
@@ -586,7 +594,7 @@ public class GUI extends JFrame {
 		JButton btnGenerate = new JButton(messages.getString("generateSets"));
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//setAmounts();
+				setAmounts();
 				//superBase.createTest((Integer)spinner_groups.getValue());
 				//superBase.createTest('a');
 				try {
@@ -618,7 +626,12 @@ public class GUI extends JFrame {
 		JButton btnNewButton = new JButton(messages.getString("generateEntireBase"));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				try {
+					superBase.createDocumentForWeb();
+				} catch (DocumentException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		btnNewButton.setBounds(380, 11, 221, 23);

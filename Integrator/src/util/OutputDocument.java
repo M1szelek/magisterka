@@ -27,6 +27,10 @@ import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 public class OutputDocument {
+	
+	private static float CONTENT_INDENT = 30;
+	private static float VARS_INDENT = 60;
+	private static float SYMBOL_INDENT = 30;
 
 	static public class HeaderFooterPageEvent extends PdfPageEventHelper {
 		private char letter;
@@ -61,106 +65,46 @@ public class OutputDocument {
 					rect.getRight(), rect.getBottom(), 0);
 		}
 	}
+	
+	static public class HeaderFooterPageForWebEvent extends PdfPageEventHelper {
+		private char letter;
+
+		public HeaderFooterPageForWebEvent(char letter) {
+			super();
+			this.letter = letter;
+		}
+
+		public void onStartPage(PdfWriter writer, Document document) {
+//			Rectangle rect = writer.getBoxSize("art");
+//			ColumnText.showTextAligned(writer.getDirectContent(),
+//					Element.ALIGN_CENTER, new Phrase("Top Left"),
+//					rect.getLeft(), rect.getTop(), 0);
+//			ColumnText.showTextAligned(writer.getDirectContent(),
+//					Element.ALIGN_CENTER, new Phrase("Top Right"),
+//					rect.getRight(), rect.getTop(), 0);
+		}
+
+		public void onEndPage(PdfWriter writer, Document document) {
+			Rectangle rect = writer.getBoxSize("art");
+			// ColumnText.showTextAligned(writer.getDirectContent(),Element.ALIGN_CENTER,
+			// new Phrase("Bottom Left"), rect.getLeft(), rect.getBottom(), 0);
+			ColumnText.showTextAligned(
+					writer.getDirectContent(),
+					Element.ALIGN_CENTER,
+					new Phrase(new Phrase(
+							
+									
+									String.format("%d",
+											writer.getCurrentPageNumber()))),
+					rect.getRight(), rect.getBottom(), 0);
+		}
+	}
 
 	public static void createDocuments(QBase qb) throws DocumentException,
 			IOException {
-		createDocument(qb);
+		createDocument2(qb);
 		createCalque2(qb);
 		createAnswerCard(qb);
-	}
-
-	public static void createDocument(QBase qb) throws DocumentException,
-			IOException {
-
-		// step 1
-		Document document = new Document();
-		// step 2
-		PdfWriter writer = PdfWriter.getInstance(document,
-				new FileOutputStream("test" + qb.getLetterOfSet() + ".pdf"));
-		Rectangle rect = new Rectangle(30, 30, 550, 800);
-		writer.setBoxSize("art", rect);
-		// step 3
-		HeaderFooterPageEvent event = new HeaderFooterPageEvent(
-				qb.getLetterOfSet());
-		writer.setPageEvent(event);
-		document.open();
-		// step 4
-		BaseFont bf = BaseFont.createFont("Arial Unicode MS.ttf",
-				BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-
-		System.out.println(document.getPageSize());
-
-		Font font = new Font(bf, 12);
-
-		Paragraph title = new Paragraph("Egzamin in\u017Cynierski - zestaw "
-				+ qb.getLetterOfSet(), font);
-		title.setAlignment(Element.ALIGN_CENTER);
-		document.add(title);
-		document.add(Chunk.NEWLINE);
-
-		float indent = 30;
-
-		List list = new List(List.ORDERED);
-		list.normalizeIndentation();
-		list.setAutoindent(false);
-		list.setSymbolIndent(indent);
-
-		list.setIndentationLeft(60);
-
-		for (Question q : qb.getQuestions()) {
-
-			ListItem item = new ListItem(q.getContent(), font);
-			// item.setIndentationLeft(indent);
-			if (q.getImgInByte() != null) {
-				Image img = Image.getInstance(q.getImgInByte());
-				img.scalePercent((q.getImgScalePercent()));
-				item.add(new ListItem(new Chunk(img, 0, 0, true)));
-			} // /\
-				// IMAGE SAVIOR!!
-			List vars = new List(List.ORDERED, List.ALPHABETICAL);
-			vars.setAutoindent(false);
-			vars.setSymbolIndent(indent);
-			vars.setLowercase(true);
-
-			ListItem varA = new ListItem(q.getVarA().getContent(), font);
-
-			if (q.getVarA().getImgInByte() != null) {
-				Image img = Image.getInstance(q.getVarA().getImgInByte());
-				img.scalePercent((q.getVarA().getImgScalePercent()));
-				varA.add(new ListItem(new Chunk(img, 0, 0, true)));
-			}
-			vars.add(varA);
-
-			ListItem varB = new ListItem(q.getVarB().getContent(), font);
-
-			if (q.getVarB().getImgInByte() != null) {
-				Image img = Image.getInstance(q.getVarB().getImgInByte());
-				img.scalePercent((q.getVarB().getImgScalePercent()));
-				varB.add(new ListItem(new Chunk(img, 0, 0, true)));
-			}
-			vars.add(varB);
-
-			ListItem varC = new ListItem(q.getVarC().getContent(), font);
-
-			if (q.getVarC().getImgInByte() != null) {
-				Image img = Image.getInstance(q.getVarC().getImgInByte());
-				img.scalePercent((q.getVarC().getImgScalePercent()));
-				varC.add(new ListItem(new Chunk(img, 0, 0, true)));
-			}
-			vars.add(varC);
-
-			item.add(vars);
-			item.add(Chunk.NEWLINE);
-
-			list.add(item);
-
-		}
-
-		list.normalizeIndentation();
-
-		document.add(list);
-
-		document.close();
 	}
 
 	public static void createDocument2(QBase qb) throws DocumentException,
@@ -192,17 +136,13 @@ public class OutputDocument {
 		document.add(title);
 		document.add(Chunk.NEWLINE);
 
-		float indent = 30;
-
-		
-
 		for (Question q : qb.getQuestions()) {
 			
 			List list = new List(List.ORDERED);
 			list.setAutoindent(false);
-			list.setSymbolIndent(indent);
+			list.setSymbolIndent(SYMBOL_INDENT);
 
-			list.setIndentationLeft(60);
+			list.setIndentationLeft(CONTENT_INDENT);
 			
 			ListItem item = new ListItem(q.getContent(), font);
 			// item.setIndentationLeft(indent);
@@ -210,11 +150,15 @@ public class OutputDocument {
 				Image img = Image.getInstance(q.getImgInByte());
 				img.scalePercent((q.getImgScalePercent()));
 				item.add(new ListItem(new Chunk(img, 0, 0, true)));
-			} // /\
-				// IMAGE SAVIOR!!
+			} 											// /\
+														// IMAGE SAVIOR!!
+			list.add(item);
+			
+			
 			List vars = new List(List.ORDERED, List.ALPHABETICAL);
 			vars.setAutoindent(false);
-			vars.setSymbolIndent(indent);
+			vars.setIndentationLeft(VARS_INDENT);
+			vars.setSymbolIndent(SYMBOL_INDENT);
 			vars.setLowercase(true);
 
 			ListItem varA = new ListItem(q.getVarA().getContent(), font);
@@ -244,62 +188,16 @@ public class OutputDocument {
 			}
 			vars.add(varC);
 
-			item.add(vars);
-			item.add(Chunk.NEWLINE);
-
-			list.add(item);
 			document.add(list);
+			document.add(vars);
+			document.add(Chunk.NEWLINE);
+
+			//list.add(item);
+			//document.add(list);
 
 		}
 
 		//document.add(list);
-
-		document.close();
-	}
-
-	public static void createCalque(QBase qb) throws DocumentException,
-			IOException {
-		Document document = new Document();
-		// step 2
-		PdfWriter.getInstance(document,
-				new FileOutputStream("kalka" + qb.getLetterOfSet() + ".pdf"));
-		// step 3
-		document.open();
-
-		PdfPTable table = new PdfPTable(4);
-		PdfPCell cell = new PdfPCell();
-		table.addCell(cell);
-
-		cell = new PdfPCell(new Phrase("A"));
-		table.addCell(cell);
-		cell = new PdfPCell(new Phrase("B"));
-		table.addCell(cell);
-		cell = new PdfPCell(new Phrase("C"));
-		table.addCell(cell);
-
-		int i = 1;
-		for (Question q : qb.getQuestions()) {
-			cell = new PdfPCell(new Phrase(Integer.toString(i)));
-			table.addCell(cell);
-
-			cell = new PdfPCell();
-			if (!q.getVarA().isCorrect())
-				cell.setBackgroundColor(new BaseColor(0, 0, 0));
-			table.addCell(cell);
-
-			cell = new PdfPCell();
-			if (!q.getVarB().isCorrect())
-				cell.setBackgroundColor(new BaseColor(0, 0, 0));
-			table.addCell(cell);
-
-			cell = new PdfPCell();
-			if (!q.getVarC().isCorrect())
-				cell.setBackgroundColor(new BaseColor(0, 0, 0));
-			table.addCell(cell);
-
-			i++;
-		}
-		document.add(table);
 
 		document.close();
 	}
@@ -464,6 +362,109 @@ public class OutputDocument {
 		}
 
 		document.close();
+	}
+	
+	static public void createDocumentForWeb(QBase qb) throws DocumentException, IOException{
+		// step 1
+				Document document = new Document();
+				// step 2
+				PdfWriter writer = PdfWriter.getInstance(document,
+						new FileOutputStream("web.pdf"));
+				Rectangle rect = new Rectangle(30, 30, 550, 800);
+				writer.setBoxSize("art", rect);
+				// step 3
+				HeaderFooterPageForWebEvent event = new HeaderFooterPageForWebEvent(
+						qb.getLetterOfSet());
+				writer.setPageEvent(event);
+				document.open();
+				// step 4
+				BaseFont bf = BaseFont.createFont("Arial Unicode MS.ttf",
+						BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
+				System.out.println(document.getPageSize());
+
+				Font font = new Font(bf, 12);
+
+				Paragraph title = new Paragraph("Pytania na testowy egzamin kierunkowy", font);
+				title.setAlignment(Element.ALIGN_CENTER);
+				document.add(title);
+				
+				Paragraph subtitle = new Paragraph("Kierunek: " + qb.getProfile(), font);
+				subtitle.setAlignment(Element.ALIGN_CENTER);
+				document.add(subtitle);
+				document.add(Chunk.NEWLINE);
+
+				
+
+				int questionNumber = 1;
+
+				for (Question q : qb.getQuestions()) {
+					
+					List list = new List(List.ORDERED);
+					list.setFirst(questionNumber);
+					questionNumber++;
+					list.setAutoindent(false);
+					list.setSymbolIndent(SYMBOL_INDENT);
+
+					list.setIndentationLeft(CONTENT_INDENT);
+					
+					ListItem item = new ListItem(q.getContent(), font);
+					
+					// item.setIndentationLeft(indent);
+					if (q.getImgInByte() != null) {
+						Image img = Image.getInstance(q.getImgInByte());
+						img.scalePercent((q.getImgScalePercent()));
+						item.add(new ListItem(new Chunk(img, 0, 0, true)));
+					} 											// /\
+																// IMAGE SAVIOR!!
+					list.add(item);
+					
+					
+					List vars = new List(List.ORDERED, List.ALPHABETICAL);
+					vars.setAutoindent(false);
+					vars.setIndentationLeft(VARS_INDENT);
+					vars.setSymbolIndent(SYMBOL_INDENT);
+					vars.setLowercase(true);
+
+					ListItem varA = new ListItem(q.getVarA().getContent(), font);
+
+					if (q.getVarA().getImgInByte() != null) {
+						Image img = Image.getInstance(q.getVarA().getImgInByte());
+						img.scalePercent((q.getVarA().getImgScalePercent()));
+						varA.add(new ListItem(new Chunk(img, 0, 0, true)));
+					}
+					vars.add(varA);
+
+					ListItem varB = new ListItem(q.getVarB().getContent(), font);
+
+					if (q.getVarB().getImgInByte() != null) {
+						Image img = Image.getInstance(q.getVarB().getImgInByte());
+						img.scalePercent((q.getVarB().getImgScalePercent()));
+						varB.add(new ListItem(new Chunk(img, 0, 0, true)));
+					}
+					vars.add(varB);
+
+					ListItem varC = new ListItem(q.getVarC().getContent(), font);
+
+					if (q.getVarC().getImgInByte() != null) {
+						Image img = Image.getInstance(q.getVarC().getImgInByte());
+						img.scalePercent((q.getVarC().getImgScalePercent()));
+						varC.add(new ListItem(new Chunk(img, 0, 0, true)));
+					}
+					vars.add(varC);
+
+					document.add(list);
+					document.add(vars);
+					document.add(Chunk.NEWLINE);
+
+					//list.add(item);
+					//document.add(list);
+
+				}
+
+				//document.add(list);
+
+				document.close();
 	}
 
 }
