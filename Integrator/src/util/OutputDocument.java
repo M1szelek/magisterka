@@ -2,10 +2,12 @@ package util;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import model.QBase;
 import model.Question;
 
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -31,6 +33,7 @@ public class OutputDocument {
 	private static float CONTENT_INDENT = 30;
 	private static float VARS_INDENT = 60;
 	private static float SYMBOL_INDENT = 30;
+	private static String LIST_SYMBOL = ")";
 
 	static public class HeaderFooterPageEvent extends PdfPageEventHelper {
 		private char letter;
@@ -67,12 +70,6 @@ public class OutputDocument {
 	}
 	
 	static public class HeaderFooterPageForWebEvent extends PdfPageEventHelper {
-		private char letter;
-
-		public HeaderFooterPageForWebEvent(char letter) {
-			super();
-			this.letter = letter;
-		}
 
 		public void onStartPage(PdfWriter writer, Document document) {
 //			Rectangle rect = writer.getBoxSize("art");
@@ -102,12 +99,12 @@ public class OutputDocument {
 
 	public static void createDocuments(QBase qb) throws DocumentException,
 			IOException {
-		createDocument2(qb);
-		createCalque2(qb);
+		createQuestionsCard(qb);
+		createCalque(qb);
 		createAnswerCard(qb);
 	}
 
-	public static void createDocument2(QBase qb) throws DocumentException,
+	private static void createQuestionsCard(QBase qb) throws DocumentException,
 			IOException {
 
 		// step 1
@@ -130,79 +127,43 @@ public class OutputDocument {
 
 		Font font = new Font(bf, 12);
 
-		Paragraph title = new Paragraph("Egzamin in\u017Cynierski - zestaw "
-				+ qb.getLetterOfSet(), font);
+		Paragraph title = new Paragraph("Pytania na testowy egzamin kierunkowy", font);
 		title.setAlignment(Element.ALIGN_CENTER);
 		document.add(title);
+		
+		Paragraph subtitle = new Paragraph("kierunek: " + qb.getProfile() + ", zestaw: " + qb.getLetterOfSet(), font);
+		subtitle.setAlignment(Element.ALIGN_CENTER);
+		document.add(subtitle);
+		
+		
 		document.add(Chunk.NEWLINE);
 
-		for (Question q : qb.getQuestions()) {
-			
-			List list = new List(List.ORDERED);
-			list.setAutoindent(false);
-			list.setSymbolIndent(SYMBOL_INDENT);
-
-			list.setIndentationLeft(CONTENT_INDENT);
-			
-			ListItem item = new ListItem(q.getContent(), font);
-			// item.setIndentationLeft(indent);
-			if (q.getImgInByte() != null) {
-				Image img = Image.getInstance(q.getImgInByte());
-				img.scalePercent((q.getImgScalePercent()));
-				item.add(new ListItem(new Chunk(img, 0, 0, true)));
-			} 											// /\
-														// IMAGE SAVIOR!!
-			list.add(item);
-			
-			
-			List vars = new List(List.ORDERED, List.ALPHABETICAL);
-			vars.setAutoindent(false);
-			vars.setIndentationLeft(VARS_INDENT);
-			vars.setSymbolIndent(SYMBOL_INDENT);
-			vars.setLowercase(true);
-
-			ListItem varA = new ListItem(q.getVarA().getContent(), font);
-
-			if (q.getVarA().getImgInByte() != null) {
-				Image img = Image.getInstance(q.getVarA().getImgInByte());
-				img.scalePercent((q.getVarA().getImgScalePercent()));
-				varA.add(new ListItem(new Chunk(img, 0, 0, true)));
-			}
-			vars.add(varA);
-
-			ListItem varB = new ListItem(q.getVarB().getContent(), font);
-
-			if (q.getVarB().getImgInByte() != null) {
-				Image img = Image.getInstance(q.getVarB().getImgInByte());
-				img.scalePercent((q.getVarB().getImgScalePercent()));
-				varB.add(new ListItem(new Chunk(img, 0, 0, true)));
-			}
-			vars.add(varB);
-
-			ListItem varC = new ListItem(q.getVarC().getContent(), font);
-
-			if (q.getVarC().getImgInByte() != null) {
-				Image img = Image.getInstance(q.getVarC().getImgInByte());
-				img.scalePercent((q.getVarC().getImgScalePercent()));
-				varC.add(new ListItem(new Chunk(img, 0, 0, true)));
-			}
-			vars.add(varC);
-
-			document.add(list);
-			document.add(vars);
-			document.add(Chunk.NEWLINE);
-
-			//list.add(item);
-			//document.add(list);
-
-		}
-
-		//document.add(list);
+		printQuestions(qb, document, font);
+		
+		generateAnswersOnEndOfDocument(document, qb, font);
+		
 
 		document.close();
 	}
+	
+	private static void generateAnswersOnEndOfDocument(Document document, QBase qb, Font font) throws DocumentException{
+		document.newPage(); 
+		
+		Paragraph paragraph = new Paragraph("Poprawne odpowiedzi:", font);
+		document.add(paragraph);
+		document.add(Chunk.NEWLINE);
+		
+		List correctAnswersOnEndOfDocument = new List(List.ORDERED);
+		
+		for(Question q: qb.getQuestions()){
+			ListItem answerItem = new ListItem(q.getCorrectLetter()+")", font);
+			correctAnswersOnEndOfDocument.add(answerItem);
+		}
+		
+		document.add(correctAnswersOnEndOfDocument);
+	}
 
-	public static void createCalque2(QBase qb) throws DocumentException,
+	private static void createCalque(QBase qb) throws DocumentException,
 			IOException {
 		Document document = new Document(/* PageSize.A4.rotate() */);
 		// step 2
@@ -278,7 +239,7 @@ public class OutputDocument {
 		document.close();
 	}
 
-	static public float addHeaderTable(Document document, QBase qb)
+	static private float addHeaderTable(Document document, QBase qb)
 			throws DocumentException {
 		PdfPTable header = new PdfPTable(1);
 		header.setWidthPercentage(100);
@@ -298,7 +259,7 @@ public class OutputDocument {
 		return header.getTotalHeight();
 	}
 
-	static public void createAnswerCard(QBase qb) throws DocumentException,
+	static private void createAnswerCard(QBase qb) throws DocumentException,
 			IOException {
 		Document document = new Document(/* PageSize.A4.rotate() */);
 		// step 2
@@ -373,8 +334,7 @@ public class OutputDocument {
 				Rectangle rect = new Rectangle(30, 30, 550, 800);
 				writer.setBoxSize("art", rect);
 				// step 3
-				HeaderFooterPageForWebEvent event = new HeaderFooterPageForWebEvent(
-						qb.getLetterOfSet());
+				HeaderFooterPageForWebEvent event = new HeaderFooterPageForWebEvent();
 				writer.setPageEvent(event);
 				document.open();
 				// step 4
@@ -396,75 +356,87 @@ public class OutputDocument {
 
 				
 
-				int questionNumber = 1;
-
-				for (Question q : qb.getQuestions()) {
-					
-					List list = new List(List.ORDERED);
-					list.setFirst(questionNumber);
-					questionNumber++;
-					list.setAutoindent(false);
-					list.setSymbolIndent(SYMBOL_INDENT);
-
-					list.setIndentationLeft(CONTENT_INDENT);
-					
-					ListItem item = new ListItem(q.getContent(), font);
-					
-					// item.setIndentationLeft(indent);
-					if (q.getImgInByte() != null) {
-						Image img = Image.getInstance(q.getImgInByte());
-						img.scalePercent((q.getImgScalePercent()));
-						item.add(new ListItem(new Chunk(img, 0, 0, true)));
-					} 											// /\
-																// IMAGE SAVIOR!!
-					list.add(item);
-					
-					
-					List vars = new List(List.ORDERED, List.ALPHABETICAL);
-					vars.setAutoindent(false);
-					vars.setIndentationLeft(VARS_INDENT);
-					vars.setSymbolIndent(SYMBOL_INDENT);
-					vars.setLowercase(true);
-
-					ListItem varA = new ListItem(q.getVarA().getContent(), font);
-
-					if (q.getVarA().getImgInByte() != null) {
-						Image img = Image.getInstance(q.getVarA().getImgInByte());
-						img.scalePercent((q.getVarA().getImgScalePercent()));
-						varA.add(new ListItem(new Chunk(img, 0, 0, true)));
-					}
-					vars.add(varA);
-
-					ListItem varB = new ListItem(q.getVarB().getContent(), font);
-
-					if (q.getVarB().getImgInByte() != null) {
-						Image img = Image.getInstance(q.getVarB().getImgInByte());
-						img.scalePercent((q.getVarB().getImgScalePercent()));
-						varB.add(new ListItem(new Chunk(img, 0, 0, true)));
-					}
-					vars.add(varB);
-
-					ListItem varC = new ListItem(q.getVarC().getContent(), font);
-
-					if (q.getVarC().getImgInByte() != null) {
-						Image img = Image.getInstance(q.getVarC().getImgInByte());
-						img.scalePercent((q.getVarC().getImgScalePercent()));
-						varC.add(new ListItem(new Chunk(img, 0, 0, true)));
-					}
-					vars.add(varC);
-
-					document.add(list);
-					document.add(vars);
-					document.add(Chunk.NEWLINE);
-
-					//list.add(item);
-					//document.add(list);
-
-				}
+				printQuestions(qb, document, font);
 
 				//document.add(list);
 
 				document.close();
+	}
+
+	private static void printQuestions(QBase qb, Document document, Font font)
+			throws BadElementException, MalformedURLException, IOException,
+			DocumentException {
+		int questionNumber = 1;
+
+		for (Question q : qb.getQuestions()) {
+			
+			List content = new List(List.ORDERED);
+			content.setFirst(questionNumber);
+			questionNumber++;
+			content.setAutoindent(false);
+			content.setSymbolIndent(SYMBOL_INDENT);
+
+			content.setIndentationLeft(CONTENT_INDENT);
+			
+			ListItem contentItem = new ListItem(q.getContent(), font);
+			
+			// item.setIndentationLeft(indent);
+			if (q.getImgInByte() != null) {
+				Image img = Image.getInstance(q.getImgInByte());
+				img.scalePercent((q.getImgScalePercent()));
+				contentItem.add(new ListItem(new Chunk(img, 0, 0, true)));
+			} 													// /\
+																// IMAGE SAVIOR!!
+			content.add(contentItem);
+			
+			
+			List vars = new List(List.ORDERED, List.ALPHABETICAL);
+			vars.setListSymbol(LIST_SYMBOL);
+			vars.setAutoindent(false);
+			vars.setIndentationLeft(VARS_INDENT);
+			vars.setSymbolIndent(SYMBOL_INDENT);
+			vars.setLowercase(true);
+
+			ListItem varA = new ListItem(q.getVarA().getContent(), font);
+			
+			varA.setListSymbol(new Chunk("a)"));
+
+			if (q.getVarA().getImgInByte() != null) {
+				Image img = Image.getInstance(q.getVarA().getImgInByte());
+				img.scalePercent((q.getVarA().getImgScalePercent()));
+				varA.add(new ListItem(new Chunk(img, 0, 0, true)));
+			}
+			vars.add(varA);
+
+			ListItem varB = new ListItem(q.getVarB().getContent(), font);
+			varB.setListSymbol(new Chunk("b)"));
+
+			if (q.getVarB().getImgInByte() != null) {
+				Image img = Image.getInstance(q.getVarB().getImgInByte());
+				img.scalePercent((q.getVarB().getImgScalePercent()));
+				varB.add(new ListItem(new Chunk(img, 0, 0, true)));
+			}
+			vars.add(varB);
+			
+
+			ListItem varC = new ListItem(q.getVarC().getContent(), font);
+			varC.setListSymbol(new Chunk("c)"));
+
+			if (q.getVarC().getImgInByte() != null) {
+				Image img = Image.getInstance(q.getVarC().getImgInByte());
+				img.scalePercent((q.getVarC().getImgScalePercent()));
+				varC.add(new ListItem(new Chunk(img, 0, 0, true)));
+			}
+			vars.add(varC);
+
+			document.add(content);
+			document.add(vars);
+			document.add(Chunk.NEWLINE);
+
+			//list.add(item);
+			//document.add(list);
+
+		}
 	}
 
 }

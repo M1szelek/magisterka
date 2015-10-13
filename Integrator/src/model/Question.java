@@ -131,5 +131,22 @@ public class Question extends AbstractQuestion {
 		}
 	}
 	
+	public String getCorrectLetter(){
+		if(this.varA.isCorrect()){
+			return "a";
+		}
+		
+		if(this.varB.isCorrect()){
+			return "b";
+		}
+		
+		if(this.varC.isCorrect()){
+			return "c";
+		}
+		
+		return null;
+		
+	}
+	
 	
 }

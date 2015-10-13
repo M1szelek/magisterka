@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Extract method &apos;private static void printQuestions(QBase qb, Document document, Font font) throws BadElementException, MalformedURLException, IOException, DocumentException &apos; from &apos;util.OutputDocument.createDocumentForWeb()&apos; to &apos;util.OutputDocument&apos;&#x0D;&#x0A;- Original project: &apos;Integrator&apos;&#x0D;&#x0A;- Method name: &apos;printQuestions&apos;&#x0D;&#x0A;- Destination type: &apos;util.OutputDocument&apos;&#x0D;&#x0A;- Declared visibility: &apos;private&apos;" comments="false" description="Extract method &apos;printQuestions&apos;" destination="0" exceptions="false" flags="786434" id="org.eclipse.jdt.ui.extract.method" input="/src&lt;util{OutputDocument.java" name="printQuestions" replace="false" selection="12849 2175" stamp="1444753016996" version="1.0" visibility="2"/>
+</session>

@@ -63,6 +63,7 @@ public class SuperBase implements Serializable{
 		QBase resbase = new QBase();							
 		
 		resbase.setLetterOfSet(setletter);
+		resbase.setProfile(qbcoll.get(0).getProfile());
 		
 		for(QBase qb: qbcoll){
 			
@@ -125,7 +126,6 @@ public class SuperBase implements Serializable{
 	public void createDocumentForWeb() throws DocumentException, IOException{
 		setAllMaxAmountToTest();
 		QBase qb = createTest('A');
-		qb.setProfile(qbcoll.get(0).getProfile());
 		OutputDocument.createDocumentForWeb(qb);
 		
 	}
