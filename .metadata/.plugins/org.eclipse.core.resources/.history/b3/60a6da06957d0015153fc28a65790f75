@@ -242,44 +242,16 @@ public class OutputDocument {
 	}
 
 	static private float addHeaderTable(Document document, QBase qb)
-			throws DocumentException, IOException {
+			throws DocumentException {
 		PdfPTable header = new PdfPTable(1);
 		header.setWidthPercentage(100);
 		header.getDefaultCell().setBackgroundColor(BaseColor.WHITE);
-		BaseFont bf = BaseFont.createFont("Arial Unicode MS.ttf",
-				BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-		Font font = new Font(bf, 12);
-		Phrase p = new Phrase("KARTA ODPOWIEDZI TESTU KIERUNKOWEGO", font);
-		PdfPCell cell = new PdfPCell(p);
-        cell.setBorder(Rectangle.NO_BORDER);
+		Font font = new Font(FontFamily.HELVETICA, 12, Font.BOLD,
+				BaseColor.BLACK);
+		Phrase p = new Phrase("Zestaw "
+				+ Character.toUpperCase(qb.getLetterOfSet()), font);
 		header.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-		header.addCell(cell);
-		
-		p = new Phrase("kierunek:  "
-				+ qb.getProfile(), font);
-		
-		cell = new PdfPCell(p);
-        cell.setBorder(Rectangle.NO_BORDER);
-		header.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-		header.addCell(cell);
-		
-		p = new Phrase("Zestaw:.................           Nr kodowy:..............", font);
-		cell = new PdfPCell(p);
-        cell.setBorder(Rectangle.NO_BORDER);
-		header.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-		header.addCell(cell);
-		
-		p = new Phrase("Maksymalna liczba punktów dla potrzeb egzaminu kierunkowego oraz WKR: 100 pkt", font);
-		cell = new PdfPCell(p);
-        cell.setBorder(Rectangle.NO_BORDER);
-		header.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-		header.addCell(cell);
-		
-		p = new Phrase("(Uzyskanie mniej ni\u017C 50 % mo\u017Cliwych punktów eliminuje studenta/kandydata z dalszego post\u0119powania)", font);
-		cell = new PdfPCell(p);
-        cell.setBorder(Rectangle.NO_BORDER);
-		header.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
-		header.addCell(cell);
+		header.addCell(p);
 		// p = new Phrase(day.toString(), font);
 		// header.addCell(p);
 		// header.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -292,7 +264,6 @@ public class OutputDocument {
 	static private void createAnswerCard(QBase qb) throws DocumentException,
 			IOException {
 		Document document = new Document(/* PageSize.A4.rotate() */);
-		document.setMargins(50, 50, 50, 200);
 		// step 2
 		PdfWriter writer = PdfWriter.getInstance(document,
 				new FileOutputStream("kartaodpowiedzi" + qb.getLetterOfSet()
@@ -317,7 +288,7 @@ public class OutputDocument {
 		table.setHeaderRows(1);
 
 		for (int i = 0; i < qb.getQuestions().size(); i++) {
-			cell = new PdfPCell(new Phrase(Integer.toString(i+1)));
+			cell = new PdfPCell(new Phrase(Integer.toString(i)));
 			table.addCell(cell);
 
 			cell = new PdfPCell();
@@ -469,9 +440,5 @@ public class OutputDocument {
 
 		}
 	}
-	
-	
-	private void addFooterTable(){
-		
-	}
+
 }

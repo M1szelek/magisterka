@@ -292,7 +292,6 @@ public class OutputDocument {
 	static private void createAnswerCard(QBase qb) throws DocumentException,
 			IOException {
 		Document document = new Document(/* PageSize.A4.rotate() */);
-		document.setMargins(50, 50, 50, 200);
 		// step 2
 		PdfWriter writer = PdfWriter.getInstance(document,
 				new FileOutputStream("kartaodpowiedzi" + qb.getLetterOfSet()
@@ -469,9 +468,5 @@ public class OutputDocument {
 
 		}
 	}
-	
-	
-	private void addFooterTable(){
-		
-	}
+
 }
