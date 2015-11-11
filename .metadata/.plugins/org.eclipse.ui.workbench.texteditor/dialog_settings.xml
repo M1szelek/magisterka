@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="Zestaw" key="selection"/>
+		<item value="addHeaderTable" key="selection"/>
 		<list key="findhistory">
+			<item value="addHeaderTable"/>
+			<item value="KARTA"/>
+			<item value="12"/>
 			<item value="Zestaw"/>
 			<item value="amount"/>
 			<item value="getAmount"/>
 			<item value="leading"/>
 			<item value="Listener"/>
-			<item value="listener"/>
-			<item value="setAmounts"/>
-			<item value="language"/>
 		</list>
 		<list key="replacehistory">
 		</list>

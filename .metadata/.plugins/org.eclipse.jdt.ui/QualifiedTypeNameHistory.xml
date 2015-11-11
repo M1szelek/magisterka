@@ -13,4 +13,5 @@
 <fullyQualifiedTypeName name="util.DeepCopy"/>
 <fullyQualifiedTypeName name="com.itextpdf.text.Rectangle"/>
 <fullyQualifiedTypeName name="com.itextpdf.text.Element"/>
+<fullyQualifiedTypeName name="util.OutputDocument"/>
 </qualifiedTypeNameHistroy>
