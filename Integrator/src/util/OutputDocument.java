@@ -34,6 +34,9 @@ public class OutputDocument {
 	private static float VARS_INDENT = 60;
 	private static float SYMBOL_INDENT = 30;
 	private static String LIST_SYMBOL = ")";
+	
+	private static float fixedHeightOfFoterTable;
+	private static PdfPTable footerTable;
 
 	static public class HeaderFooterPageEvent extends PdfPageEventHelper {
 		private char letter;
@@ -44,13 +47,13 @@ public class OutputDocument {
 		}
 
 		public void onStartPage(PdfWriter writer, Document document) {
-			Rectangle rect = writer.getBoxSize("art");
-			ColumnText.showTextAligned(writer.getDirectContent(),
-					Element.ALIGN_CENTER, new Phrase("Top Left"),
-					rect.getLeft(), rect.getTop(), 0);
-			ColumnText.showTextAligned(writer.getDirectContent(),
-					Element.ALIGN_CENTER, new Phrase("Top Right"),
-					rect.getRight(), rect.getTop(), 0);
+//			Rectangle rect = writer.getBoxSize("art");
+//			ColumnText.showTextAligned(writer.getDirectContent(),
+//					Element.ALIGN_CENTER, new Phrase("Top Left"),
+//					rect.getLeft(), rect.getTop(), 0);
+//			ColumnText.showTextAligned(writer.getDirectContent(),
+//					Element.ALIGN_CENTER, new Phrase("Top Right"),
+//					rect.getRight(), rect.getTop(), 0);
 		}
 
 		public void onEndPage(PdfWriter writer, Document document) {
@@ -172,7 +175,6 @@ public class OutputDocument {
 		document.open();
 		document.setMargins(50, 50, 50, 180);
 
-
 		PdfPTable table = new PdfPTable(4);
 		table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
 		PdfPCell cell = new PdfPCell();
@@ -221,7 +223,7 @@ public class OutputDocument {
 		int status = ColumnText.START_COLUMN;
 		while (ColumnText.hasMoreText(status)) {
 			if (count == 0) {
-				height = addHeaderTable(document, qb);
+				height = 92;
 			}
 			column.setSimpleColumn(x[count][0], document.bottom(), x[count][1],
 					document.top() - height - 10);
@@ -405,11 +407,10 @@ public class OutputDocument {
 		// step 3
 		document.open();
 		
-		OutputDocument.addFooterTable(writer);
-		
 		float heightOfHeader = addHeaderTable(document, qb);
-
-		//document.add(Chunk.NEWLINE);
+		
+		int numberOfLastPage = getNumberOfLastPage(qb);
+		int pageNumber = 0;
 
 		PdfPTable table = new PdfPTable(4);
 		table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -455,6 +456,10 @@ public class OutputDocument {
 			status = column.go();
 			if (++count > 1) {
 				count = 0;
+				pageNumber++;
+				if(pageNumber == numberOfLastPage){
+					OutputDocument.addFooterTable(writer);
+				}
 				document.newPage();
 			}
 		}
@@ -463,9 +468,16 @@ public class OutputDocument {
 
 		document.close();
 	}
+	
+	private static int getNumberOfLastPage(QBase qb){
+		int rowsOnPage = 60;
+		int amountOfQuestions = qb.getQuestions().size();
+		
+		return amountOfQuestions / rowsOnPage + 1;
+	}
 
 	private static void addFooterTable(PdfWriter writer) throws DocumentException, IOException {
-		PdfPTable table;
+		footerTable = new PdfPTable(3);
 		PdfContentByte canvas = writer.getDirectContent();
 		
 		BaseFont bf = BaseFont.createFont("Arial Unicode MS.ttf",
@@ -473,74 +485,45 @@ public class OutputDocument {
 		Font font = new Font(bf, 10);
 		Font fontSmall = new Font(bf, 8);
 		
-		float fixedHeight = 30f;
+		fixedHeightOfFoterTable = 30f;
 		
-		table = new PdfPTable(3);
-		table.setTotalWidth(495);
+		footerTable.setTotalWidth(495);
 		
-		table.setLockedWidth(true);
-		table.setWidths(new float[]{2, 1, 1});
+		footerTable.setLockedWidth(true);
+		footerTable.setWidths(new float[]{2, 1, 1});
+		
+		addFooterTableCell("Suma poprawnych odpowiedzi (1 sprawdzaj\u0105cy)", font, Element.ALIGN_MIDDLE);
+		addFooterTableEmptyCell();
+		addFooterTableCell("Podpis sprawdzaj\u0105cego", fontSmall, Element.ALIGN_BOTTOM);
+		
+		addFooterTableCell("Suma poprawnych odpowiedzi (2 sprawdzaj\u0105cy)", font, Element.ALIGN_MIDDLE);
+		addFooterTableEmptyCell();
+		addFooterTableCell("Podpis sprawdzaj\u0105cego", fontSmall, Element.ALIGN_BOTTOM);
+		
+		addFooterTableCell("WYNIK KO\u0143COWY", font, Element.ALIGN_MIDDLE);
+		addFooterTableEmptyCell();
+		addFooterTableCell("Podpis oceniaj\u0105cego", fontSmall, Element.ALIGN_BOTTOM);
+		
+		addFooterTableCell("UZYSKANA LICZBA PUNKTÓW\n(wynik koñcowy pomno¿ony przez 2)", font, Element.ALIGN_MIDDLE);
+		addFooterTableEmptyCell();
+		addFooterTableCell("Podpis oceniaj\u0105cego", fontSmall, Element.ALIGN_BOTTOM);
 
+		footerTable.writeSelectedRows(0, -1, 50, footerTable.getTotalHeight() + 38, canvas);
+
+	}
+	
+	private static void addFooterTableCell(String content, Font font, int verticalAlign){
 		PdfPCell cell;
 		cell = new PdfPCell(new Phrase(
-				"Suma poprawnych odpowiedzi (1 sprawdzaj\u0105cy)", font));
-		cell.setFixedHeight(fixedHeight);
-		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				content, font));
+		cell.setFixedHeight(fixedHeightOfFoterTable);
+		cell.setVerticalAlignment(verticalAlign);
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		table.addCell(cell);
-
-		cell = new PdfPCell();
-		table.addCell(cell);
-
-		cell = new PdfPCell(new Phrase("Podpis sprawdzaj\u0105cego", fontSmall));
-		cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
-		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		table.addCell(cell);
-
-		cell = new PdfPCell(new Phrase(
-				"Suma poprawnych odpowiedzi (2 sprawdzaj\u0105cy)", font));
-		cell.setFixedHeight(fixedHeight);
-		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		table.addCell(cell);
-
-		cell = new PdfPCell();
-		table.addCell(cell);
-
-		cell = new PdfPCell(new Phrase("Podpis sprawdzaj\u0105cego", fontSmall));
-		cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
-		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		table.addCell(cell);
-
-		cell = new PdfPCell(new Phrase("WYNIK KO\u0143COWY", font));
-		cell.setFixedHeight(fixedHeight);
-		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		table.addCell(cell);
-
-		cell = new PdfPCell();
-		table.addCell(cell);
-
-		cell = new PdfPCell(new Phrase("Podpis oceniaj\u0105cego", fontSmall));
-		cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
-		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		table.addCell(cell);
-
-		cell = new PdfPCell(new Phrase("UZYSKANA LICZBA PUNKTÓW (wynik koñcowy pomno¿ony przez 2)", font));
-		cell.setFixedHeight(fixedHeight);
-		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		table.addCell(cell);
-
-		cell = new PdfPCell();
-		table.addCell(cell);
-
-		cell = new PdfPCell(new Phrase("Podpis oceniaj\u0105cego", fontSmall));
-		cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
-		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		table.addCell(cell);
-
-		table.writeSelectedRows(0, -1, 50, table.getTotalHeight() + 38, canvas);
-
+		footerTable.addCell(cell);
+	}
+	
+	private static void addFooterTableEmptyCell(){
+		PdfPCell cell = new PdfPCell();
+		footerTable.addCell(cell);
 	}
 }
