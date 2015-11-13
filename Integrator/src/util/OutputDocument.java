@@ -223,6 +223,7 @@ public class OutputDocument {
 		int status = ColumnText.START_COLUMN;
 		while (ColumnText.hasMoreText(status)) {
 			if (count == 0) {
+				addCalqueHeaderTable(document, qb);
 				height = 92;
 			}
 			column.setSimpleColumn(x[count][0], document.bottom(), x[count][1],
@@ -284,6 +285,28 @@ public class OutputDocument {
 		cell.setBorder(Rectangle.NO_BORDER);
 		header.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
 		header.addCell(cell);
+
+		document.add(header);
+		return header.getTotalHeight();
+	}
+	
+	static private float addCalqueHeaderTable(Document document, QBase qb)
+			throws DocumentException, IOException {
+		PdfPTable header = new PdfPTable(1);
+
+		header.setWidthPercentage(100);
+		header.getDefaultCell().setBackgroundColor(BaseColor.WHITE);
+
+		BaseFont bf = BaseFont.createFont("Arial Unicode MS.ttf",
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+		Font font = new Font(bf, 12);
+
+		Phrase p = new Phrase("ZESTAW " + qb.getLetterOfSet(), font);
+		PdfPCell cell = new PdfPCell(p);
+		//cell.setBorder(Rectangle.NO_BORDER);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		header.addCell(cell);
+
 
 		document.add(header);
 		return header.getTotalHeight();
@@ -410,7 +433,9 @@ public class OutputDocument {
 		float heightOfHeader = addHeaderTable(document, qb);
 		
 		int numberOfLastPage = getNumberOfLastPage(qb);
-		int pageNumber = 0;
+		int pageNumber = 1;
+		
+		System.out.println(numberOfLastPage);
 
 		PdfPTable table = new PdfPTable(4);
 		table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -446,8 +471,13 @@ public class OutputDocument {
 		column.addElement(table);
 		int count = 0;
 		float height = 0;
+		boolean footerAdded = false;
 		int status = ColumnText.START_COLUMN;
 		while (ColumnText.hasMoreText(status)) {
+			if(pageNumber == numberOfLastPage && !footerAdded){
+				OutputDocument.addFooterTable(writer);
+				footerAdded = true;
+			}
 			if (count == 0) {
 				height = heightOfHeader;
 			}
@@ -457,10 +487,9 @@ public class OutputDocument {
 			if (++count > 1) {
 				count = 0;
 				pageNumber++;
-				if(pageNumber == numberOfLastPage){
-					OutputDocument.addFooterTable(writer);
-				}
+				
 				document.newPage();
+				//OutputDocument.addFooterTable(writer);
 			}
 		}
 
