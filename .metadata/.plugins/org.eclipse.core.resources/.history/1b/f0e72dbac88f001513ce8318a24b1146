@@ -110,7 +110,7 @@ public class OutputDocument {
 		// step 1
 				Document document = new Document();
 				// step 2
-				PdfWriter.getInstance(document, new FileOutputStream("previewquestion.pdf"));
+				PdfWriter.getInstance(document, new FileOutputStream("test.pdf"));
 				// step 3
 				document.open();
 				// step 4

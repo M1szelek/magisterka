@@ -55,7 +55,6 @@ import util.DeepCopy;
 import util.OutputDocument;
 
 import com.itextpdf.text.DocumentException;
-import javax.swing.border.CompoundBorder;
 
 
 
@@ -1120,7 +1119,8 @@ public class GUI extends JFrame {
 			}
 			
 		});
-		textArea_content.setBorder(new BevelBorder(BevelBorder.LOWERED, Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK));
+		textArea_content.setBorder(BorderFactory.createCompoundBorder(border, 
+		BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 		
 		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(58, 217, 551, 114);
@@ -1236,14 +1236,7 @@ public class GUI extends JFrame {
 		JButton btnNewButton_6 = new JButton(messages.getString("previewSingleQuestion"));
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Question q = qBase.getQuestions().get(currQ);
 				
-				try {
-					OutputDocument.previewSingleQuestion(q);
-				} catch (DocumentException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 		});
 		btnNewButton_6.setBounds(822, 626, 253, 23);
