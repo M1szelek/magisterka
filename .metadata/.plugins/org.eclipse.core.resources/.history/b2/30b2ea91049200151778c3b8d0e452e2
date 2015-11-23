@@ -203,7 +203,6 @@ public class GUI extends JFrame {
 			this.currQ++;
 			renderQuestion();
 		}
-		this.ignoreSave = false;
 		
 	}
 	
@@ -215,7 +214,6 @@ public class GUI extends JFrame {
 			this.currQ--;
 			renderQuestion();
 		}
-		this.ignoreSave = false;
 		
 	}
 	
@@ -223,7 +221,6 @@ public class GUI extends JFrame {
 		this.ignoreSave = true;
 		this.currQ = 0;
 		renderQuestion();
-		this.ignoreSave = false;
 		
 	}
 	
@@ -231,7 +228,6 @@ public class GUI extends JFrame {
 		this.ignoreSave = true;
 		this.currQ = qBase.getQuestions().size()-1;
 		renderQuestion();
-		this.ignoreSave = false;
 		
 	}
 	
@@ -390,7 +386,7 @@ public class GUI extends JFrame {
 		this.renderQuestion();
 	}
 	
-	public void saveAs(){				
+	public void saveAs(){				//zapisz jako
 		try
 	      {
 			JFileChooser fc = new JFileChooser(defaultPath);
@@ -763,9 +759,7 @@ public class GUI extends JFrame {
 			public void insertUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.setAuthor(textField_author.getText());
-				if(!ignoreSave){
-					notSaved();
-				}
+				notSaved();
 				//System.out.println("Added character to" + currQ);
 				
 			}
@@ -774,9 +768,7 @@ public class GUI extends JFrame {
 			public void removeUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.setAuthor(textField_author.getText());
-				if(!ignoreSave){
-					notSaved();
-				}
+				notSaved();
 				//System.out.println("Removed character from" + currQ);
 				
 			}
@@ -1131,9 +1123,7 @@ public class GUI extends JFrame {
 			public void insertUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).setContent(textArea_content.getText());
-				if(!ignoreSave){
-					notSaved();
-				}
+				notSaved();
 				//System.out.println("Added character to" + currQ);
 				
 			}
@@ -1142,9 +1132,7 @@ public class GUI extends JFrame {
 			public void removeUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).setContent(textArea_content.getText());
-				if(!ignoreSave){
-					notSaved();
-				}
+				notSaved();
 				//System.out.println("Removed character from" + currQ);
 				
 			}
@@ -1172,9 +1160,7 @@ public class GUI extends JFrame {
 			public void insertUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).getVarA().setContent(textArea_varA.getText());
-				if(!ignoreSave){
-					notSaved();
-				}
+				notSaved();
 				//System.out.println("Added character to" + currQ);
 				
 			}
@@ -1183,9 +1169,7 @@ public class GUI extends JFrame {
 			public void removeUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).getVarA().setContent(textArea_varA.getText());
-				if(!ignoreSave){
-					notSaved();
-				}
+				notSaved();
 				//System.out.println("Removed character from" + currQ);
 				
 			}
@@ -1213,9 +1197,7 @@ public class GUI extends JFrame {
 			public void insertUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).getVarB().setContent(textArea_varB.getText());
-				if(!ignoreSave){
-					notSaved();
-				}
+				notSaved();
 				//System.out.println("Added character to" + currQ);
 				
 			}
@@ -1224,9 +1206,7 @@ public class GUI extends JFrame {
 			public void removeUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).getVarB().setContent(textArea_varB.getText());
-				if(!ignoreSave){
-					notSaved();
-				}
+				notSaved();
 				//System.out.println("Removed character from" + currQ);
 				
 			}
@@ -1254,9 +1234,7 @@ public class GUI extends JFrame {
 			public void insertUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).getVarC().setContent(textArea_varC.getText());
-				if(!ignoreSave){
-					notSaved();
-				}
+				notSaved();
 				//System.out.println("Added character to" + currQ);
 				
 			}
@@ -1265,9 +1243,7 @@ public class GUI extends JFrame {
 			public void removeUpdate(DocumentEvent arg0) {
 				// TODO Auto-generated method stub
 				qBase.getQuestions().get(currQ).getVarC().setContent(textArea_varC.getText());
-				if(!ignoreSave){
-					notSaved();
-				}
+				notSaved();
 				//System.out.println("Removed character from" + currQ);
 				
 			}
