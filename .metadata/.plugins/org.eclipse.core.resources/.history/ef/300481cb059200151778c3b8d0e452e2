@@ -94,8 +94,8 @@ public class GUI extends JFrame {
 		this.superBase = new SuperBase();
 	
 		this.currFile = null;
-		this.newBase = true;
-		notSaved();
+	//	this.newBase = true;
+	//	notSaved();
 	//	renderAuthorName();
 	//	setQBaseSize();
 		renderTable();
@@ -127,7 +127,6 @@ public class GUI extends JFrame {
 	         out.writeObject(this.superBase);
 	         out.close();
 	         fileOut.close();
-	         this.saved();
 	         //this.saved();
 	         //System.out.printf("Serialized data is saved in /tmp/employee.ser");
 	      }catch(IOException i)
@@ -159,7 +158,6 @@ public class GUI extends JFrame {
 	         out.writeObject(this.superBase);
 	         out.close();
 	         fileOut.close();
-	         this.saved();
 	        // this.saved();
 	         //System.out.printf("Serialized data is saved in /tmp/employee.ser");
 	      }catch(IOException i)
@@ -201,7 +199,6 @@ public class GUI extends JFrame {
 		    // this.saved();
 	         renderTable = true;
 	         renderTable();
-	         saved();
 	      }catch(IOException i)
 	      {
 	         i.printStackTrace();
@@ -220,16 +217,16 @@ public class GUI extends JFrame {
 	public void notSaved(){
 		this.saved = false;
 		if(this.newBase == false){
-			this.setTitle(currFile.getName() + "* - Integrator pyta\u0144 egzaminacyjnych");
+			this.setTitle(currFile.getName() + "* - Creator pyta\u0144 egzaminacyjnych");
 		}else{
-			this.setTitle("NewBase* - Integrator pyta\u0144 egzaminacyjnych");
+			this.setTitle("NewBase* - Creator pyta\u0144 egzaminacyjnych");
 		}
 	}
 	
 	public void saved(){
 		this.saved = true;
 		this.newBase = false;
-		this.setTitle(currFile.getName() + " - Integrator pyta\u0144 egzaminacyjnych");
+		this.setTitle(currFile.getName() + " - Creator pyta\u0144 egzaminacyjnych");
 	}
 	
 	public void addBase(){
@@ -263,7 +260,7 @@ public class GUI extends JFrame {
 	         renderTable = true;
 	         renderTable();
 		   
-		     this.notSaved();
+		     //this.saved();
 	      }catch(IOException i)
 	      {
 	         i.printStackTrace();
@@ -304,7 +301,6 @@ public class GUI extends JFrame {
 		}
 		renderTable = true;
 		renderTable();
-		this.notSaved();
 	}
 	
 	public int calcTotal(){
@@ -357,19 +353,35 @@ public class GUI extends JFrame {
         //return config;
 	}
 	
-	public void setLang(String lang, String region) throws IOException{
-		if(config.getLang() == lang){
+	public void setEnglish() throws IOException{
+		if(config.getLang() == "en"){
 			return;
 		}
 		
-		config = new Config(lang,region);
+		config = new Config("en","US");
 		File file = new File("config");
 		FileOutputStream fileOut = new FileOutputStream(file);
         ObjectOutputStream out = new ObjectOutputStream(fileOut);
         out.writeObject(config);
         out.close();
         fileOut.close();
-        System.out.println("Lang changed to " + lang.toUpperCase());
+        System.out.println("Lang changed to EN");
+        JOptionPane.showMessageDialog(null, messages.getString("changeLang"));
+	}
+	
+	public void setPolish() throws IOException{
+		if(config.getLang() == "pl"){
+			return;
+		}
+		
+		config = new Config("pl","PL");
+		File file = new File("config");
+		FileOutputStream fileOut = new FileOutputStream(file);
+        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        out.writeObject(config);
+        out.close();
+        fileOut.close();
+        System.out.println("Lang changed to PL");
         JOptionPane.showMessageDialog(null, messages.getString("changeLang"));
 	}
 
@@ -476,7 +488,7 @@ public class GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					setLang("en","US");
+					setEnglish();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -493,7 +505,7 @@ public class GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					setLang("pl","PL");
+					setPolish();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -657,8 +669,6 @@ public class GUI extends JFrame {
 				}
 				
 				renderTable = false;
-				
-				notSaved();
 				
 			}
 		
