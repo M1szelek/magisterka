@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 //import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -19,8 +21,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -38,7 +38,6 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
@@ -55,7 +54,6 @@ import util.DeepCopy;
 import util.OutputDocument;
 
 import com.itextpdf.text.DocumentException;
-import javax.swing.border.CompoundBorder;
 
 
 
@@ -63,16 +61,18 @@ import javax.swing.border.CompoundBorder;
 
 public class GUI extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textField_name;
 	private JTextField textField_author;
 	private JTextField textField_profile;
 	private JTextField textField_subjectcode;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
-	
 	private final JLabel lblqsize = new JLabel("/ 1");
 	
-	private String defaultPath = "C:\\Users\\Miszelek\\Desktop";
+	private String defaultPath = "";
 	private FileFilter fileFilter = new FileNameExtensionFilter("Creator file", "creator");
 	
 	//private JFileChooser fc;
@@ -123,6 +123,7 @@ public class GUI extends JFrame {
 				try {
 					GUI frame = new GUI();
 					frame.setVisible(true);
+					frame.setDefaultCloseOperation (JFrame.DO_NOTHING_ON_CLOSE);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -533,6 +534,21 @@ public class GUI extends JFrame {
         JOptionPane.showMessageDialog(null, messages.getString("changeLang"));
 	}
 	
+	public void exit(){
+		 int reply = JOptionPane.showConfirmDialog(this, messages.getString("exitConfirmation"), 
+			      null,      
+			      JOptionPane.YES_NO_OPTION, 
+			      JOptionPane.INFORMATION_MESSAGE);
+		 
+		 if(reply == JOptionPane.YES_OPTION){
+			 System.exit(0);
+		 }
+		 
+		 
+		
+		
+	}
+	
 	
 
 	/**
@@ -633,7 +649,8 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				System.exit(0);
+				
+				exit();
 			}
 			
 		});
@@ -989,9 +1006,7 @@ public class GUI extends JFrame {
 						tmpBase.shuffleVariants();
 						try {
 							OutputDocument.createDocument(tmpBase);
-							OutputDocument.createCalque2(tmpBase);
 						} catch (DocumentException | IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					
@@ -1024,8 +1039,6 @@ public class GUI extends JFrame {
 		lblIncorrect_1.setForeground(Color.RED);
 		lblIncorrect_1.setBounds(619, 516, 89, 14);
 		contentPane.add(lblIncorrect_1);
-		
-		Border border = BorderFactory.createLineBorder(Color.BLACK);
 		
 		textField_profile = new JTextField();
 		textField_profile.setBounds(783, 11, 292, 20);
@@ -1341,11 +1354,17 @@ public class GUI extends JFrame {
 	    });
 		contentPane.add(spinner_scaleVarC);
 		
-//		JScrollPane scroll = new JScrollPane (textArea_content, 
-//				   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-//		
-//		contentPane.add(scroll);
-		
 		this.newBase();
+		
+		this.addWindowListener(new WindowAdapter() {
+			   public void windowClosing(WindowEvent evt) {
+			     exit();
+			   }
+		});
+		
+		this.defaultPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+		
 	}
+		
+		
 }

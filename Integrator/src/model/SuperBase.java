@@ -42,6 +42,8 @@ public class SuperBase implements Serializable{
 		for(QBase qb: tests){
 			OutputDocument.createDocuments(qb);
 		}
+		
+		OutputDocument.createAnswerCard(tests.get(0));
 	}
 	
 	public void createSets(char setStartLetter, int count) throws DocumentException, IOException{
@@ -117,16 +119,25 @@ public class SuperBase implements Serializable{
 		
 	}
 	
-	private void setAllMaxAmountToTest(){
-		for(QBase qb: qbcoll){
+	private ArrayList<QBase> setAllMaxAmountToTest(){
+		@SuppressWarnings("unchecked")
+		ArrayList<QBase> qbcolldp = (ArrayList<QBase>)DeepCopy.copy(qbcoll);
+		
+		for(QBase qb: qbcolldp){
 			qb.setAmountToTest(qb.getQuestions().size());
 		}
+		
+		return qbcolldp;
 	}
 	
-	public void createDocumentForWeb() throws DocumentException, IOException{
-		setAllMaxAmountToTest();
-		QBase qb = createTest('A');
-		OutputDocument.createDocumentForWeb(qb);
+	public void createDocumentOfEntireBase() throws DocumentException, IOException{
+		
+		SuperBase tmpsb = new SuperBase();
+		
+		tmpsb.setQbcoll(setAllMaxAmountToTest());
+		tmpsb.setAllMaxAmountToTest();
+		QBase qb = tmpsb.createTest('A');
+		OutputDocument.createDocumentOfEntireBase(qb);
 		
 	}
 }

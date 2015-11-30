@@ -35,10 +35,10 @@ public class OutputDocument {
 	private static float SYMBOL_INDENT = 30;
 	private static String LIST_SYMBOL = ")";
 	
-	private static float fixedHeightOfFoterTable;
+	private static float fixedHeightOfFooterTable;
 	private static PdfPTable footerTable;
 
-	static public class HeaderFooterPageEvent extends PdfPageEventHelper {
+	static private class HeaderFooterPageEvent extends PdfPageEventHelper {
 		private char letter;
 
 		public HeaderFooterPageEvent(char letter) {
@@ -47,19 +47,12 @@ public class OutputDocument {
 		}
 
 		public void onStartPage(PdfWriter writer, Document document) {
-//			Rectangle rect = writer.getBoxSize("art");
-//			ColumnText.showTextAligned(writer.getDirectContent(),
-//					Element.ALIGN_CENTER, new Phrase("Top Left"),
-//					rect.getLeft(), rect.getTop(), 0);
-//			ColumnText.showTextAligned(writer.getDirectContent(),
-//					Element.ALIGN_CENTER, new Phrase("Top Right"),
-//					rect.getRight(), rect.getTop(), 0);
+
 		}
 
 		public void onEndPage(PdfWriter writer, Document document) {
 			Rectangle rect = writer.getBoxSize("art");
-			// ColumnText.showTextAligned(writer.getDirectContent(),Element.ALIGN_CENTER,
-			// new Phrase("Bottom Left"), rect.getLeft(), rect.getBottom(), 0);
+
 			ColumnText.showTextAligned(
 					writer.getDirectContent(),
 					Element.ALIGN_CENTER,
@@ -72,22 +65,14 @@ public class OutputDocument {
 		}
 	}
 
-	static public class HeaderFooterPageForWebEvent extends PdfPageEventHelper {
+	static private class HeaderFooterPageForEntireBaseEvent extends PdfPageEventHelper {
 
 		public void onStartPage(PdfWriter writer, Document document) {
-			// Rectangle rect = writer.getBoxSize("art");
-			// ColumnText.showTextAligned(writer.getDirectContent(),
-			// Element.ALIGN_CENTER, new Phrase("Top Left"),
-			// rect.getLeft(), rect.getTop(), 0);
-			// ColumnText.showTextAligned(writer.getDirectContent(),
-			// Element.ALIGN_CENTER, new Phrase("Top Right"),
-			// rect.getRight(), rect.getTop(), 0);
+
 		}
 
 		public void onEndPage(PdfWriter writer, Document document) {
 			Rectangle rect = writer.getBoxSize("art");
-			// ColumnText.showTextAligned(writer.getDirectContent(),Element.ALIGN_CENTER,
-			// new Phrase("Bottom Left"), rect.getLeft(), rect.getBottom(), 0);
 			ColumnText.showTextAligned(writer.getDirectContent(),
 					Element.ALIGN_CENTER, new Phrase(new Phrase(
 
@@ -100,25 +85,20 @@ public class OutputDocument {
 			IOException {
 		createQuestionsCard(qb);
 		createCalque(qb);
-		createAnswerCard(qb);
 	}
 
 	private static void createQuestionsCard(QBase qb) throws DocumentException,
 			IOException {
 
-		// step 1
 		Document document = new Document();
-		// step 2
 		PdfWriter writer = PdfWriter.getInstance(document,
-				new FileOutputStream("test" + qb.getLetterOfSet() + ".pdf"));
+				new FileOutputStream(qb.getProfile() + "zestaw" + qb.getLetterOfSet() + ".pdf"));
 		Rectangle rect = new Rectangle(30, 30, 550, 800);
 		writer.setBoxSize("art", rect);
-		// step 3
 		HeaderFooterPageEvent event = new HeaderFooterPageEvent(
 				qb.getLetterOfSet());
 		writer.setPageEvent(event);
 		document.open();
-		// step 4
 		BaseFont bf = BaseFont.createFont("Arial Unicode MS.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
@@ -303,7 +283,7 @@ public class OutputDocument {
 
 		Phrase p = new Phrase("ZESTAW " + qb.getLetterOfSet(), font);
 		PdfPCell cell = new PdfPCell(p);
-		//cell.setBorder(Rectangle.NO_BORDER);
+		
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		header.addCell(cell);
 
@@ -312,17 +292,17 @@ public class OutputDocument {
 		return header.getTotalHeight();
 	}
 
-	static public void createDocumentForWeb(QBase qb) throws DocumentException,
+	static public void createDocumentOfEntireBase(QBase qb) throws DocumentException,
 			IOException {
 	
 		Document document = new Document();
 	
 		PdfWriter writer = PdfWriter.getInstance(document,
-				new FileOutputStream("web.pdf"));
+				new FileOutputStream("entireBase.pdf"));
 		Rectangle rect = new Rectangle(30, 30, 550, 800);
 		writer.setBoxSize("art", rect);
 	
-		HeaderFooterPageForWebEvent event = new HeaderFooterPageForWebEvent();
+		HeaderFooterPageForEntireBaseEvent event = new HeaderFooterPageForEntireBaseEvent();
 		writer.setPageEvent(event);
 		document.open();
 	
@@ -369,8 +349,8 @@ public class OutputDocument {
 				Image img = Image.getInstance(q.getImgInByte());
 				img.scalePercent((q.getImgScalePercent()));
 				contentItem.add(new ListItem(new Chunk(img, 0, 0, true)));
-			} // /\
-				// IMAGE SAVIOR!!
+			}
+
 			content.add(contentItem);
 
 			List vars = new List(List.ORDERED, List.ALPHABETICAL);
@@ -404,7 +384,7 @@ public class OutputDocument {
 			ListItem varC = new ListItem(q.getVarC().getContent(), font);
 			varC.setListSymbol(new Chunk("c)"));
 
-			if (q.getVarC().getImgInByte() != null) {
+			if (q.getVarC().getImgInByte() != null)	 {
 				Image img = Image.getInstance(q.getVarC().getImgInByte());
 				img.scalePercent((q.getVarC().getImgScalePercent()));
 				varC.add(new ListItem(new Chunk(img, 0, 0, true)));
@@ -419,15 +399,15 @@ public class OutputDocument {
 		}
 	}
 
-	static private void createAnswerCard(QBase qb) throws DocumentException,
+	public static void createAnswerCard(QBase qb) throws DocumentException,
 			IOException {
 		Document document = new Document();
 		document.setMargins(50, 50, 50, 180);
-		// step 2
+	
 		PdfWriter writer = PdfWriter.getInstance(document,
-				new FileOutputStream("kartaodpowiedzi" + qb.getLetterOfSet()
+				new FileOutputStream("kartaodpowiedzi" + qb.getProfile()
 						+ ".pdf"));
-		// step 3
+	
 		document.open();
 		
 		float heightOfHeader = addHeaderTable(document, qb);
@@ -489,7 +469,6 @@ public class OutputDocument {
 				pageNumber++;
 				
 				document.newPage();
-				//OutputDocument.addFooterTable(writer);
 			}
 		}
 
@@ -514,7 +493,7 @@ public class OutputDocument {
 		Font font = new Font(bf, 10);
 		Font fontSmall = new Font(bf, 8);
 		
-		fixedHeightOfFoterTable = 30f;
+		fixedHeightOfFooterTable = 30f;
 		
 		footerTable.setTotalWidth(495);
 		
@@ -545,7 +524,7 @@ public class OutputDocument {
 		PdfPCell cell;
 		cell = new PdfPCell(new Phrase(
 				content, font));
-		cell.setFixedHeight(fixedHeightOfFoterTable);
+		cell.setFixedHeight(fixedHeightOfFooterTable);
 		cell.setVerticalAlignment(verticalAlign);
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		footerTable.addCell(cell);

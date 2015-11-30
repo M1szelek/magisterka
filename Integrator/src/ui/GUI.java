@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -61,15 +63,13 @@ public class GUI extends JFrame {
 	private JTextField txt_letterofset;
 	private JLabel lblTotal;
 	
-	private boolean saved = false;
-	private boolean ignoreSave = false;
 	private boolean newBase = true;
 	
 	private boolean renderTable = false;
 	
 	private ResourceBundle messages;
 	
-	private String defaultPath = "C:\\Users\\Miszelek\\Desktop";
+	private String defaultPath = "";
 	
 	Config config;
 	
@@ -83,6 +83,7 @@ public class GUI extends JFrame {
 				try {
 					GUI frame = new GUI();
 					frame.setVisible(true);
+					frame.setDefaultCloseOperation (JFrame.DO_NOTHING_ON_CLOSE);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -218,7 +219,6 @@ public class GUI extends JFrame {
 	}
 	
 	public void notSaved(){
-		this.saved = false;
 		if(this.newBase == false){
 			this.setTitle(currFile.getName() + "* - Integrator pyta\u0144 egzaminacyjnych");
 		}else{
@@ -227,7 +227,6 @@ public class GUI extends JFrame {
 	}
 	
 	public void saved(){
-		this.saved = true;
 		this.newBase = false;
 		this.setTitle(currFile.getName() + " - Integrator pyta\u0144 egzaminacyjnych");
 	}
@@ -372,6 +371,21 @@ public class GUI extends JFrame {
         System.out.println("Lang changed to " + lang.toUpperCase());
         JOptionPane.showMessageDialog(null, messages.getString("changeLang"));
 	}
+	
+	public void exit(){
+		 int reply = JOptionPane.showConfirmDialog(this, messages.getString("exitConfirmation"), 
+			      null,      
+			      JOptionPane.YES_NO_OPTION, 
+			      JOptionPane.INFORMATION_MESSAGE);
+		 
+		 if(reply == JOptionPane.YES_OPTION){
+			 System.exit(0);
+		 }
+		 
+		 
+		
+		
+	}
 
 	/**
 	 * Create the frame.
@@ -506,7 +520,7 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				System.exit(0);
+				exit();
 			}
 			
 		});
@@ -581,10 +595,11 @@ public class GUI extends JFrame {
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] {
 				String.class, String.class, String.class, String.class, Integer.class, Integer.class, Boolean.class
 			};
-			public Class getColumnClass(int columnIndex) {
+			public Class<?> getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 		});
@@ -595,20 +610,18 @@ public class GUI extends JFrame {
 				deleteSelected();
 			}
 		});
-		btnDeleteSelected.setBounds(195, 11, 175, 23);
+		btnDeleteSelected.setBounds(815, 11, 175, 23);
 		contentPane.add(btnDeleteSelected);
 		
 		JButton btnGenerate = new JButton(messages.getString("generateSets"));
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setAmounts();
-				//superBase.createTest((Integer)spinner_groups.getValue());
-				//superBase.createTest('a');
+
 				try {
 					char letter = txt_letterofset.getText().charAt(0);
 					superBase.createSets(letter, (Integer)spinner_groups.getValue());
 				} catch (DocumentException | IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -634,7 +647,7 @@ public class GUI extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					superBase.createDocumentForWeb();
+					superBase.createDocumentOfEntireBase();
 				} catch (DocumentException | IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -664,14 +677,13 @@ public class GUI extends JFrame {
 		
 		});
 		
-		/*final JCheckBox checkBox = new JCheckBox();
-		table.getColumn("Delete").setCellRenderer(new DefaultTableCellRenderer() {
-		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
-		    {
-		      checkBox.setSelected(((Boolean)value).booleanValue()) ;
-		      return checkBox;
-		    }
-		});*/
+		this.addWindowListener(new WindowAdapter() {
+			   public void windowClosing(WindowEvent evt) {
+			     exit();
+			   }
+		});
+		
+		this.defaultPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
 		
 		
 	}
