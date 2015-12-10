@@ -13,7 +13,7 @@ public class QBase implements Serializable {
 	private String author;
 	private String profile;						
 	private String subjectCode;
-	ArrayList<Question> questions;
+	private ArrayList<Question> questions;
 	
 	public QBase(String name, String author, String profile, String subjectCode) {
 		super();
