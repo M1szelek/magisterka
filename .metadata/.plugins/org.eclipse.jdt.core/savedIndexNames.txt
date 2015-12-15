@@ -2,8 +2,8 @@ INDEX VERSION 1.127+C:\Users\Miszelek\Dropbox\magisterka\.metadata\.plugins\org.
 3015671029.index
 3626931047.index
 384216248.index
-1144188029.index
 449615986.index
+1144188029.index
 2306618721.index
 728132027.index
 683184654.index

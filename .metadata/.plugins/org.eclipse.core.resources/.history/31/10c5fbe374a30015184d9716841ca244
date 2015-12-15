@@ -71,7 +71,7 @@ public class GUI extends JFrame {
 	
 	private String defaultPath = "";
 	
-	private Config config;
+	Config config;
 	
 
 	/**
@@ -91,7 +91,7 @@ public class GUI extends JFrame {
 		});
 	}
 	
-	private void newBase(){
+	public void newBase(){
 		this.superBase = new SuperBase();
 	
 		this.currFile = null;
@@ -102,7 +102,7 @@ public class GUI extends JFrame {
 		renderTable();
 	}
 	
-	private void saveAs(){				//zapisz jako
+	public void saveAs(){				//zapisz jako
 		try
 	      {
 			JFileChooser fc = new JFileChooser(this.defaultPath);
@@ -137,7 +137,7 @@ public class GUI extends JFrame {
 	      }
 	}
 	
-	private void setAmounts(){
+	public void setAmounts(){
 		DefaultTableModel model = (DefaultTableModel) table.getModel();	
 		for(int i = 0; i < superBase.getQbcoll().size(); i++){
 			
@@ -147,7 +147,7 @@ public class GUI extends JFrame {
 	}
 	
 	
-	private void save(){					//zapis pliku
+	public void save(){					//zapis pliku
 		try
 	      {
 			 if(this.currFile == null){				//jesli jeszcze plik nie powstal
@@ -169,7 +169,7 @@ public class GUI extends JFrame {
 	      }
 	}
 	
-	private void open(){				//ladowanie pliku
+	public void open(){				//ladowanie pliku
 	      try
 	      {
 	        JFileChooser fc = new JFileChooser(this.defaultPath);
@@ -218,7 +218,7 @@ public class GUI extends JFrame {
 	      
 	}
 	
-	private void notSaved(){
+	public void notSaved(){
 		if(this.newBase == false){
 			this.setTitle(currFile.getName() + "* - Integrator pyta\u0144 egzaminacyjnych");
 		}else{
@@ -226,12 +226,12 @@ public class GUI extends JFrame {
 		}
 	}
 	
-	private void saved(){
+	public void saved(){
 		this.newBase = false;
 		this.setTitle(currFile.getName() + " - Integrator pyta\u0144 egzaminacyjnych");
 	}
 	
-	private void addBase(){
+	public void addBase(){
 		try
 	      {
 	    	JFileChooser fc = new JFileChooser("C:\\Users\\Miszelek\\Desktop");    //TODO: ZMIENIC FINALNIE!!!!
@@ -275,7 +275,7 @@ public class GUI extends JFrame {
 	      }
 	}
 	
-	private void renderTable(){
+	public void renderTable(){
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		model.setRowCount(0);
 		
@@ -287,7 +287,7 @@ public class GUI extends JFrame {
 		setTotal();
 	}
 	
-	private void deleteSelected(){
+	public void deleteSelected(){
 		DefaultTableModel model = (DefaultTableModel) table.getModel();		
 		for(int i = 0; i < superBase.getQbcoll().size(); i++){
 			if((boolean)model.getValueAt(i, 6)){
@@ -306,7 +306,7 @@ public class GUI extends JFrame {
 		this.notSaved();
 	}
 	
-	private int calcTotal(){
+	public int calcTotal(){
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		
 		int res = 0;
@@ -327,12 +327,12 @@ public class GUI extends JFrame {
 		return res;
 	}
 	
-	private void setTotal(){
+	public void setTotal(){
 		this.lblTotal.setText(messages.getString("total") + ": " + calcTotal());
 		
 	}
 	
-	private void loadConfig() throws IOException, ClassNotFoundException{
+	public void loadConfig() throws IOException, ClassNotFoundException{
 		//Config config;
 		
 		File file = new File("config");
@@ -356,7 +356,7 @@ public class GUI extends JFrame {
         //return config;
 	}
 	
-	private void setLang(String lang, String region) throws IOException{
+	public void setLang(String lang, String region) throws IOException{
 		if(config.getLang() == lang){
 			return;
 		}
@@ -372,7 +372,7 @@ public class GUI extends JFrame {
         JOptionPane.showMessageDialog(null, messages.getString("changeLang"));
 	}
 	
-	private void exit(){
+	public void exit(){
 		 int reply = JOptionPane.showConfirmDialog(this, messages.getString("exitConfirmation"), 
 			      null,      
 			      JOptionPane.YES_NO_OPTION, 
@@ -392,7 +392,7 @@ public class GUI extends JFrame {
 	 * @throws IOException 
 	 * @throws ClassNotFoundException 
 	 */
-	private GUI() throws ClassNotFoundException, IOException {
+	public GUI() throws ClassNotFoundException, IOException {
 		superBase = new SuperBase();
 		
 		 Locale currentLocale;

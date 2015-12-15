@@ -71,7 +71,7 @@ public class GUI extends JFrame {
 	
 	private String defaultPath = "";
 	
-	private Config config;
+	Config config;
 	
 
 	/**

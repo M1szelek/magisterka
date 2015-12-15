@@ -13,9 +13,9 @@ public class QBase implements Serializable {
 	private String author;
 	private String profile;						
 	private String subjectCode;					
-	private ArrayList<Question> questions;
+	ArrayList<Question> questions;
 	
-	private char letterOfSet;
+	char letterOfSet;
 	
 	public char getLetterOfSet() {
 		return letterOfSet;
