@@ -234,7 +234,7 @@ public class GUI extends JFrame {
 	private void addBase(){
 		try
 	      {
-	    	JFileChooser fc = new JFileChooser("C:\\Users\\Miszelek\\Desktop");    //TODO: ZMIENIC FINALNIE!!!!
+	    	JFileChooser fc = new JFileChooser(defaultPath);
 	    	FileFilter fileFilter = new FileNameExtensionFilter("Creator file", "creator");
 	    	fc.setFileFilter(fileFilter);
 			fc.setMultiSelectionEnabled(true);
@@ -402,7 +402,7 @@ public class GUI extends JFrame {
 
 	     messages = ResourceBundle.getBundle("i18n.MessagesBundle", currentLocale);
 		
-		setTitle("Integrator pytañ egzaminacyjnych");
+		setTitle("Integrator pyta\u0144 egzaminacyjnych");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1016, 664);
 		
