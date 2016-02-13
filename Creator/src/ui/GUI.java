@@ -186,7 +186,7 @@ public class GUI extends JFrame {
 		this.setTitle(currFile.getName() + " - Creator pyta\u0144 egzaminacyjnych");
 	}
 	
-	private void renderAuthorName(){
+	private void renderBaseInfo(){
 		textField_name.setText(qBase.getName());
 		textField_author.setText(qBase.getAuthor());
 		textField_profile.setText(qBase.getProfile());
@@ -283,7 +283,7 @@ public class GUI extends JFrame {
 		this.currFile = null;
 		this.newBase = true;
 		notSaved();
-		renderAuthorName();
+		renderBaseInfo();
 		setQBaseSize();
 		renderQuestion();
 	}
@@ -477,7 +477,7 @@ public class GUI extends JFrame {
 	         setQBaseSize();
 		     currQ = 0;
 		     renderQuestion();
-		     renderAuthorName();
+		     renderBaseInfo();
 		     this.saved();
 	      }catch(IOException i)
 	      {

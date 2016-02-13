@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="pyta" key="selection"/>
+		<item value="renderAuthorName" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="renderAuthorName"/>
+			<item value="setQBaseSize"/>
+			<item value="open"/>
+			<item value="newBase"/>
+			<item value="menuBar"/>
 			<item value="pyta"/>
 			<item value="public"/>
 			<item value="web"/>
-			<item value="web.pdf"/>
-			<item value="CONTENT"/>
-			<item value="exit"/>
-			<item value="close"/>
-			<item value="System"/>
 		</list>
 		<list key="replacehistory">
 			<item value="private"/>
