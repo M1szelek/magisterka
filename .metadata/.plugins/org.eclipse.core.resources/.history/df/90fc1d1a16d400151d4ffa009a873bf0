@@ -1112,6 +1112,7 @@ public class GUI extends JFrame {
 		scrollPane.setBounds(58, 73, 551, 133);
 		contentPane.add(scrollPane);
 		
+		//JTextArea textArea_content = new JTextArea();
 		textArea_content.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
 		textArea_content.getDocument().addDocumentListener(new DocumentListener(){
 

@@ -824,7 +824,7 @@ public class GUI extends JFrame {
 				previousQuestion();
 			}
 		});
-		btn_prev.setBounds(157, 592, 103, 23);
+		btn_prev.setBounds(157, 592, 89, 23);
 		contentPane.add(btn_prev);
 		
 		JButton btn_next = new JButton(">");
@@ -989,12 +989,12 @@ public class GUI extends JFrame {
 				jumpTo((Integer)spinner.getValue());
 			}
 		});
-		btnJumpTo.setBounds(157, 626, 103, 23);
+		btnJumpTo.setBounds(157, 626, 89, 23);
 		contentPane.add(btnJumpTo);
 		
 		spinner = new JSpinner();
 		spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
-		spinner.setBounds(270, 627, 40, 20);
+		spinner.setBounds(256, 627, 40, 20);
 		contentPane.add(spinner);
 		
 		JButton btnGenerate = new JButton(messages.getString("previewEntireBase"));
@@ -1112,6 +1112,7 @@ public class GUI extends JFrame {
 		scrollPane.setBounds(58, 73, 551, 133);
 		contentPane.add(scrollPane);
 		
+		//JTextArea textArea_content = new JTextArea();
 		textArea_content.setFont(new Font("Arial Unicode MS", Font.PLAIN, 20));
 		textArea_content.getDocument().addDocumentListener(new DocumentListener(){
 
