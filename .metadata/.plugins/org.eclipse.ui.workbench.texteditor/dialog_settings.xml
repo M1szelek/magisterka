@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="textArea_content" key="selection"/>
+		<item value="removeQuestion" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="removeQuestion"/>
+			<item value="remove"/>
+			<item value="addQuestion"/>
+			<item value="newQuestion"/>
+			<item value="renderQuestion"/>
 			<item value="textArea_content"/>
 			<item value="textArea"/>
 			<item value="renderAuthorName"/>
-			<item value="setQBaseSize"/>
-			<item value="open"/>
-			<item value="newBase"/>
-			<item value="menuBar"/>
-			<item value="pyta"/>
 		</list>
 		<list key="replacehistory">
 			<item value="private"/>
@@ -25,7 +25,7 @@
 		<item value="257" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="381" key="DIALOG_HEIGHT"/>
-		<item value="331" key="DIALOG_Y_ORIGIN"/>
+		<item value="387" key="DIALOG_Y_ORIGIN"/>
 		<item value="1031" key="DIALOG_X_ORIGIN"/>
 	</section>
 </section>
