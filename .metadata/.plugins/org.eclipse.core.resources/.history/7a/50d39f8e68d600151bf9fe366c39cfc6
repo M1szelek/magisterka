@@ -61,6 +61,9 @@ import com.itextpdf.text.DocumentException;
 
 public class GUI extends JFrame {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textField_name;
@@ -71,6 +74,8 @@ public class GUI extends JFrame {
 	
 	private String defaultPath = "";
 	private FileFilter fileFilter = new FileNameExtensionFilter("Creator file", "creator");
+	
+	//private JFileChooser fc;
 	
 	
 	private QBase qBase;
@@ -108,6 +113,10 @@ public class GUI extends JFrame {
 	
 	private Config config;
 	
+
+	/**
+	 * Launch the application.
+	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -136,7 +145,9 @@ public class GUI extends JFrame {
 		this.scrollPane_3.setViewportView(textArea_varC);
 		this.textArea_varC.setLineWrap(true);
 		this.textArea_varC.setText(q.getVarC().getContent());
-
+		//this.currQ = _currQ;
+		//dodajemy dla spinnera zawsze 1, zeby nie zaczynac od 0 pytania na HUDzie
+		//spinner.setValue(this.currQ+1);
 		this.label_current.setText(Integer.toString(this.currQ+1));
 		
 		this.imagePanel.setImage(q.getImg());
@@ -311,6 +322,7 @@ public class GUI extends JFrame {
 	
 	private void setImg(int choose) throws IOException{		//choose: 0 - content, 1 - varA, 2 - varB, 3 - varC
 		JFileChooser fc = new JFileChooser(defaultPath);
+		fc.setFileFilter(fileFilter);
 		
 		int returnVal = fc.showSaveDialog(GUI.this);
 		
@@ -318,7 +330,10 @@ public class GUI extends JFrame {
 		 
 		 if (returnVal == JFileChooser.APPROVE_OPTION) {
                file = fc.getSelectedFile();
+               //This is where a real application would open the file.
+               //log.append("Opening: " + file.getName() + "." + newline);
            } else {
+               //log.append("Open command cancelled by user." + newline);
            	return;
         }
 		 

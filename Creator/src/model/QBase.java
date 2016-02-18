@@ -56,29 +56,21 @@ public class QBase implements Serializable {
 	public void setContent(int i, String var){
 		if(i < questions.size())
 			questions.get(i).setContent(var);
-		else
-			System.out.println("Poza tablica");
 	}
 	
 	public void setVarA(int i, String var){
 		if(i < questions.size())
 			questions.get(i).setVarA(new QuestionVariant(var));
-		else
-			System.out.println("Poza tablica");
 	}
 	
 	public void setVarB(int i, String var){
 		if(i < questions.size())
 			questions.get(i).setVarB(new QuestionVariant(var));
-		else
-			System.out.println("Poza tablica");
 	}
 	
 	public void setVarC(int i, String var){
 		if(i < questions.size())
 			questions.get(i).setVarC(new QuestionVariant(var));
-		else
-			System.out.println("Poza tablica");
 	}
 	
 	public void removeQuestion(int i){
