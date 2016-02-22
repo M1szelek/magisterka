@@ -39,7 +39,7 @@ public class OutputDocument {
 
 		Font font = new Font(bf, 12);
 		
-		Paragraph title = new Paragraph("Wydruk testowy", font);
+		Paragraph title = new Paragraph("Podgl\u0105d testowy", font);
 		title.setAlignment(Element.ALIGN_CENTER);
 		
 		document.add(title);
@@ -128,7 +128,7 @@ public class OutputDocument {
 
 				Font font = new Font(bf, 12);
 				
-				Paragraph title = new Paragraph("Wydruk testowy", font);
+				Paragraph title = new Paragraph("Podgl\u0105d testowy", font);
 				title.setAlignment(Element.ALIGN_CENTER);
 				
 				document.add(title);
