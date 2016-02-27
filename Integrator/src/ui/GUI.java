@@ -97,8 +97,6 @@ public class GUI extends JFrame {
 		this.currFile = null;
 		this.newBase = true;
 		notSaved();
-	//	renderAuthorName();
-	//	setQBaseSize();
 		renderTable();
 	}
 	
@@ -182,10 +180,7 @@ public class GUI extends JFrame {
 	    	 if (returnVal == JFileChooser.APPROVE_OPTION) {
 	                file = fc.getSelectedFile();
 	                this.currFile = file;
-	                //This is where a real application would open the file.
-	                //log.append("Opening: " + file.getName() + "." + newline);
 	            } else {
-	                //log.append("Open command cancelled by user." + newline);
 	            	return;
 	         }
 	    	  
@@ -194,12 +189,6 @@ public class GUI extends JFrame {
 	         this.superBase = (SuperBase) in.readObject();
 	         in.close();
 	         fileIn.close();
-	        // this.superBase();
-	        // setQBaseSize();
-		    // currQ = 0;
-		    // renderQuestion();
-		    // renderAuthorName();
-		    // this.saved();
 	         renderTable = true;
 	         renderTable();
 	         saved();

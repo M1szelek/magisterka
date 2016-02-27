@@ -92,7 +92,7 @@ public class OutputDocument {
 
 		Document document = new Document();
 		PdfWriter writer = PdfWriter.getInstance(document,
-				new FileOutputStream(qb.getProfile() + "zestaw" + qb.getLetterOfSet() + ".pdf"));
+				new FileOutputStream(qb.getProfile() + "_zestawpytan_" + qb.getLetterOfSet() + ".pdf"));
 		Rectangle rect = new Rectangle(30, 30, 550, 800);
 		writer.setBoxSize("art", rect);
 		HeaderFooterPageEvent event = new HeaderFooterPageEvent(
@@ -150,7 +150,7 @@ public class OutputDocument {
 		Document document = new Document();
 	
 		PdfWriter writer = PdfWriter.getInstance(document,
-				new FileOutputStream("kalka" + qb.getLetterOfSet() + ".pdf"));
+				new FileOutputStream(qb.getProfile() + "_kalka_" + qb.getLetterOfSet() + ".pdf"));
 	
 		document.open();
 		document.setMargins(50, 50, 50, 180);
@@ -405,8 +405,7 @@ public class OutputDocument {
 		document.setMargins(50, 50, 50, 180);
 	
 		PdfWriter writer = PdfWriter.getInstance(document,
-				new FileOutputStream("kartaodpowiedzi" + qb.getProfile()
-						+ ".pdf"));
+				new FileOutputStream(qb.getProfile() + "_kartaodpowiedzi.pdf"));
 	
 		document.open();
 		
