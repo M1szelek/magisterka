@@ -409,7 +409,10 @@ public class GUI extends JFrame {
 	                file = fc.getSelectedFile();
 	                file = new File(file.getAbsolutePath()+".creator");
 	                this.currFile = file;
+	                //This is where a real application would open the file.
+	                //log.append("Opening: " + file.getName() + "." + newline);
 	            } else {
+	                //log.append("Open command cancelled by user." + newline);
 	            	return;
 	         }
 			
@@ -419,6 +422,7 @@ public class GUI extends JFrame {
 	         out.close();
 	         fileOut.close();
 	         this.saved();
+	         //System.out.printf("Serialized data is saved in /tmp/employee.ser");
 	      }catch(IOException i)
 	      {
 	          i.printStackTrace();
@@ -534,6 +538,11 @@ public class GUI extends JFrame {
 	 * @throws ClassNotFoundException 
 	 */
 	private GUI() throws ClassNotFoundException, IOException {
+		//FileFilter fileFilter = new FileNameExtensionFilter("Creator file", "creator");
+		//fc = new JFileChooser("C:\\Users\\Miszelek\\Desktop");									//TODO: ZMIENIC FINALNIE!!!!
+		//fc.setFileFilter(fileFilter);
+		
+		//Config config = loadConfig();
 		
 		loadConfig();
 		

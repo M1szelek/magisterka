@@ -413,6 +413,8 @@ public class OutputDocument {
 		
 		int numberOfLastPage = getNumberOfLastPage(qb);
 		int pageNumber = 1;
+		
+		System.out.println(numberOfLastPage);
 
 		PdfPTable table = new PdfPTable(4);
 		table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);

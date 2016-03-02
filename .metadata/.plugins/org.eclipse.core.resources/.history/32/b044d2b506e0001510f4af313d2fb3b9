@@ -354,6 +354,7 @@ public class GUI extends JFrame {
         out.writeObject(config);
         out.close();
         fileOut.close();
+        System.out.println("Lang changed to " + lang.toUpperCase());
         JOptionPane.showMessageDialog(null, messages.getString("changeLang"));
 	}
 	

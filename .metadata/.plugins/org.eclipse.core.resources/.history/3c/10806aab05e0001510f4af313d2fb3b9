@@ -180,10 +180,7 @@ public class GUI extends JFrame {
 	    	 if (returnVal == JFileChooser.APPROVE_OPTION) {
 	                file = fc.getSelectedFile();
 	                this.currFile = file;
-	                //This is where a real application would open the file.
-	                //log.append("Opening: " + file.getName() + "." + newline);
 	            } else {
-	                //log.append("Open command cancelled by user." + newline);
 	            	return;
 	         }
 	    	  
@@ -192,12 +189,6 @@ public class GUI extends JFrame {
 	         this.superBase = (SuperBase) in.readObject();
 	         in.close();
 	         fileIn.close();
-	        // this.superBase();
-	        // setQBaseSize();
-		    // currQ = 0;
-		    // renderQuestion();
-		    // renderAuthorName();
-		    // this.saved();
 	         renderTable = true;
 	         renderTable();
 	         saved();
@@ -331,7 +322,6 @@ public class GUI extends JFrame {
 	}
 	
 	private void loadConfig() throws IOException, ClassNotFoundException{
-		//Config config;
 		
 		File file = new File("config");
 		
@@ -351,7 +341,6 @@ public class GUI extends JFrame {
         in.close();
         fileIn.close();
         
-        //return config;
 	}
 	
 	private void setLang(String lang, String region) throws IOException{

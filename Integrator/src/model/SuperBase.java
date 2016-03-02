@@ -56,8 +56,6 @@ public class SuperBase implements Serializable{
 		}
 		
 		generateDocuments(res);
-		
-		//return res;
 	}
 	
 	private QBase createTest(char setletter){

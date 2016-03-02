@@ -8,9 +8,6 @@ import javax.swing.JPanel;
 
 public class ImagePanel extends JPanel{
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private BufferedImage image;
 	private BufferedImage resizedImage;
@@ -26,7 +23,7 @@ public class ImagePanel extends JPanel{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(this.resizedImage, 0, 0, null); // see javadoc for more info on the parameters            
+        g.drawImage(this.resizedImage, 0, 0, null);         
     }
 
 	public BufferedImage getImage() {
@@ -62,7 +59,6 @@ public class ImagePanel extends JPanel{
 		
 		this.repaint();
 	 
-		//return resizedImage;
 	}
     
 
