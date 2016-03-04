@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Extract method &apos;private void generateSets()&apos; from &apos;ui.GUI.GUI().new ActionListener() {...}.actionPerformed()&apos; to &apos;ui.GUI&apos;&#x0D;&#x0A;- Original project: &apos;Integrator&apos;&#x0D;&#x0A;- Method name: &apos;generateSets&apos;&#x0D;&#x0A;- Destination type: &apos;ui.GUI&apos;&#x0D;&#x0A;- Declared visibility: &apos;private&apos;" comments="false" description="Extract method &apos;generateSets&apos;" destination="1" exceptions="false" flags="786434" id="org.eclipse.jdt.ui.extract.method" input="/src&lt;ui{GUI.java" name="generateSets" replace="false" selection="16511 240" stamp="1457037109356" version="1.0" visibility="2"/>
+</session>

@@ -129,7 +129,7 @@ public class GUI extends JFrame {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();	
 		for(int i = 0; i < superBase.getQbcoll().size(); i++){
 			
-				superBase.getQbcoll().get(i).setAmountToTest((int)model.getValueAt(i,5));				
+				superBase.getQbcoll().get(i).setAmountToTest((int)model.getValueAt(i,5));;				
 			
 		}
 	}
@@ -149,6 +149,8 @@ public class GUI extends JFrame {
 	         out.close();
 	         fileOut.close();
 	         this.saved();
+	        // this.saved();
+	         //System.out.printf("Serialized data is saved in /tmp/employee.ser");
 	      }catch(IOException i)
 	      {
 	          i.printStackTrace();
@@ -298,6 +300,8 @@ public class GUI extends JFrame {
 			if(val > 0 && val <= size){
 				res += val;
 			}
+				
+			//(int)model.getValueAt(i, 5);
 			
 		}
 		
@@ -358,17 +362,6 @@ public class GUI extends JFrame {
 		 
 		
 		
-	}
-
-	private void generateSets() {
-		setAmounts();
-
-		try {
-			char letter = txt_letterofset.getText().charAt(0);
-			superBase.createSets(letter, (Integer)spinner_groups.getValue());
-		} catch (DocumentException | IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -596,7 +589,14 @@ public class GUI extends JFrame {
 		JButton btnGenerate = new JButton(messages.getString("generateSets"));
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				generateSets();
+				setAmounts();
+
+				try {
+					char letter = txt_letterofset.getText().charAt(0);
+					superBase.createSets(letter, (Integer)spinner_groups.getValue());
+				} catch (DocumentException | IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		btnGenerate.setBounds(520, 575, 193, 23);

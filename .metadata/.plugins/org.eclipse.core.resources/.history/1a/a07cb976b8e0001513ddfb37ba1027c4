@@ -57,6 +57,7 @@ public class GUI extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private SuperBase superBase;
+	//private JFileChooser fc;
 	private File currFile;
 	private JSpinner spinner_groups = new JSpinner();
 	private JTextField txt_letterofset;
@@ -72,6 +73,10 @@ public class GUI extends JFrame {
 	
 	private Config config;
 	
+
+	/**
+	 * Launch the application.
+	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -95,7 +100,7 @@ public class GUI extends JFrame {
 		renderTable();
 	}
 	
-	private void saveAs(){
+	private void saveAs(){				//zapisz jako
 		try
 	      {
 			JFileChooser fc = new JFileChooser(this.defaultPath);
@@ -109,7 +114,10 @@ public class GUI extends JFrame {
 	                file = fc.getSelectedFile();
 	                file = new File(file.getAbsolutePath()+".integrator");
 	                this.currFile = file;
+	                //This is where a real application would open the file.
+	                //log.append("Opening: " + file.getName() + "." + newline);
 	            } else {
+	                //log.append("Open command cancelled by user." + newline);
 	            	return;
 	         }
 			
@@ -119,6 +127,8 @@ public class GUI extends JFrame {
 	         out.close();
 	         fileOut.close();
 	         this.saved();
+	         //this.saved();
+	         //System.out.printf("Serialized data is saved in /tmp/employee.ser");
 	      }catch(IOException i)
 	      {
 	          i.printStackTrace();
@@ -129,7 +139,7 @@ public class GUI extends JFrame {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();	
 		for(int i = 0; i < superBase.getQbcoll().size(); i++){
 			
-				superBase.getQbcoll().get(i).setAmountToTest((int)model.getValueAt(i,5));				
+				superBase.getQbcoll().get(i).setAmountToTest((int)model.getValueAt(i,5));;				
 			
 		}
 	}
@@ -149,6 +159,8 @@ public class GUI extends JFrame {
 	         out.close();
 	         fileOut.close();
 	         this.saved();
+	        // this.saved();
+	         //System.out.printf("Serialized data is saved in /tmp/employee.ser");
 	      }catch(IOException i)
 	      {
 	          i.printStackTrace();
@@ -221,7 +233,11 @@ public class GUI extends JFrame {
 	    	 
 	    	 if (returnVal == JFileChooser.APPROVE_OPTION) {
 	                files = fc.getSelectedFiles();
+	                
+	                //This is where a real application would open the file.
+	                //log.append("Opening: " + file.getName() + "." + newline);
 	            } else {
+	                //log.append("Open command cancelled by user." + newline);
 	            	return;
 	         }
 	    	  
@@ -254,13 +270,7 @@ public class GUI extends JFrame {
 		
 		for(QBase qb: superBase.getQbcoll()){
 			renderTable = true;
-			model.addRow(new Object[]{qb.getName(),
-					qb.getAuthor(),
-					qb.getProfile(),
-					qb.getSubjectCode(),
-					qb.getQuestions().size(),
-					qb.getAmountToTest(),
-					new Boolean(false)});
+			model.addRow(new Object[]{qb.getName(), qb.getAuthor(), qb.getProfile(), qb.getSubjectCode(), qb.getQuestions().size(), qb.getAmountToTest(), new Boolean(false)});
 		}
 		
 		setTotal();
@@ -298,6 +308,8 @@ public class GUI extends JFrame {
 			if(val > 0 && val <= size){
 				res += val;
 			}
+				
+			//(int)model.getValueAt(i, 5);
 			
 		}
 		
@@ -358,17 +370,6 @@ public class GUI extends JFrame {
 		 
 		
 		
-	}
-
-	private void generateSets() {
-		setAmounts();
-
-		try {
-			char letter = txt_letterofset.getText().charAt(0);
-			superBase.createSets(letter, (Integer)spinner_groups.getValue());
-		} catch (DocumentException | IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -541,7 +542,9 @@ public class GUI extends JFrame {
 		contentPane.add(scrollPane);
 		
 		table = new JTable(){
-
+			/**
+			 * 
+			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -573,7 +576,9 @@ public class GUI extends JFrame {
 					messages.getString("subject"), messages.getString("teacher"), messages.getString("profile"), messages.getString("code"), messages.getString("amountInBase"), messages.getString("amountToTest"), messages.getString("delete")
 			}
 		) {
-
+			/**
+			 * 
+			 */
 			private static final long serialVersionUID = 1L;
 			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] {
@@ -596,7 +601,14 @@ public class GUI extends JFrame {
 		JButton btnGenerate = new JButton(messages.getString("generateSets"));
 		btnGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				generateSets();
+				setAmounts();
+
+				try {
+					char letter = txt_letterofset.getText().charAt(0);
+					superBase.createSets(letter, (Integer)spinner_groups.getValue());
+				} catch (DocumentException | IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		btnGenerate.setBounds(520, 575, 193, 23);

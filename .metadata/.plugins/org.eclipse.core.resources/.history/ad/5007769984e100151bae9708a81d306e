@@ -129,7 +129,7 @@ public class GUI extends JFrame {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();	
 		for(int i = 0; i < superBase.getQbcoll().size(); i++){
 			
-				superBase.getQbcoll().get(i).setAmountToTest((int)model.getValueAt(i,5));				
+				superBase.getQbcoll().get(i).setAmountToTest((int)model.getValueAt(i,5));;				
 			
 		}
 	}
