@@ -9,15 +9,27 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -42,11 +54,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import com.itextpdf.text.DocumentException;
+
 import model.QBase;
 import model.SuperBase;
 import util.Config;
-
-import com.itextpdf.text.DocumentException;
 
 public class GUI extends JFrame {
 
@@ -72,6 +84,10 @@ public class GUI extends JFrame {
 	
 	private Config config;
 	
+	private static final String password = "I98Xr4CHvG";
+	private SecretKey secretKey;
+	private Cipher desCipher;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -95,7 +111,7 @@ public class GUI extends JFrame {
 		renderTable();
 	}
 	
-	private void saveAs(){
+	private void saveAs() throws InvalidKeyException{
 		try
 	      {
 			JFileChooser fc = new JFileChooser(this.defaultPath);
@@ -112,9 +128,11 @@ public class GUI extends JFrame {
 	            } else {
 	            	return;
 	         }
-			
+			 this.desCipher.init(Cipher.ENCRYPT_MODE, this.secretKey);
 			 FileOutputStream fileOut = new FileOutputStream(file);
-	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			 BufferedOutputStream bos = new BufferedOutputStream(fileOut);
+			 CipherOutputStream cos = new CipherOutputStream(bos, this.desCipher);
+	         ObjectOutputStream out = new ObjectOutputStream(cos);
 	         out.writeObject(this.superBase);
 	         out.close();
 	         fileOut.close();
@@ -135,16 +153,18 @@ public class GUI extends JFrame {
 	}
 	
 	
-	private void save(){					//zapis pliku
+	private void save() throws InvalidKeyException{					//zapis pliku
 		try
 	      {
 			 if(this.currFile == null){				//jesli jeszcze plik nie powstal
 				 saveAs();
 				 return;
 			 }
-			
+			 this.desCipher.init(Cipher.ENCRYPT_MODE, this.secretKey);
 			 FileOutputStream fileOut = new FileOutputStream(this.currFile);
-	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			 BufferedOutputStream bos = new BufferedOutputStream(fileOut);
+			 CipherOutputStream cos = new CipherOutputStream(bos, this.desCipher);
+	         ObjectOutputStream out = new ObjectOutputStream(cos);
 	         out.writeObject(this.superBase);
 	         out.close();
 	         fileOut.close();
@@ -155,7 +175,7 @@ public class GUI extends JFrame {
 	      }
 	}
 	
-	private void open(){				//ladowanie pliku
+	private void open() throws InvalidKeyException{				//ladowanie pliku
 	      try
 	      {
 	        JFileChooser fc = new JFileChooser(this.defaultPath);
@@ -171,9 +191,11 @@ public class GUI extends JFrame {
 	            } else {
 	            	return;
 	         }
-	    	  
+	    	 desCipher.init(Cipher.DECRYPT_MODE, secretKey);
 	    	 FileInputStream fileIn = new FileInputStream(file);
-	         ObjectInputStream in = new ObjectInputStream(fileIn);
+	    	 BufferedInputStream bis = new BufferedInputStream(fileIn);
+	    	 CipherInputStream cis = new CipherInputStream(bis, desCipher);
+	         ObjectInputStream in = new ObjectInputStream(cis);
 	         this.superBase = (SuperBase) in.readObject();
 	         in.close();
 	         fileIn.close();
@@ -208,45 +230,47 @@ public class GUI extends JFrame {
 		this.setTitle(currFile.getName() + " - Integrator pyta\u0144 egzaminacyjnych");
 	}
 	
-	private void addBase(){
-		try
-	      {
-	    	JFileChooser fc = new JFileChooser(defaultPath);
-	    	FileFilter fileFilter = new FileNameExtensionFilter("Creator file", "creator");
-	    	fc.setFileFilter(fileFilter);
-			fc.setMultiSelectionEnabled(true);
-			int returnVal = fc.showOpenDialog(GUI.this);
-	    	 
-	    	 File files[];
-	    	 
-	    	 if (returnVal == JFileChooser.APPROVE_OPTION) {
-	                files = fc.getSelectedFiles();
-	            } else {
-	            	return;
-	         }
-	    	  
-	    	 for(File f: files){
-		    	 FileInputStream fileIn = new FileInputStream(f);
-		         ObjectInputStream in = new ObjectInputStream(fileIn);
-		         superBase.add((QBase) in.readObject());
-		         in.close();
-		         fileIn.close();
-	    	 }
-	         renderTable = true;
-	         renderTable();
-		   
-		     this.notSaved();
-	      }catch(IOException i)
-	      {
-	         i.printStackTrace();
-	         return;
-	      }catch(ClassNotFoundException c)
-	      {
-	         System.out.println("Incorrect format");
-	         c.printStackTrace();
-	         return;
-	      }
-	}
+private void addBase() throws InvalidKeyException{
+	try
+      {
+    	JFileChooser fc = new JFileChooser(defaultPath);
+    	FileFilter fileFilter = new FileNameExtensionFilter("Creator file", "creator");
+    	fc.setFileFilter(fileFilter);
+		fc.setMultiSelectionEnabled(true);
+		int returnVal = fc.showOpenDialog(GUI.this);
+    	 
+    	 File files[];
+    	 
+    	 if (returnVal == JFileChooser.APPROVE_OPTION) {
+                files = fc.getSelectedFiles();
+            } else {
+            	return;
+         }
+    	 desCipher.init(Cipher.DECRYPT_MODE, secretKey); 
+    	 for(File f: files){
+	    	 FileInputStream fileIn = new FileInputStream(f);
+	    	 BufferedInputStream bis = new BufferedInputStream(fileIn);
+	    	 CipherInputStream cis = new CipherInputStream(bis, desCipher);
+	         ObjectInputStream in = new ObjectInputStream(cis);
+	         superBase.add((QBase) in.readObject());
+	         in.close();
+	         fileIn.close();
+    	 }
+         renderTable = true;
+         renderTable();
+	   
+	     this.notSaved();
+      }catch(IOException i)
+      {
+         i.printStackTrace();
+         return;
+      }catch(ClassNotFoundException c)
+      {
+         System.out.println("Incorrect format");
+         c.printStackTrace();
+         return;
+      }
+}
 	
 	private void renderTable(){
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -375,16 +399,29 @@ public class GUI extends JFrame {
 	 * Create the frame.
 	 * @throws IOException 
 	 * @throws ClassNotFoundException 
+	 * @throws InvalidKeyException 
+	 * @throws NoSuchAlgorithmException 
+	 * @throws InvalidKeySpecException 
+	 * @throws NoSuchPaddingException 
 	 */
-	private GUI() throws ClassNotFoundException, IOException {
+	private GUI() throws ClassNotFoundException, IOException, InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException {
 		superBase = new SuperBase();
 		
-		 Locale currentLocale;
+		Locale currentLocale;
 	     
-		 loadConfig();
-	     currentLocale = new Locale(config.getLang(), config.getCountry());
+		loadConfig();
+	    currentLocale = new Locale(config.getLang(), config.getCountry());
 
-	     messages = ResourceBundle.getBundle("i18n.MessagesBundle", currentLocale);
+	    messages = ResourceBundle.getBundle("i18n.MessagesBundle", currentLocale);
+	     
+	    byte key[] = password.getBytes();
+		DESKeySpec desKeySpec = new DESKeySpec(key);
+		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
+		this.secretKey = keyFactory.generateSecret(desKeySpec);
+
+		// Create Cipher
+		this.desCipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
+		this.desCipher.init(Cipher.ENCRYPT_MODE, secretKey);
 		
 		setTitle("Integrator pyta\u0144 egzaminacyjnych");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -419,7 +456,12 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				open();
+				try {
+					open();
+				} catch (InvalidKeyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -436,7 +478,12 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				save();
+				try {
+					save();
+				} catch (InvalidKeyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -450,7 +497,12 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				saveAs();
+				try {
+					saveAs();
+				} catch (InvalidKeyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -519,7 +571,12 @@ public class GUI extends JFrame {
 				//DefaultTableModel model = (DefaultTableModel) table.getModel();
 				//model.addRow(new Object[]{"a", "b", "c", "d"});
 				
-				addBase();
+				try {
+					addBase();
+				} catch (InvalidKeyException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 				
 			}

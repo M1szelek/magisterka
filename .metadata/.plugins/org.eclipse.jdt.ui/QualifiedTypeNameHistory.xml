@@ -14,4 +14,5 @@
 <fullyQualifiedTypeName name="com.itextpdf.text.Rectangle"/>
 <fullyQualifiedTypeName name="com.itextpdf.text.Element"/>
 <fullyQualifiedTypeName name="util.OutputDocument"/>
+<fullyQualifiedTypeName name="javax.crypto.Cipher"/>
 </qualifiedTypeNameHistroy>
